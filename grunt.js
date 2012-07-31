@@ -1,60 +1,42 @@
 /*global module:false*/
 module.exports = function(grunt) {
+  grunt.loadNpmTasks('grunt-rigger');
 
   // Project configuration.
   grunt.initConfig({
     meta: {
       version: '0.1.0',
-      banner: '/*! PROJECT_NAME - v<%= meta.version %> - ' +
+      banner: '/*! R8 - v<%= meta.version %> - ' +
         '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-        '* http://PROJECT_WEBSITE/\n' +
+        '* http://github.com/eclifford/R8/\n' +
         '* Copyright (c) <%= grunt.template.today("yyyy") %> ' +
-        'YOUR_NAME; Licensed MIT */'
-    },
-    lint: {
-      files: ['grunt.js', 'lib/**/*.js', 'test/**/*.js']
-    },
-    qunit: {
-      files: ['test/**/*.html']
+        'Eric Clifford; Licensed MIT */'
     },
     concat: {
       dist: {
         src: ['<banner:meta.banner>', 'lib/r8.js', 'lib/permissions.js', 'lib/core.js', 'lib/api.js'],
-        dest: 'dist/r8.js'
+        dest: 'build/r8.js'
+      }
+    },
+    rig: {
+      amd: {
+        src: ['r8/r8.coffee'],
+        dest: 'build/r8.coffee'
       }
     },
     min: {
       dist: {
         src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
-        dest: 'dist/r8.min.js'
+        dest: 'build/r8.min.js'
       }
     },
     watch: {
-      files: '<config:lint.files>',
-      tasks: 'lint qunit'
-    },
-    jshint: {
-      options: {
-        curly: true,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        sub: true,
-        undef: true,
-        boss: true,
-        eqnull: true,
-        browser: true
-      },
-      globals: {
-        jQuery: true
-      }
+      files: 'r8/*.coffee',
+      tasks: 'rig'
     },
     uglify: {}
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint qunit concat min');
-
+  grunt.registerTask('default', 'concat rig min');
 };

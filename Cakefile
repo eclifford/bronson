@@ -41,5 +41,9 @@ walk = (dir, pattern, done) ->
           results.push file
         done(null, results) unless --pending
 
-task 'watch', 'Run middleman and the file watcher', ->
-  run 'coffee', '-wco', './lib', './src'
+task 'watch', 'Run the watcher for files changes', ->
+  run 'grunt', 'watch'
+
+task 'build', 'build', ->
+  run 'grunt', 'rig'
+  run 'coffee', '-c', './dist/r8.coffee'

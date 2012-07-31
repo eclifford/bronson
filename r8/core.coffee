@@ -40,9 +40,10 @@ Core = R8.Core =
   # @param channel [String] The channel to listen on
   # 
   unsubscribe: (subscriber, channel) ->
-    for item, i in channels[channel]
+    for item, i in @channels[channel]
+      console.log item, i
       if item.subscriber == subscriber
-        channels[channel].splice i, 1
+        @channels[channel].splice i, 1
 
   # Publish an event to a channel
   # @param channel [String] the channel to publish to
@@ -94,11 +95,12 @@ Core = R8.Core =
 
     obj = obj[0]
 
-    require [moduleId], (module) ->
+    require [moduleId], (module) =>
       ##try
       # Create the module by instantiating it
-      module = new module(obj)          
-      modules[moduleId] = module
+      module = new module(obj)       
+
+      @modules['test'] = module
       callback(module)
       console.log "Core#createModule: Creating module #{moduleId} successful"
       ##catch err 
