@@ -1,8 +1,20 @@
----
-layout: layout
-title: "Bronson"
----
-<div class="wrapper">
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Bronson by eclifford</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+    <div class="wrapper">
   <header>
     <h1>Bronson</h1>
     <p>no dice</p>
@@ -34,17 +46,19 @@ title: "Bronson"
     <h3>Api</h3>
 
     <h4>Publish Example</h4>
-{% highlight coffeescript %}
-require ['bronson'], (Bronson) ->
-  Bronson.Core.publish 'TestEvent'
-{% endhighlight %}
+<div class="highlight"><pre><code class="coffeescript"><span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
+  <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">publish</span> <span class="s">&#39;TestEvent&#39;</span>
+</code></pre>
+</div>
+
 
     <h4>Simple Subscribing</h4>
-{% highlight coffeescript %}
-require ['bronson'], (Bronson) ->
-  Bronson.Core.subscribe 'TestModule', 'TestEvent', (msg) ->
-    console.log 'successfully subscribe'
-{% endhighlight %}
+<div class="highlight"><pre><code class="coffeescript"><span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
+  <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">subscribe</span> <span class="s">&#39;TestModule&#39;</span><span class="p">,</span> <span class="s">&#39;TestEvent&#39;</span><span class="p">,</span> <span class="nf">(msg) -&gt;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;successfully subscribe&#39;</span>
+</code></pre>
+</div>
+
 
 
 <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
@@ -72,3 +86,6 @@ require ['bronson'], (Bronson) ->
     </div>
     <script src="javascripts/scale.fix.js"></script>
 
+ 
+  </body>
+</html>
