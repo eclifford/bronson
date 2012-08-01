@@ -6,9 +6,9 @@ define [
   describe "Bronson.Permissions", ->
 
     before ->
-      # @rules = 
-      #   "TestModule":
-      #     "TestEvent": false
+      @rules = 
+        "TestModule":
+          "TestEvent": false
 
     describe "validate()", ->
       it "should succesfully validate permissions", ->
@@ -16,6 +16,7 @@ define [
         Bronson.Permissions.extend @rules
         refute.exception ->
           Bronson.Core.subscribe 'TestModule', 'TestEvent'
+        Bronson.Permissions.enabled = false
 
 
     # describe "subscribe()", ->

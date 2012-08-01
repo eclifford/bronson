@@ -1,7 +1,7 @@
 define [
   'cs!build/bronson',
   'cs!test/fixtures/TestModule'
-], (R8, TestModule) ->  
+], (Bronson, TestModule) ->  
   buster.spec.expose()
 
   describe "Core", ->
@@ -16,13 +16,13 @@ define [
       it "should successfully subscribe given valid paramaters", ->
         Bronson.Core.subscribe 'TestModule', 'TestEvent', @spy
         Bronson.Core.publish 'TestEvent'
-        Bronson.Core.unsubscribe 'TestModule', 'TestEvent', ->
+        Bronson.Core.unsubscribe 'TestModule', 'TestEvent'
         assert.calledOnce @spy
 
       it "should successfully recieve data passed to it", ->
         Bronson.Core.subscribe 'TestModule', 'TestEvent', @spy
         Bronson.Core.publish 'TestEvent', {foo: 'bar'}
-        Bronson.Core.unsubscribe 'TestModule', 'TestEvent', ->
+        Bronson.Core.unsubscribe 'TestModule', 'TestEvent'
         assert.calledOnceWith @spy, {foo: 'bar'}
 
       it "should throw if passed invalid paramaters", ->
@@ -33,7 +33,7 @@ define [
     describe "unsubscribe()", ->
       it "should successfully unsubscribe", ->
         Bronson.Core.subscribe 'TestModule', 'TestEvent', @spy
-        Bronson.Core.unsubscribe 'TestModule', 'TestEvent', ->
+        Bronson.Core.unsubscribe 'TestModule', 'TestEvent'
         Bronson.Core.publish 'TestEvent'
         refute.calledOnce @spy
 

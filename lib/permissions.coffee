@@ -14,22 +14,6 @@ Permissions = Bronson.Permissions =
   extend: (props) ->
     rules = Bronson.Util.extend(rules, props)
 
-  # # The rules for modules/events
-  # rules:
-  #   "gallery-module":
-  #     "toggleTray": true
-  #     "galleryCloseClicked": true
-  #     "changeCurrentPhoto": true
-  #   "panel-plugin":
-  #     "galleryLoaded": true
-  #     "galleryClose": true
-  #   "test":
-  #     'test': true
-  #   "responsive":
-  #     "/responsive": true
-  #   # "TestModule":
-  #   #   "TestEvent": true
-
   # Validate a subscribers permission for subscribing to a channel
   #
   # @param subscriber [string] the subscriber 

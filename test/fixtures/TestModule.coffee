@@ -1,5 +1,5 @@
 define [], () ->
-  class TestModule extends R8.Module
+  class TestModule extends Bronson.Module
     initialize: ->
 
     dipose: ->
