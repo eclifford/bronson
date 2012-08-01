@@ -110,4 +110,3 @@ Api = Bronson.Api =
 
     # Pass to core
     Bronson.Core.stopModule moduleId, callback
-

@@ -139,7 +139,3 @@ Core = Bronson.Core =
       callback()
     else 
       throw new Error "Bronson.Core#stopModule: unable to stop nonexistent module"
-
-
-
-

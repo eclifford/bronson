@@ -47,3 +47,6 @@ task 'watch', 'Run the watcher for files changes', ->
 task 'build', 'build', ->
   run 'grunt', 'rig'
   run 'coffee', '-c', './build/bronson.coffee'
+
+task 'docs', 'Build the docs', ->
+  run 'codo', 'lib'

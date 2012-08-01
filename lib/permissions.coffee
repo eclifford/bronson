@@ -31,6 +31,3 @@ Permissions = Bronson.Permissions =
       return if test is undefined then false else test
     else 
       return true
-
-
-

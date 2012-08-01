@@ -10,16 +10,16 @@
   Bronson = window.Bronson =
     version: "0.0.1"
 
-  # # Utility function watching for RequireJS errors
-  # # @ param err [String] the error 
-  # #
-  # require.onError = (err) ->
-  #   if err.requireType is 'timeout'
-  #     console.error "Could not load module #{err.requireModules}"
-  #   else
-  #     failedId = err.requireModules && err.requireModules[0]
-  #     require.undef failedId
-  #     throw err
+  # Utility function watching for RequireJS errors
+  # @ param err [String] the error 
+  #
+  require.onError = (err) ->
+    if err.requireType is 'timeout'
+      console.error "Could not load module #{err.requireModules}"
+    else
+      failedId = err.requireModules && err.requireModules[0]
+      require.undef failedId
+      throw err
 
   # Bronson Api
   # Interface layer for Bronson
@@ -133,8 +133,6 @@
   
       # Pass to core
       Bronson.Core.stopModule moduleId, callback
-  
-  
   # Bronson Permissions 
   # Permissions layer for Bronson
   #
@@ -168,10 +166,6 @@
         return if test is undefined then false else test
       else 
         return true
-  
-  
-  
-  
   # Bronson Core
   #
   # @author Eric Clifford
@@ -313,11 +307,6 @@
         callback()
       else 
         throw new Error "Bronson.Core#stopModule: unable to stop nonexistent module"
-  
-  
-  
-  
-  
   class Bronson.Module
     view: null
     currentId: null
@@ -359,6 +348,184 @@
       @disposed = true
   
       Object.freeze? this
+  # Bronson Model
+  #
+  # @author Eric Clifford
+  # @version 0.0.1
+  #
+  class Bronson.Model extends Backbone.Model
+    disposed: false
+  
+    dispose: ->
+      return if @disposed
+  
+      # Remove the collection reference, internal attribute hashes
+      # and event handlers
+      properties = [
+        'collection',
+        'attributes', 'changed'
+        '_escapedAttributes', '_previousAttributes',
+        '_silent', '_pending',
+        '_callbacks'
+      ]
+      delete this[prop] for prop in properties
+  
+      # Finished
+      @disposed = true
+  
+      # Make this object immutable
+      Object.freeze? this
+  # Bronson Collection
+  # Backbone Collection base class
+  #
+  # @author Eric Clifford
+  # @version 0.0.1
+  #
+  class Collection extends Backbone.Collection
+    model: Bronson.Model
+  
+    # Whether or not this collection has been disposed
+    disposed: false
+  
+    # Dipose this collection
+    # 
+    # @example
+    #   Bronson.Collection.dispose()
+    #
+    dispose: ->
+      return if @disposed
+  
+      # Empty the list silently, but do not dispose all models since
+      # they might be referenced elsewhere
+      @reset [], silent: true
+  
+      # Remove model constructor reference, internal model lists
+      # and event handlers
+      properties = [
+        'model',
+        'models', '_byId', '_byCid',
+        '_callbacks'
+      ]
+      delete this[prop] for prop in properties
+  
+      # Finished
+      @disposed = true
+  
+      # Make this object immutable
+      Object.freeze? this
+  # Backbone Base View
+  # Base view for extending shared backbone functionality
+  #
+  # @author Eric Clifford
+  # @version 1.0.0
+  # @copyright AKQA
+  # @todo 
+  #
+  
+  class Bronson.View extends Backbone.View
+    # Subviews
+    # --------
+  
+    # List of subviews
+    subviews: null
+    subviewsByName: null
+  
+    constructor: ->
+      # Call Backbone’s constructor
+      super
+  
+    initialize: (options) ->
+      # No super call here, Backbone’s `initialize` is a no-op
+  
+      # Initialize subviews
+      @subviews = []
+      @subviewsByName = {}
+  
+      logger.log 1, "--- View: initialize()" 
+  
+    # Subviews
+    # --------
+  
+    # Getting or adding a subview
+    subview: (name, view) ->
+      if name and view
+        # Add the subview, ensure it’s unique
+        @removeSubview name
+        @subviews.push view
+        @subviewsByName[name] = view
+        view
+      else if name
+        # Get and return the subview by the given name
+        @subviewsByName[name]
+  
+      logger.log 1, "--- View: subview(#{name})" 
+  
+    # Removing a subview
+    removeSubview: (nameOrView) ->
+      return unless nameOrView
+  
+      if typeof nameOrView is 'string'
+        # Name given, search for a subview by name
+        name = nameOrView
+        view = @subviewsByName[name]
+      else
+        # View instance given, search for the corresponding name
+        view = nameOrView
+        for otherName, otherView of @subviewsByName
+          if view is otherView
+            name = otherName
+            break
+  
+      # Break if no view and name were found
+      return unless name and view and view.dispose
+  
+      # Dispose the view
+      view.dispose()
+  
+      # Remove the subview from the lists
+      index = _(@subviews).indexOf(view)
+      if index > -1
+        @subviews.splice index, 1
+      delete @subviewsByName[name]
+  
+      logger.log 1, "--- View: removeSubView(#{nameOrView})" 
+  
+    # Main render function
+    # This method is bound to the instance in the constructor (see above)
+    render: ->
+      throw new Error 'View#render must be overridden'
+  
+    # Disposal
+    # --------
+  
+    disposed: false
+  
+    dispose: ->
+      return if @disposed
+  
+      # Dispose subviews
+      subview.dispose() for subview in @subviews
+  
+      # Remove the topmost element from DOM. This also removes all event
+      # handlers from the element and all its children.
+      @$el.remove()
+  
+      # Remove element references, options,
+      # model/collection references and subview lists
+      properties = [
+        'el', '$el',
+        'options', 'model', 'collection',
+        'subviews', 'subviewsByName',
+        '_callbacks'
+      ]
+      delete this[prop] for prop in properties
+  
+      # Finished
+      @disposed = true
+  
+      Object.freeze? this
+  
+      logger.log 1, "--- View: dispose()" 
   Util = Bronson.Util =
   
     # Object Helpers
@@ -419,8 +586,3 @@
   # This example returns an object, but the module
   # can return a function as the exported value.
   return Bronson
-
-
-
-
-  
