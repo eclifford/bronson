@@ -19,7 +19,7 @@
 
         <header>
           <h1>Bronson</h1>
-          <h2></h2>
+          <h2>no dice</h2>
         </header>
 
         <section id="downloads" class="clearfix">
@@ -31,9 +31,61 @@
         <hr>
 
         <section id="main_content">
-          <h3>Welcome to GitHub Pages.</h3>
+          <h3>Introduction</h3>      
+          <p>Bronson is a collection of utilities for building large, scalable modular javascript applications. </p>
+          <h3>Features</h3>
+          <ul>
+            <li>Managed Publish/Subscribe</li>
+            <li>Module loader</li>
+            <li>Base Backbone Model, View, Collection</li>
+            <li>Optimized Memory Management</li>
+          </ul>
+          <h3>Depedencies</h3>
+          <ul>
+            <li>RequireJS</li>
+            <li>Jquery</li>
+            <li>Underscore</li>
+            <li>Backbone</li>
+          <h3>Overview</h3>
+          <h4>Api</h4>
+          <p>The API layer is the public interface for communicating with the Bronson library. The API abstracts the Core and Permissions layer and presents a closed to modification interface.
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+          <strong>Loading a Module</strong>
+
+<pre><code># With Library already loaded
+Bronson.Api.createModule 'TestModule', 
+  url: 'path/to/data'
+, ->
+  console.log 'module created'
+
+# VIA AMD/RequireJS       
+require ['bronson'], (Bronson) ->            
+  Bronson.Api.createModule 'app/modules/model-listing',   
+    url: '/app/data/model-list-data.json'          
+  , ->       
+    console.log 'module created'   
+</code></pre>
+
+          <strong>Publishing an Event</strong>
+
+<pre><code>require ['bronson'], (Bronson) ->                     
+  Bronson.Api.publish 'TestEvent', { foo: "bar" }              
+</code></pre>
+
+          <strong>Subscribing to an Event</strong>
+
+<pre><code>require ['api'], (api) ->                     
+  api.createModule 'app/modules/model-listing',   
+    url: '/app/data/model-list-data.json'          
+  , ->       
+    console.log 'module created'   
+</code></pre>
+
+
+
+          <h3>Running Tests</h3>
+          <h3>Loading Modules</h3>
+
 
 <pre><code>$ cd your_repo_root/repo_name
 $ git fetch origin
