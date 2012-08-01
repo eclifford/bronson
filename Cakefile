@@ -41,12 +41,5 @@ walk = (dir, pattern, done) ->
           results.push file
         done(null, results) unless --pending
 
-task 'watch', 'Run the watcher for files changes', ->
-  run 'grunt', 'watch'
-
-task 'build', 'build', ->
-  run 'grunt', 'rig'
-  run 'coffee', '-c', './build/bronson.coffee'
-
 task 'docs', 'Build the docs', ->
   run 'codo', 'lib'

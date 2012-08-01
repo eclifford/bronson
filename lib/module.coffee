@@ -1,6 +1,10 @@
+# Bronson Module
+#
+# @author Eric Clifford
+# @version 0.0.1
+#
 class Bronson.Module
-  view: null
-  currentId: null
+  id: ""
   disposed: false 
 
   # Constructor
@@ -11,7 +15,7 @@ class Bronson.Module
   # Initialize
   #
   initialize: ->
-    # Empty per default
+    throw new Error "Bronson.Module#initialize: must override initialize"
 
   # Cleanup this controller
   # 
@@ -28,14 +32,11 @@ class Bronson.Module
         obj.dispose()
         delete this[prop]
 
-    # Unbind handlers of global events
-    #@unsubscribeAllEvents()
-
-    # Remove properties which are not disposable
-    properties = ['currentId']
-    delete this[prop] for prop in properties
+    # Stop this module and remove all events
+    Bronson.Core.stopModule id
 
     # Finished
     @disposed = true
 
+    # Make this object immutable
     Object.freeze? this

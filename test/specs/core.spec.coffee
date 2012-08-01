@@ -44,3 +44,21 @@ define [
           assert.isFunction module.initialize
           done()
 
+    describe "unsubscribeAll()", ->
+      it "should successfully remove all subscribed channels from subscriber", ->
+        refute.exception ->
+          Bronson.Core.subscribe 'TestModule', 'TestEvent', ->
+          Bronson.Core.subscribe 'TestModule', 'TestEvent2', ->
+          Bronson.Core.subscribe 'TestModule', 'TestEvent3', ->
+          Bronson.Core.unsubscribeAll 'TestModule'
+          assert.equals Bronson.Core.channels, {}
+
+    describe "stopModule()", ->
+      it "should succesfully stop a module without erroring", (done) ->
+        refute.exception ->
+          Bronson.Core.createModule 'test/fixtures/TestModule', {}, (module) ->
+            Bronson.Core.stopModule 'test/fixtures/TestModule', ->
+              done()
+
+
+

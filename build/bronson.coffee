@@ -1,3 +1,6 @@
+# Bronson -v 0.1.0 - 2012-08-01
+# http://github.com/eclifford/bronson
+# Copyright (c) 2012 Eric Clifford; Licensed MIT
 ((root, factory) ->
   if typeof define is "function" and define.amd
     # AMD. Register as an anonymous module.
@@ -21,6 +24,8 @@
       require.undef failedId
       throw err
 
+  requirejs.onResourceLoad = (context, map, depArray) ->
+
   # Bronson Api
   # Interface layer for Bronson
   #
@@ -28,6 +33,19 @@
   # @version 0.0.1
   #
   Api = Bronson.Api = 
+    # Publish an event to a channel
+    # @param channel [String] the channel to publish to
+    #
+    # @example
+    #   Bronson.Api.publish 'TestEvent'
+    #
+    publish: (channel) ->
+      if not channel? || typeof channel isnt "string"
+        throw new Error "Bronson.Api#publish: a valid channel must be supplied"
+  
+      # Pass to the core
+      Bronson.Core.publish channel, arguments[1]
+      
     # Subscribe a module to an event while validating a modules
     # permission to subscribe to said event
     #
@@ -71,19 +89,6 @@
   
       # Pass to the core
       Bronson.Core.unsubscribe subscriber, channel
-  
-    # Publish an event to a channel
-    # @param channel [String] the channel to publish to
-    #
-    # @example
-    #   Bronson.Api.publish 'TestEvent'
-    #
-    publish: (channel) ->
-      if not channel? || typeof channel isnt "string"
-        throw new Error "Bronson.Api#publish: a valid channel must be supplied"
-  
-      # Pass to the core
-      Bronson.Core.publish channel, arguments[1]
    
     # Create a module
     #
@@ -143,9 +148,10 @@
     # Whether or not the permissions are activated
     enabled: false
   
-    # Appliations rules
+    # Application rules
     rules: {}
   
+    # Overwrite the application rules
     extend: (props) ->
       rules = Bronson.Util.extend(rules, props)
   
@@ -174,6 +180,34 @@
   Core = Bronson.Core = 
     channels: {}
     modules: {}
+  
+    # Publish an event to a channel
+    # @param channel [String] the channel to publish to
+    #
+    # @example
+    #   Bronson.Core.publish 'TestEvent'
+    #
+    publish: (channel) ->
+      # Verify our input parameters
+      if not channel?
+        throw new Error "Bronson.Core#publish: channel must be defined"
+  
+      if typeof channel isnt "string"
+        throw new Error "Bronson.Core#publish: channel must be a string" 
+  
+      # Verify that the channel exists
+      if !@channels[channel]
+        return true
+  
+      # Get all subscribers to this channel
+      subscribers = @channels[channel].slice()
+  
+      # Get the arguments
+      args = [].slice.call(arguments, 1)
+  
+      # Call the callback method on all subscribers
+      for subscriber in subscribers
+        subscriber.callback.apply this, args
   
     # Subscribe a module to an event
     #
@@ -217,34 +251,23 @@
         if item.subscriber == subscriber
           @channels[channel].splice i, 1
   
-    # Publish an event to a channel
-    # @param channel [String] the channel to publish to
+    # Unsubscribe subscriber from all channels
+    # @param subscriber [String] The module to unsubscribe
     #
     # @example
-    #   Bronson.Core.publish 'TestEvent'
+    #   Bronson.Core.unsubscribeAll 'TestModule'
     #
-    publish: (channel) ->
-      # Verify our input parameters
-      if not channel?
-        throw new Error "Bronson.Core#publish: channel must be defined"
-  
-      if typeof channel isnt "string"
-        throw new Error "Bronson.Core#publish: channel must be a string" 
-  
-      # Verify that the channel exists
-      if !@channels[channel]
-        return true
-  
-      # Get all subscribers to this channel
-      subscribers = @channels[channel].slice()
-  
-      # Get the arguments
-      args = [].slice.call(arguments, 1)
-  
-      # Call the callback method on all subscribers
-      for subscriber in subscribers
-        subscriber.callback.apply this, args
-   
+    unsubscribeAll: (subscriber) ->
+      for channel of @channels
+        if @channels.hasOwnProperty(channel) 
+          # Iterate through channels and remove subscribers
+          for subscriber, y in @channels[channel]
+            if subscriber == subscriber
+              @channels[channel].splice y, 1
+          # If channel is empty delete it
+          if @channels[channel].length == 0
+            delete @channels[channel]
+     
     # Create a module
     #
     # @param moduleId [String] the AMD module to load(alias or relative path)
@@ -273,13 +296,13 @@
   
       # Load the module through RequireJS
       require [moduleId], (module) =>
-        #try
-        # Create the module by instantiating it
-        module = new module(obj)
-        @modules[moduleId] = module      
-        callback(module)
-        #catch err 
-        #  throw new Error "Bronson.Core#createModule: #{err}"
+        try 
+          _module = new module(obj)
+          _module.id = moduleId
+          @modules[moduleId] = _module      
+          callback(_module)
+        catch e 
+          throw new Error "Bronson.Core#createModule: #{e}"
   
     # Stop all modues
     #
@@ -296,20 +319,29 @@
     #   Bronson.Core.stopModule 'TestModule'
     #
     stopModule: (moduleId, callback)->
-      mod = modules[moduleId]
-      if(mod) 
-        for ch of @channels
-          if @channels.hasOwnProperty(ch)
-            i = 0
-            while i < @channels[ch].length
-              @channels[ch].splice i  if @channels[ch][i].subscriber is moduleId
-              i++
-        callback()
-      else 
-        throw new Error "Bronson.Core#stopModule: unable to stop nonexistent module"
+      # Validate input parameters
+      if not moduleId? || typeof moduleId isnt "string"
+        throw new Error "Bronson.Core#stopModule: moduleId must be valid"
+  
+      if not @modules[moduleId]?
+        throw new Error "Bronson.Core#stopModule: that moduleId is not loaded"
+  
+      try 
+        require.undef(moduleId) 
+        @unsubscribeAll(moduleId) 
+  
+      catch e
+        throw new Error "Bronson.Core#stopModule: #{e}"
+     
+      callback()
+  
+  # Bronson Module
+  #
+  # @author Eric Clifford
+  # @version 0.0.1
+  #
   class Bronson.Module
-    view: null
-    currentId: null
+    id: ""
     disposed: false 
   
     # Constructor
@@ -320,7 +352,7 @@
     # Initialize
     #
     initialize: ->
-      # Empty per default
+      throw new Error "Bronson.Module#initialize: must override initialize"
   
     # Cleanup this controller
     # 
@@ -337,228 +369,21 @@
           obj.dispose()
           delete this[prop]
   
-      # Unbind handlers of global events
-      #@unsubscribeAllEvents()
-  
-      # Remove properties which are not disposable
-      properties = ['currentId']
-      delete this[prop] for prop in properties
-  
-      # Finished
-      @disposed = true
-  
-      Object.freeze? this
-  # Bronson Model
-  #
-  # @author Eric Clifford
-  # @version 0.0.1
-  #
-  class Bronson.Model extends Backbone.Model
-    disposed: false
-  
-    dispose: ->
-      return if @disposed
-  
-      # Remove the collection reference, internal attribute hashes
-      # and event handlers
-      properties = [
-        'collection',
-        'attributes', 'changed'
-        '_escapedAttributes', '_previousAttributes',
-        '_silent', '_pending',
-        '_callbacks'
-      ]
-      delete this[prop] for prop in properties
+      # Stop this module and remove all events
+      Bronson.Core.stopModule id
   
       # Finished
       @disposed = true
   
       # Make this object immutable
       Object.freeze? this
-  # Bronson Collection
-  # Backbone Collection base class
+  # Bronson Util 
+  # Permissions layer for Bronson
   #
   # @author Eric Clifford
   # @version 0.0.1
   #
-  class Collection extends Backbone.Collection
-    model: Bronson.Model
-  
-    # Whether or not this collection has been disposed
-    disposed: false
-  
-    # Dipose this collection
-    # 
-    # @example
-    #   Bronson.Collection.dispose()
-    #
-    dispose: ->
-      return if @disposed
-  
-      # Empty the list silently, but do not dispose all models since
-      # they might be referenced elsewhere
-      @reset [], silent: true
-  
-      # Remove model constructor reference, internal model lists
-      # and event handlers
-      properties = [
-        'model',
-        'models', '_byId', '_byCid',
-        '_callbacks'
-      ]
-      delete this[prop] for prop in properties
-  
-      # Finished
-      @disposed = true
-  
-      # Make this object immutable
-      Object.freeze? this
-  # Backbone Base View
-  # Base view for extending shared backbone functionality
-  #
-  # @author Eric Clifford
-  # @version 1.0.0
-  # @copyright AKQA
-  # @todo 
-  #
-  
-  class Bronson.View extends Backbone.View
-    # Subviews
-    # --------
-  
-    # List of subviews
-    subviews: null
-    subviewsByName: null
-  
-    constructor: ->
-      # Call Backbone’s constructor
-      super
-  
-    initialize: (options) ->
-      # No super call here, Backbone’s `initialize` is a no-op
-  
-      # Initialize subviews
-      @subviews = []
-      @subviewsByName = {}
-  
-      logger.log 1, "--- View: initialize()" 
-  
-    # Subviews
-    # --------
-  
-    # Getting or adding a subview
-    subview: (name, view) ->
-      if name and view
-        # Add the subview, ensure it’s unique
-        @removeSubview name
-        @subviews.push view
-        @subviewsByName[name] = view
-        view
-      else if name
-        # Get and return the subview by the given name
-        @subviewsByName[name]
-  
-      logger.log 1, "--- View: subview(#{name})" 
-  
-    # Removing a subview
-    removeSubview: (nameOrView) ->
-      return unless nameOrView
-  
-      if typeof nameOrView is 'string'
-        # Name given, search for a subview by name
-        name = nameOrView
-        view = @subviewsByName[name]
-      else
-        # View instance given, search for the corresponding name
-        view = nameOrView
-        for otherName, otherView of @subviewsByName
-          if view is otherView
-            name = otherName
-            break
-  
-      # Break if no view and name were found
-      return unless name and view and view.dispose
-  
-      # Dispose the view
-      view.dispose()
-  
-      # Remove the subview from the lists
-      index = _(@subviews).indexOf(view)
-      if index > -1
-        @subviews.splice index, 1
-      delete @subviewsByName[name]
-  
-      logger.log 1, "--- View: removeSubView(#{nameOrView})" 
-  
-    # Main render function
-    # This method is bound to the instance in the constructor (see above)
-    render: ->
-      throw new Error 'View#render must be overridden'
-  
-    # Disposal
-    # --------
-  
-    disposed: false
-  
-    dispose: ->
-      return if @disposed
-  
-      # Dispose subviews
-      subview.dispose() for subview in @subviews
-  
-      # Remove the topmost element from DOM. This also removes all event
-      # handlers from the element and all its children.
-      @$el.remove()
-  
-      # Remove element references, options,
-      # model/collection references and subview lists
-      properties = [
-        'el', '$el',
-        'options', 'model', 'collection',
-        'subviews', 'subviewsByName',
-        '_callbacks'
-      ]
-      delete this[prop] for prop in properties
-  
-      # Finished
-      @disposed = true
-  
-      Object.freeze? this
-  
-      logger.log 1, "--- View: dispose()" 
   Util = Bronson.Util =
-  
-    # Object Helpers
-    # --------------
-  
-    # Prototypal delegation. Create an object which delegates
-    # to another object.
-    beget: do ->
-      if typeof Object.create is 'function'
-        Object.create
-      else
-        ctor = ->
-        (obj) ->
-          ctor:: = obj
-          new ctor
-  
-    # # Make properties readonly and not configurable
-    # # using ECMAScript 5 property descriptors
-    # readonly: do ->
-    #   if support.propertyDescriptors
-    #     readonlyDescriptor =
-    #       writable: false
-    #       enumerable: true
-    #       configurable: false
-    #     (obj, properties...) ->
-    #       for prop in properties
-    #         readonlyDescriptor.value = obj[prop]
-    #         Object.defineProperty obj, prop, readonlyDescriptor
-    #       true
-    #   else
-    #     ->
-    #       false
-  
     extend: (object, extenders...) ->
       return {} if not object?
       for other in extenders
@@ -570,17 +395,7 @@
   
       object
   
-    # String Helpers
-    # --------------
   
-    # Upcase the first character
-    upcase: (str) ->
-      str.charAt(0).toUpperCase() + str.substring(1)
-  
-    # underScoreHelper -> under_score_helper
-    underscorize: (string) ->
-      string.replace /[A-Z]/g, (char, index) ->
-        (if index isnt 0 then '_' else '') + char.toLowerCase()
 
   # Just return a value to define the module export.
   # This example returns an object, but the module

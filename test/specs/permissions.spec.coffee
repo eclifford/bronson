@@ -16,6 +16,7 @@ define [
         Bronson.Permissions.extend @rules
         refute.exception ->
           Bronson.Core.subscribe 'TestModule', 'TestEvent'
+          Bronson.Core.unsubscribe 'TestModule', 'TestEvent'
         Bronson.Permissions.enabled = false
 
 

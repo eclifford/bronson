@@ -21,13 +21,12 @@
       require.undef failedId
       throw err
 
+  requirejs.onResourceLoad = (context, map, depArray) ->
+
   #= api
   #= permissions
   #= core
   #= module
-  #= model
-  #= collection
-  #= view
   #= util
 
   # Just return a value to define the module export.

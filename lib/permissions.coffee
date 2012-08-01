@@ -8,9 +8,10 @@ Permissions = Bronson.Permissions =
   # Whether or not the permissions are activated
   enabled: false
 
-  # Appliations rules
+  # Application rules
   rules: {}
 
+  # Overwrite the application rules
   extend: (props) ->
     rules = Bronson.Util.extend(rules, props)
 

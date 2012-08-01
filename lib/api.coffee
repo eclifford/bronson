@@ -5,6 +5,19 @@
 # @version 0.0.1
 #
 Api = Bronson.Api = 
+  # Publish an event to a channel
+  # @param channel [String] the channel to publish to
+  #
+  # @example
+  #   Bronson.Api.publish 'TestEvent'
+  #
+  publish: (channel) ->
+    if not channel? || typeof channel isnt "string"
+      throw new Error "Bronson.Api#publish: a valid channel must be supplied"
+
+    # Pass to the core
+    Bronson.Core.publish channel, arguments[1]
+    
   # Subscribe a module to an event while validating a modules
   # permission to subscribe to said event
   #
@@ -48,19 +61,6 @@ Api = Bronson.Api =
 
     # Pass to the core
     Bronson.Core.unsubscribe subscriber, channel
-
-  # Publish an event to a channel
-  # @param channel [String] the channel to publish to
-  #
-  # @example
-  #   Bronson.Api.publish 'TestEvent'
-  #
-  publish: (channel) ->
-    if not channel? || typeof channel isnt "string"
-      throw new Error "Bronson.Api#publish: a valid channel must be supplied"
-
-    # Pass to the core
-    Bronson.Core.publish channel, arguments[1]
  
   # Create a module
   #

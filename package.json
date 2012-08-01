@@ -9,7 +9,9 @@
     "grunt-rigger": "~0.1.0",
     "grunt": "~0.3.11",
     "coffee-script": "~1.3.3",
-    "codo": "~0.9.1"
+    "codo": "~0.9.1",
+    "grunt-coffee": "0.0.3",
+    "grunt-buster": "~0.1.1"
   },
   "devDependencies": {},
   "optionalDependencies": {},
