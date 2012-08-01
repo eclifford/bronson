@@ -1,13 +1,18 @@
-Permissions = R8.Permissions =
-  _enabled: false
+# Bronson Permissions 
+# Permissions layer for Bronson
+#
+# @author Eric Clifford
+# @version 0.0.1
+#
+Permissions = Bronson.Permissions =
+  # Whether or not the permissions are activated
+  enabled: false
 
-  enabled: (value) ->
-    @_enabled = !!value
-
+  # Appliations rules
   rules: {}
 
   extend: (props) ->
-    rules = $.extend true, {}, props, @
+    rules = Bronson.Util.extend(rules, props)
 
   # # The rules for modules/events
   # rules:
@@ -31,7 +36,13 @@ Permissions = R8.Permissions =
   # @param channel [string] the channel
   #
   validate: (subscriber, channel) ->
-    if @_enabled 
+    # Validate inputs
+    if not subscriber? || typeof subscriber isnt 'string'
+      throw new Error 'Bronson.Permissions#validate: must provide a valid subscriber'
+    if not channel? || typeof channel isnt 'string'
+      throw new Error 'Bronson.Permissions#validate: must provide a valid channel' 
+     
+    if @enabled 
       test = @rules[subscriber]?[channel]
       return if test is undefined then false else test
     else 

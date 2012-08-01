@@ -1,4 +1,4 @@
-class R8.Module
+class Bronson.Module
   view: null
   currentId: null
   disposed: false 

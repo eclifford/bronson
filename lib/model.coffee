@@ -1,4 +1,9 @@
-class R8.Model extends Backbone.Model
+# Bronson Model
+#
+# @author Eric Clifford
+# @version 0.0.1
+#
+class Bronson.Model extends Backbone.Model
   disposed: false
 
   dispose: ->
@@ -18,4 +23,5 @@ class R8.Model extends Backbone.Model
     # Finished
     @disposed = true
 
+    # Make this object immutable
     Object.freeze? this

@@ -7,7 +7,7 @@
 # @todo 
 #
 
-class R8.View extends Backbone.View
+class Bronson.View extends Backbone.View
   # Subviews
   # --------
 

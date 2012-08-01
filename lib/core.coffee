@@ -1,9 +1,9 @@
-# R8 Core
+# Bronson Core
 #
 # @author Eric Clifford
 # @version 0.0.1
 #
-Core = R8.Core = 
+Core = Bronson.Core = 
   channels: {}
   modules: {}
 
@@ -13,47 +13,55 @@ Core = R8.Core =
   # @param channel [String] The channel to listen on
   # @param callback [Function] the callback
   #
+  # @example
+  #   Bronson.Core.subscribe 'TestModule', 'TestEvent', ->
+  #     console.log 'Module succesfully subscribed'
+  #
   subscribe: (subscriber, channel, callback) -> 
-    if not subscriber? or not channel? or not callback?
-      throw new Error 'R8.Core#subscribe: subscriber, channel, callback must be defined'
+    # Verify our input parameters
+    if not subscriber? || typeof subscriber isnt "string"
+      throw new Error "Bronson.Core#subscribe: must supply a valid subscriber"
+   
+    if not channel? || typeof channel isnt "string"
+      throw new Error "Bronson.Core#subscribe: must supply a valid channel"
 
-    if typeof channel isnt "string"
-      throw new Error "R8.Core#subscribe: channel must be a string"
-
-    if typeof subscriber isnt "string"
-      throw new Error "R8.Core#subscribe: subscriber must be a string"
-
-    if typeof callback isnt "function"
-      throw new Error "R8.Core#subscribe: callback must be a function"   
+    if callback? and typeof callback isnt "function"
+      throw new Error "Bronson.Core#subscribe: callback must be a function"   
 
     # Create the channel if it doesn't exist otherwise select it
     @channels[channel] = (if (not @channels[channel]) then [] else @channels[channel])
 
+    # Push the event
     @channels[channel].push 
       subscriber: subscriber
       callback: callback
-
-    console.log "Core#subscribe: Subscribing subscriber: #{subscriber} to channel: #{channel}"
 
   # Unsubscribe a subscriber from a channel
   # @param subscriber [String] The module to subscribe
   # @param channel [String] The channel to listen on
   # 
+  # @example
+  #   Bronson.Core.unsubscribe 'TestModule', 'TestEvent', ->
+  #     console.log 'Module succesfully unsubscribed'
+  #
   unsubscribe: (subscriber, channel) ->
     for item, i in @channels[channel]
-      console.log item, i
       if item.subscriber == subscriber
         @channels[channel].splice i, 1
 
   # Publish an event to a channel
   # @param channel [String] the channel to publish to
   #
+  # @example
+  #   Bronson.Core.publish 'TestEvent'
+  #
   publish: (channel) ->
+    # Verify our input parameters
     if not channel?
-      throw new Error "Core#publish: channel must be defined"
+      throw new Error "Bronson.Core#publish: channel must be defined"
 
     if typeof channel isnt "string"
-      throw new Error "Core#publish: channel must be a string" 
+      throw new Error "Bronson.Core#publish: channel must be a string" 
 
     # Verify that the channel exists
     if !@channels[channel]
@@ -68,11 +76,10 @@ Core = R8.Core =
     # Call the callback method on all subscribers
     for subscriber in subscribers
       subscriber.callback.apply this, args
-      console.log "Core#publish: Publishing event to #{channel}"
  
   # Create a module
   #
-  # @param moduleId [String] the AMD module to load
+  # @param moduleId [String] the AMD module to load(alias or relative path)
   # @param obj... [Object] the optional configuration object
   # @param callback [Function] the callback
   #
@@ -83,33 +90,33 @@ Core = R8.Core =
   #     garbage collection
   #
   # @example
-  #   core.createModule 'TestModule', {foo: 'bar'}, ->
+  #   Bronson.Core.createModule 'TestModule', {foo: 'bar'}, ->
   #     console.log 'module has been created'
   #
   createModule: (moduleId, obj..., callback) ->  
-    if moduleId is 'undefined'
-      throw new Error "Core#createModule: moduleId must be defined"
+    # Verify the input paramaters
+    if not moduleId?
+      throw new Error "Bronson.Core#createModule: moduleId must be defined"
 
     if typeof moduleId isnt 'string'
-      throw new Error "Core#createModule: moduleId must be a string"
+      throw new Error "Bronson.Core#createModule: moduleId must be a string"
 
     obj = obj[0]
 
+    # Load the module through RequireJS
     require [moduleId], (module) =>
-      ##try
+      #try
       # Create the module by instantiating it
-      module = new module(obj)       
-
-      @modules['test'] = module
+      module = new module(obj)
+      @modules[moduleId] = module      
       callback(module)
-      console.log "Core#createModule: Creating module #{moduleId} successful"
-      ##catch err 
-      ##  logger.log 3, "Core#createModule: Error creating module", err
+      #catch err 
+      #  throw new Error "Bronson.Core#createModule: #{err}"
 
   # Stop all modues
   #
   # @example
-  #   core.stopAllModules()
+  #   Bronson.Core.stopAllModules()
   #
   stopAllModules: ->
     for id of modules
@@ -118,9 +125,9 @@ Core = R8.Core =
   # Stop module
   #
   # @example
-  #   core.stopModule 'TestModule'
+  #   Bronson.Core.stopModule 'TestModule'
   #
-  stopModule: (moduleId)->
+  stopModule: (moduleId, callback)->
     mod = modules[moduleId]
     if(mod) 
       for ch of @channels
@@ -129,10 +136,9 @@ Core = R8.Core =
           while i < @channels[ch].length
             @channels[ch].splice i  if @channels[ch][i].subscriber is moduleId
             i++
-      console.log "AKQA.Application.Core#stopModule: successfully stopped module #{moduleId}"
-
+      callback()
     else 
-      throw new Error "AKQA.Application.Core#stopModule: unable to stop nonexistent module"
+      throw new Error "Bronson.Core#stopModule: unable to stop nonexistent module"
 
 
 

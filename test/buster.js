@@ -1,4 +1,4 @@
-module.exports['R8 Tests'] = {
+module.exports['Bronson Tests'] = {
   environment: 'browser',
   rootPath: "../",
 
@@ -20,7 +20,7 @@ module.exports['R8 Tests'] = {
   // our source files
   sources: [
     'test/fixtures/TestModule.coffee',
-    'build/r8.coffee'
+    'build/bronson.coffee'
   ],
 
   // our tests

@@ -1,7 +1,11 @@
-# Abstract class which extends the standard Backbone collection
-# in order to add some functionality
+# Bronson Collection
+# Backbone Collection base class
+#
+# @author Eric Clifford
+# @version 0.0.1
+#
 class Collection extends Backbone.Collection
-  model: R8.Model
+  model: Bronson.Model
 
   # Whether or not this collection has been disposed
   disposed: false
@@ -9,7 +13,7 @@ class Collection extends Backbone.Collection
   # Dipose this collection
   # 
   # @example
-  #   @dipose()
+  #   Bronson.Collection.dispose()
   #
   dispose: ->
     return if @disposed
@@ -30,4 +34,5 @@ class Collection extends Backbone.Collection
     # Finished
     @disposed = true
 
+    # Make this object immutable
     Object.freeze? this

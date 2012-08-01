@@ -46,4 +46,4 @@ task 'watch', 'Run the watcher for files changes', ->
 
 task 'build', 'build', ->
   run 'grunt', 'rig'
-  run 'coffee', '-c', './dist/r8.coffee'
+  run 'coffee', '-c', './build/bronson.coffee'

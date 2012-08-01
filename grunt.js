@@ -6,7 +6,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     meta: {
       version: '0.1.0',
-      banner: '/*! R8 - v<%= meta.version %> - ' +
+      banner: '/*! Bronson - v<%= meta.version %> - ' +
         '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
         '* http://github.com/eclifford/R8/\n' +
         '* Copyright (c) <%= grunt.template.today("yyyy") %> ' +
@@ -14,24 +14,24 @@ module.exports = function(grunt) {
     },
     concat: {
       dist: {
-        src: ['<banner:meta.banner>', 'lib/r8.js', 'lib/permissions.js', 'lib/core.js', 'lib/api.js'],
-        dest: 'build/r8.js'
+        src: ['<banner:meta.banner>', 'lib/bronson.js', 'lib/permissions.js', 'lib/core.js', 'lib/api.js'],
+        dest: 'build/bronson.js'
       }
     },
     rig: {
       amd: {
-        src: ['r8/r8.coffee'],
-        dest: 'build/r8.coffee'
+        src: ['lib/bronson.coffee'],
+        dest: 'build/bronson.coffee'
       }
     },
     min: {
       dist: {
         src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
-        dest: 'build/r8.min.js'
+        dest: 'build/bronson.min.js'
       }
     },
     watch: {
-      files: 'r8/*.coffee',
+      files: 'lib/*.coffee',
       tasks: 'rig'
     },
     uglify: {}
