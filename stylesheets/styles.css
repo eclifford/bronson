@@ -1,5 +1,17 @@
 @import url(https://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,700);
 
+@font-face {
+    font-family: 'PincoyablackBlack';
+    src: url('fonts/pincoyablack-webfont.eot');
+    src: url('fonts/pincoyablack-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/pincoyablack-webfont.woff') format('woff'),
+         url('fonts/pincoyablack-webfont.ttf') format('truetype'),
+         url('fonts/pincoyablack-webfont.svg#PincoyablackBlack') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 body {
   padding:50px;
   font:14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -10,6 +22,11 @@ body {
 h1, h2, h3, h4, h5, h6 {
   color:#222;
   margin:0 0 20px;
+}
+
+
+h1.fontface {
+  font: 70px/78px 'PincoyablackBlack', Arial, sans-serif;letter-spacing: 0;
 }
 
 p, ul, ol, table, pre, dl {

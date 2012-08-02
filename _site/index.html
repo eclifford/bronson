@@ -16,8 +16,8 @@
 
     <div class="wrapper">
   <header>
-    <h1>Bronson</h1>
-    <p>no dice</p>
+    <h1 class='fontface'>BronsonJS</h1>
+    <img src='images/bronson.jpeg' width="200px" />
 
     <p class="view"><a href="https://github.com/eclifford/Bronson">View the Project on GitHub <small>eclifford/Bronson</small></a></p>
     <ul>
@@ -27,39 +27,85 @@
     </ul>
   </header>
   <section>
-    <h3>Introduction</h3>
+    <h2>Introduction</h2>
 
     <p>Bronson is a publish/subscribe framework with a built in permissions layer.</p>
 
-    <h3>Features</h3>
+    <h2>Features</h2>
     <ul>
       <li>Advanced publish/subscribe framework</li>
       <li>Module loading/sandboxing</li>
     </ul>
 
-    <h3>Dependencies</h3>
+    <h2>Dependencies</h2>
     <ul>
       <li>RequireJS</li>
       <li>JQuery</li>
     </ul>
 
     <h3>Api</h3>
+    <p>The API layer is the public programming interface for communicating with R8. The API abstracts the Core and Permissions layer and presents a closed to modification interface.</p>
 
-    <h4>Publish Example</h4>
-<div class="highlight"><pre><code class="coffeescript"><span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
+    <h4>Responsibilities</h4>
+    <ul>
+      <li>Provide interface to pass module loading to core</li>
+      <li>Coordinate with Permissions layer to validate events</li>
+      <li>Provide interface to pass publish/subscribe events to core</li>
+    </ul>
+
+    <h4>Methods</h4>
+    <ul>
+      <li>api.publish(module, event, data)</li>
+      <li>api.subscribe(event, data, callback)</li>
+      <li>api.unsubscribe(event)</li>
+    </ul>
+
+    <h4>Examples</h4>
+    <h5>Simple Publish</h5>
+<div class="highlight"><pre><code class="coffeescript"><span class="c1"># With AMD</span>
+<span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
   <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">publish</span> <span class="s">&#39;TestEvent&#39;</span>
+
+<span class="c1"># Without</span>
+<span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">publish</span> <span class="s">&#39;TestEvent&#39;</span>
 </code></pre>
 </div>
 
 
-    <h4>Simple Subscribing</h4>
-<div class="highlight"><pre><code class="coffeescript"><span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
+    <h5>Simple Subscribing</h5>
+<div class="highlight"><pre><code class="coffeescript"><span class="c1"># With AMD</span>
+<span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
   <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">subscribe</span> <span class="s">&#39;TestModule&#39;</span><span class="p">,</span> <span class="s">&#39;TestEvent&#39;</span><span class="p">,</span> <span class="nf">(msg) -&gt;</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;successfully subscribe&#39;</span>
+
+<span class="c1"># Without</span>
+<span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">subscribe</span> <span class="s">&#39;TestModule&#39;</span><span class="p">,</span> <span class="s">&#39;TestEvent&#39;</span><span class="p">,</span> <span class="nf">(msg) -&gt;</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;sucessfully subscribed&#39;</span>
 </code></pre>
 </div>
 
 
+    <h5>Publishing with Data</h5>
+
+<div class="highlight"><pre><code class="coffeescript"><span class="c1"># With AMD</span>
+<span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
+  <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">publish</span> <span class="s">&#39;TestEvent&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nv">foo: </span><span class="s">&#39;bar&#39;</span> <span class="p">}</span> <span class="nf">(msg) -&gt;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;successfully published&#39;</span>
+</code></pre>
+</div>
+ 
+
+    <h5>Sending data to a subscriber</h5>
+<div class="highlight"><pre><code class="coffeescript"><span class="c1"># With AMD</span>
+<span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
+  <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">subscribe</span> <span class="s">&#39;TestModule&#39;</span><span class="p">,</span> <span class="s">&#39;TestEvent&#39;</span><span class="p">,</span> <span class="nf">(msg) -&gt;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;thanks for the #{msg}&#39;</span>
+
+  <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">publish</span> <span class="s">&#39;TestEvent&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nv">foo: </span><span class="s">&#39;bar&#39;</span> <span class="p">}</span> <span class="nf">(msg) -&gt;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;successfully published&#39;</span>
+</code></pre>
+</div>
+ 
 
 <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
 

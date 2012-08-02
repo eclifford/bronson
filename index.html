@@ -4,8 +4,8 @@ title: "Bronson"
 ---
 <div class="wrapper">
   <header>
-    <h1>Bronson</h1>
-    <p>no dice</p>
+    <h1 class='fontface'>BronsonJS</h1>
+    <img src='images/bronson.jpeg' width="200px" />
 
     <p class="view"><a href="https://github.com/eclifford/Bronson">View the Project on GitHub <small>eclifford/Bronson</small></a></p>
     <ul>
@@ -15,37 +15,83 @@ title: "Bronson"
     </ul>
   </header>
   <section>
-    <h3>Introduction</h3>
+    <h2>Introduction</h2>
 
     <p>Bronson is a publish/subscribe framework with a built in permissions layer.</p>
 
-    <h3>Features</h3>
+    <h2>Features</h2>
     <ul>
       <li>Advanced publish/subscribe framework</li>
       <li>Module loading/sandboxing</li>
     </ul>
 
-    <h3>Dependencies</h3>
+    <h2>Dependencies</h2>
     <ul>
       <li>RequireJS</li>
       <li>JQuery</li>
     </ul>
 
     <h3>Api</h3>
+    <p>The API layer is the public programming interface for communicating with R8. The API abstracts the Core and Permissions layer and presents a closed to modification interface.</p>
 
-    <h4>Publish Example</h4>
+    <h4>Responsibilities</h4>
+    <ul>
+      <li>Provide interface to pass module loading to core</li>
+      <li>Coordinate with Permissions layer to validate events</li>
+      <li>Provide interface to pass publish/subscribe events to core</li>
+    </ul>
+
+    <h4>Methods</h4>
+    <ul>
+      <li>api.publish(module, event, data)</li>
+      <li>api.subscribe(event, data, callback)</li>
+      <li>api.unsubscribe(event)</li>
+    </ul>
+
+    <h4>Examples</h4>
+    <h5>Simple Publish</h5>
 {% highlight coffeescript %}
+# With AMD
 require ['bronson'], (Bronson) ->
   Bronson.Core.publish 'TestEvent'
+
+# Without
+Bronson.Core.publish 'TestEvent'
 {% endhighlight %}
 
-    <h4>Simple Subscribing</h4>
+    <h5>Simple Subscribing</h5>
 {% highlight coffeescript %}
+# With AMD
 require ['bronson'], (Bronson) ->
   Bronson.Core.subscribe 'TestModule', 'TestEvent', (msg) ->
     console.log 'successfully subscribe'
+
+# Without
+Bronson.Core.subscribe 'TestModule', 'TestEvent', (msg) ->
+  console.log 'sucessfully subscribed'
 {% endhighlight %}
 
+    <h5>Publishing with Data</h5>
+
+{% highlight coffeescript %}
+# With AMD
+require ['bronson'], (Bronson) ->
+  Bronson.Core.publish 'TestEvent', { foo: 'bar' } (msg) ->
+    console.log 'successfully published'
+
+{% endhighlight %} 
+
+    <h5>Sending data to a subscriber</h5>
+{% highlight coffeescript %}
+# With AMD
+require ['bronson'], (Bronson) ->
+  Bronson.Core.subscribe 'TestModule', 'TestEvent', (msg) ->
+    console.log 'thanks for the #{msg}'
+
+  Bronson.Core.publish 'TestEvent', { foo: 'bar' } (msg) ->
+    console.log 'successfully published'
+
+{% endhighlight %} 
 
 <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
 
