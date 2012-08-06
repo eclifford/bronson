@@ -42,7 +42,6 @@
           return;
         }
         this.disposed = true;
-        Bronson.Core.publish('dispose');
         this.model.unbind('change');
         this.model.dispose();
         return $(this.el).remove();

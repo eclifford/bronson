@@ -25,7 +25,7 @@ define [
       console.log 'dispose'
       return if @disposed
       @disposed = true
-      Bronson.Core.publish 'dispose'
+      #Bronson.Core.publish 'dispose'
       @model.unbind 'change'
       @model.dispose()
       $(@el).remove()

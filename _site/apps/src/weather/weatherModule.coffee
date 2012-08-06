@@ -30,8 +30,8 @@ define [
         weatherModel.url = "http://api.wunderground.com/api/2d04094a0883bebf/forecast/geolookup/conditions/q/#{data.latitude},#{data.longitude}.json?callback=?"
         weatherModel.fetch()
 
-      Bronson.Core.subscribe 'WeatherModule', 'dispose', =>
-        @dispose()
+      #Bronson.Core.subscribe 'WeatherModule', 'dispose', =>
+        #@dispose()
 
     dispose: ->
       #super

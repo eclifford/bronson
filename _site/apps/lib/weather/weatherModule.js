@@ -33,12 +33,9 @@
             return $(_this.el).append(_this.weatherView.render().el);
           }
         });
-        Bronson.Core.subscribe('WeatherModule', 'geoUpdate', function(data) {
+        return Bronson.Core.subscribe('WeatherModule', 'geoUpdate', function(data) {
           weatherModel.url = "http://api.wunderground.com/api/2d04094a0883bebf/forecast/geolookup/conditions/q/" + data.latitude + "," + data.longitude + ".json?callback=?";
           return weatherModel.fetch();
-        });
-        return Bronson.Core.subscribe('WeatherModule', 'dispose', function() {
-          return _this.dispose();
         });
       };
 

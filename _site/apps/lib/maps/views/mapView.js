@@ -36,24 +36,19 @@
       };
 
       MapView.prototype.render = function() {
-        var mapOptions, overlay,
+        var mapOptions,
           _this = this;
         mapOptions = {
           zoom: 8,
-          center: new google.maps.LatLng(-34.397, 150.644),
+          center: new google.maps.LatLng(34.397, 137.644),
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         this.map = new google.maps.Map($(this.el).get(0), mapOptions);
-        overlay = new google.maps.OverlayView();
-        overlay.draw = function() {};
-        overlay.setMap(this.map);
-        google.maps.event.addListener(this.map, 'dragstart', function() {});
-        google.maps.event.addListener(this.map, 'dragend', function() {
-          var center, coord;
-          center = _this.map.getCenter();
+        google.maps.event.addListener(this.map, 'click', function(event) {
+          var coord;
           coord = {
-            latitude: center.Ya,
-            longitude: center.Za
+            latitude: event.latLng.Ya,
+            longitude: event.latLng.Za
           };
           return Bronson.Core.publish('geoUpdate', coord);
         });

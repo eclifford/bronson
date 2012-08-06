@@ -24,28 +24,20 @@ define [
       
       mapOptions =
         zoom: 8
-        center: new google.maps.LatLng(-34.397, 150.644)
+        center: new google.maps.LatLng(34.397, 137.644)
         mapTypeId: google.maps.MapTypeId.ROADMAP  
 
 
       
       @map = new google.maps.Map $(@el).get(0), mapOptions
 
-      overlay = new google.maps.OverlayView()
-      overlay.draw = ->
-      overlay.setMap @map
-
-      google.maps.event.addListener(@map, 'dragstart', =>
-        #projection = overlay.getProjection()
-        #pixel = projection.fromLatLngToContainerPixel(@marker.getPosition())
-        #console.log @map.getCenter()
-      )
-
-      google.maps.event.addListener(@map, 'dragend', => 
-        center = @map.getCenter()
+      google.maps.event.addListener(@map, 'click', (event) => 
+        #center = @map.getCenter()
+        # console.log center, 'center'
         coord =
-          latitude: center.Ya
-          longitude: center.Za
+          latitude: event.latLng.Ya
+          longitude: event.latLng.Za
+        # console.log coord
         Bronson.Core.publish 'geoUpdate', coord
       )
 
