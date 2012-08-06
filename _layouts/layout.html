@@ -1,19 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Bronson by eclifford</title>
-
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
+  <title>Bronson Demo</title>
+  <link rel='stylesheet' type='text/css' href='stylesheets/bootstrap.css'/>
+  <link rel='stylesheet' type='text/css' href='stylesheets/styles.css'/>
+  <script src='javascripts/vendor/jquery/jquery.js'></script>
+  <script src='javascripts/vendor/bootstrap/bootstrap.js'></script>
+  <script data-main='apps/lib/app' src='javascripts/vendor/requirejs/require.js'></script>
+  <script src='javascripts/vendor/requirejs/require-conf.js'></script>
+</head>
   <body>
-
+    <h1 class='fontface'>BronsonJS</h1>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <ul class="nav">
+            <li class="active">
+              <a href="#">Home</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
     {{ content }} 
   </body>
 </html>
