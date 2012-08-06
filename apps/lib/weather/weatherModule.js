@@ -26,7 +26,7 @@
         this.weatherView = new WeatherView({
           model: weatherModel
         });
-        weatherModel.url = 'http://api.wunderground.com/api/2d04094a0883bebf/forecast/geolookup/conditions/q/CA/San_Francisco.json?callback=?';
+        weatherModel.url = 'http://api.wunderground.com/api/2d04094a0883bebf/forecast/geolookup/conditions/q/Japan/Tokyo.json?callback=?';
         weatherModel.fetch({
           silent: true,
           success: function() {

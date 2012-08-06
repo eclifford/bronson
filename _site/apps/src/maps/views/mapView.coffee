@@ -23,15 +23,15 @@ define [
     render: ->
       
       mapOptions =
-        zoom: 8
-        center: new google.maps.LatLng(34.397, 137.644)
+        zoom: 10
+        center: new google.maps.LatLng(35.689488, 139.691706)
         mapTypeId: google.maps.MapTypeId.ROADMAP  
 
 
-      
       @map = new google.maps.Map $(@el).get(0), mapOptions
 
       google.maps.event.addListener(@map, 'click', (event) => 
+        console.log 'test'
         #center = @map.getCenter()
         # console.log center, 'center'
         coord =
@@ -40,6 +40,15 @@ define [
         # console.log coord
         Bronson.Core.publish 'geoUpdate', coord
       )
+
+      Bronson.Api.subscribe 'MapsModule', 'addMarker', (data) =>
+        console.log @map
+        latlng = new google.maps.LatLng(data.location.latitude, data.location.longitude)
+        marker = new google.maps.Marker
+          animation: google.maps.Animation.DROP,
+          position: latlng
+          map: @map
+
 
       $(@el).prepend(_.template(MapTemplate, {id: @id}))
       @

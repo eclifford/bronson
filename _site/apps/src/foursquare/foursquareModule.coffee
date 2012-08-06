@@ -19,7 +19,7 @@ define [
 
       venuesCollection.fetch
         data:
-          ll: '40.7, -74'
+          ll: '35.689488, 139.691706'
           oauth_token: 'O4KTMAIQA3K40AYAU522GP0ILLUY2SVSIH54WSAAGNCOCM1Y'
           v: '20120805'
           limit: 5

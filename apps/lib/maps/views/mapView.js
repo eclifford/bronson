@@ -39,8 +39,8 @@
         var mapOptions,
           _this = this;
         mapOptions = {
-          zoom: 8,
-          center: new google.maps.LatLng(34.397, 137.644),
+          zoom: 10,
+          center: new google.maps.LatLng(35.689488, 139.691706),
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         this.map = new google.maps.Map($(this.el).get(0), mapOptions);
@@ -52,6 +52,16 @@
             longitude: event.latLng.Za
           };
           return Bronson.Core.publish('geoUpdate', coord);
+        });
+        Bronson.Api.subscribe('MapsModule', 'addMarker', function(data) {
+          var latlng, marker;
+          console.log(_this.map);
+          latlng = new google.maps.LatLng(data.location.latitude, data.location.longitude);
+          return marker = new google.maps.Marker({
+            animation: google.maps.Animation.DROP,
+            position: latlng,
+            map: _this.map
+          });
         });
         $(this.el).prepend(_.template(MapTemplate, {
           id: this.id

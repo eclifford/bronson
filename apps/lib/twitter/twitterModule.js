@@ -28,7 +28,7 @@
         });
         tweetsCollection.fetch({
           data: {
-            geocode: "37.781157,-122.398720,1mi",
+            geocode: "35.689488,139.691706,1mi",
             rpp: 4
           },
           silent: true,

@@ -8,7 +8,14 @@ define [
   class CarouselItemView extends Backbone.View
     className: 'item'
 
+    events: 
+      "click": 'notify'
+
     initialize: ->
+
+    notify: ->
+
+      Bronson.Api.publish 'addMarker', @model.toJSON() 
 
     render: ->
       $(@el).html(_.template(CarouselItemTemplate, @model.toJSON()))

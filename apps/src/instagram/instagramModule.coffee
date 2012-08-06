@@ -20,8 +20,8 @@ define [
       @imagesCollection.fetch
         data: 
           client_id: "b3481714257943a4974e4e7ba99eb357"
-          lat: "48.858844"
-          lng: "2.294351"
+          lat: "35.689488"
+          lng: "139.691706"
         silent: true
         success: =>
           $(@el).append @carouselView.render().el

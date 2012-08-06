@@ -17,7 +17,15 @@
 
       CarouselItemView.prototype.className = 'item';
 
+      CarouselItemView.prototype.events = {
+        "click": 'notify'
+      };
+
       CarouselItemView.prototype.initialize = function() {};
+
+      CarouselItemView.prototype.notify = function() {
+        return Bronson.Api.publish('addMarker', this.model.toJSON());
+      };
 
       CarouselItemView.prototype.render = function() {
         $(this.el).html(_.template(CarouselItemTemplate, this.model.toJSON()));
