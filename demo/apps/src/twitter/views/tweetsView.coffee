@@ -7,6 +7,11 @@ define [
   'text!apps/src/twitter/templates/tweetsTemplate.html'
 ], ($, _, Backbone, Bronson, TweetItemView, TweetsTemplate) ->
   class TweetsView extends Backbone.View
+    tagName: 'li'
+    className: 'module twitter'
+      
+    events: ->
+      'click .icon-remove-sign': 'dispose'
 
     initialize: ->
       @id = Math.random().toString(36).substring(7)
@@ -14,10 +19,7 @@ define [
       @collection.bind 'reset', @render
 
     render: ->
-      if $(".#{@id}", @el).length == 0   
-        $(@el).append(_.template(TweetsTemplate, {id: @id}))
-      else
-        $(".#{@id}", @el).html(_.template(TweetsTemplate, {id: @id}))
+      $(@el).html(_.template(TweetsTemplate))
 
       _.each @collection.models, ((item) ->
         @renderItem item
@@ -28,7 +30,12 @@ define [
     renderItem: (item) ->
       tweetItemView = new TweetItemView 
         model: item
-      $('.module.twitter', @el).append tweetItemView.render().el
+      $(@el).append tweetItemView.render().el
+
+    dispose: ->
+      @collection.unbind 'change'
+      @collection.dispose()
+      $(@el).remove()   
 
 
 

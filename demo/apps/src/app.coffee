@@ -1,47 +1,47 @@
 require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
-  instagram = false
 
-
-
-
-
-  # Bronson.Core.createModule 'apps/lib/foursquare/foursquareModule'
-  #   el: '#logger'
-  # , ->
-  #   console.load 'loaded'
   $('#btnAddInstagram').click ->
-    # if !instagram 
-    Bronson.Core.createModule 'apps/lib/instagram/instagramModule',
+    Bronson.Api.createModule 'apps/lib/instagram/instagramModule',
       el: '#modules'
     , ->
-      instagram = true
-    # else 
-    #   Bronson.Core.stopModule 'apps/lib/instagram/instagramModule', ->
-    #     instagram = false
 
   $('#btnAddTwitter').click ->
-    Bronson.Core.createModule 'apps/lib/twitter/twitterModule',
+    Bronson.Api.createModule 'apps/lib/twitter/twitterModule',
       el: '#modules'
     , ->
   $('#btnAddWeather').click ->
-    Bronson.Core.createModule 'apps/lib/weather/weatherModule',
+    Bronson.Api.createModule 'apps/lib/weather/weatherModule',
       el: '#modules'
     , ->
   $('#btnAddMaps').click ->
-    Bronson.Core.createModule 'apps/lib/maps/mapsModule',
+    Bronson.Api.createModule 'apps/lib/maps/mapsModule',
       el: '#modules'
     , ->
 
   $('#btnAddFourSquare').click ->
-    Bronson.Core.createModule 'apps/lib/foursquare/foursquareModule',
+    Bronson.Api.createModule 'apps/lib/foursquare/foursquareModule',
       el: '#modules'
     , ->
 
   $('#btnGetCurrentPosition').click ->
     if navigator && navigator.geolocation
       navigator.geolocation.getCurrentPosition (geo) ->
-        Bronson.Core.publish 'geoUpdate', geo.coords 
+        Bronson.Api.publish 'geoUpdate', geo.coords 
       , (error) ->
         console.log 'failure'
     else
       console.log 'geolocation not supported'
+
+  $('#btnSetPositionToTokyo').click ->
+    coords =
+      latitude: '35.689488'
+      longitude: '139.691706'
+
+    Bronson.Api.publish 'geoUpdate', coords 
+
+  $('#btnSetPositionToLondon').click ->
+    coords =
+      latitude: '51.500152'
+      longitude: '-0.126236'
+
+    Bronson.Api.publish 'geoUpdate', coords 

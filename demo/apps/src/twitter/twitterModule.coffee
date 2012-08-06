@@ -15,12 +15,15 @@ define [
       tweetsCollection = new TweetsCollection()
 
       tweetView = new TweetsView 
-        el: @el
         collection: tweetsCollection
 
       tweetsCollection.fetch
         data:
           geocode: "37.781157,-122.398720,1mi"
+          rpp: 4
+        silent: true
+        success: =>
+          $(@el).append tweetView.render().el
 
       Bronson.Core.subscribe 'TwitterModule', 'geoUpdate', (data) ->
         tweetsCollection.fetch

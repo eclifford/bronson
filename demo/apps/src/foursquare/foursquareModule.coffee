@@ -28,7 +28,7 @@ define [
         success: =>
           $(@el).append @venuesView.render().el
 
-      Bronson.Core.subscribe 'FoursquareModule', 'geoUpdate', (data) ->
+      Bronson.Api.subscribe 'FoursquareModule', 'geoUpdate', (data) ->
         venuesCollection.fetch
           data:
             ll: "#{data.latitude},#{data.longitude}"
@@ -36,6 +36,5 @@ define [
             v: '20120805'
             limit: 5
             section: 'food'
-
 
     dispose: ->

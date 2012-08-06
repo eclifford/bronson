@@ -57,7 +57,7 @@
         return Bronson.Core.unsubscribe(subscriber, channel);
       },
       createModule: function() {
-        var callback, moduleId, obj, _i;
+        var callback, moduleId, obj, _i, _ref;
         moduleId = arguments[0], obj = 3 <= arguments.length ? __slice.call(arguments, 1, _i = arguments.length - 1) : (_i = 1, []), callback = arguments[_i++];
         if (!moduleId || typeof moduleId !== "string") {
           throw new Error("Bronson.Api#createModule: a valid module alias or path must be supplied");
@@ -65,7 +65,7 @@
         if ((callback != null) && typeof callback !== "function") {
           throw new Error("Bronson.Api#createModule: callback must be a function");
         }
-        return Bronson.Core.createModule(moduleId, obj, callback);
+        return (_ref = Bronson.Core).createModule.apply(_ref, [moduleId].concat(__slice.call(obj), [callback]));
       },
       stopAllModules: function() {
         return Bronson.Core.stopAllModules();

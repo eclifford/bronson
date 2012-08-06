@@ -27,7 +27,7 @@ define [
           $(@el).append @carouselView.render().el
 
 
-      Bronson.Core.subscribe 'InstagramModule', 'geoUpdate', (data) =>
+      Bronson.Api.subscribe 'InstagramModule', 'geoUpdate', (data) =>
         @imagesCollection.fetch
           data:
             client_id: "b3481714257943a4974e4e7ba99eb357"
@@ -35,7 +35,7 @@ define [
             lng: data.longitude
           silent: false
 
-      Bronson.Core.subscribe 'InstagramModule', 'dispose', =>
+      Bronson.Api.subscribe 'InstagramModule', 'dispose', =>
         #@dispose()
 
     dispose: ->

@@ -86,7 +86,7 @@ Api = Bronson.Api =
       throw new Error "Bronson.Api#createModule: callback must be a function"
 
     # Pass to core
-    Bronson.Core.createModule moduleId, obj, callback
+    Bronson.Core.createModule moduleId, obj..., callback
 
   # Stop all modues
   #

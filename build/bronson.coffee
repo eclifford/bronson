@@ -1,4 +1,4 @@
-# Bronson -v 0.1.0 - 2012-08-05
+# Bronson -v 0.1.0 - 2012-08-06
 # http://github.com/eclifford/bronson
 # Copyright (c) 2012 Eric Clifford; Licensed MIT
 ((root, factory) ->
@@ -114,7 +114,7 @@
         throw new Error "Bronson.Api#createModule: callback must be a function"
   
       # Pass to core
-      Bronson.Core.createModule moduleId, obj, callback
+      Bronson.Core.createModule moduleId, obj..., callback
   
     # Stop all modues
     #

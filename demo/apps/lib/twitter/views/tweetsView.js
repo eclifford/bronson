@@ -15,6 +15,16 @@
         return TweetsView.__super__.constructor.apply(this, arguments);
       }
 
+      TweetsView.prototype.tagName = 'li';
+
+      TweetsView.prototype.className = 'module twitter';
+
+      TweetsView.prototype.events = function() {
+        return {
+          'click .icon-remove-sign': 'dispose'
+        };
+      };
+
       TweetsView.prototype.initialize = function() {
         this.id = Math.random().toString(36).substring(7);
         _.bindAll(this, 'render');
@@ -22,15 +32,7 @@
       };
 
       TweetsView.prototype.render = function() {
-        if ($("." + this.id, this.el).length === 0) {
-          $(this.el).append(_.template(TweetsTemplate, {
-            id: this.id
-          }));
-        } else {
-          $("." + this.id, this.el).html(_.template(TweetsTemplate, {
-            id: this.id
-          }));
-        }
+        $(this.el).html(_.template(TweetsTemplate));
         _.each(this.collection.models, (function(item) {
           return this.renderItem(item);
         }), this);
@@ -42,7 +44,13 @@
         tweetItemView = new TweetItemView({
           model: item
         });
-        return $('.module.twitter', this.el).append(tweetItemView.render().el);
+        return $(this.el).append(tweetItemView.render().el);
+      };
+
+      TweetsView.prototype.dispose = function() {
+        this.collection.unbind('change');
+        this.collection.dispose();
+        return $(this.el).remove();
       };
 
       return TweetsView;

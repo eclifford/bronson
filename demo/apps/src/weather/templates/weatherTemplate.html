@@ -1,5 +1,31 @@
-<div class='module weather'>
-  City: <%= location.city %> 
-  <img src='<%= current_observation.icon_url %>' />
-  Temp: <%= current_observation.temp_f %> 
+<a class="close" data-dismiss="alert" href="#">×</a> 
+<h4>Weather</h4>
+<strong><%= location.city %></strong>
+<div class="searchResult">
+  <div class="icon" style='padding-right: 3px'><img src="<%= forecast.txt_forecast.forecastday[0].icon_url %>" width="45px"></div>
+  <div>
+    <strong><%= forecast.txt_forecast.forecastday[0].title %></strong>
+    <%= forecast.txt_forecast.forecastday[0].fcttext %>
+  </div>
+</div>
+<div class="searchResult">
+  <div class="icon" style='padding-right: 3px'><img src="<%= forecast.txt_forecast.forecastday[1].icon_url %>" width="45px"></div>
+  <div>
+    <strong><%= forecast.txt_forecast.forecastday[1].title %></strong>
+    <%= forecast.txt_forecast.forecastday[1].fcttext %>
+  </div>
+</div>
+<div class="searchResult">
+  <div class="icon" style='padding-right: 3px'><img src="<%= forecast.txt_forecast.forecastday[2].icon_url %>" width="45px"></div>
+  <div>
+    <strong><%= forecast.txt_forecast.forecastday[2].title %></strong>
+    <%= forecast.txt_forecast.forecastday[2].fcttext %>
+  </div>
+</div>
+<div class="searchResult">
+  <div class="icon" style='padding-right: 3px'><img src="<%= forecast.txt_forecast.forecastday[3].icon_url %>" width="45px"></div>
+  <div>
+    <strong><%= forecast.txt_forecast.forecastday[3].title %></strong>
+    <%= forecast.txt_forecast.forecastday[3].fcttext %>
+  </div>
 </div>

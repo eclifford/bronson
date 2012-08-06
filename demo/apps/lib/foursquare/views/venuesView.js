@@ -21,14 +21,18 @@
 
       VenuesView.prototype.events = function() {
         return {
-          'click .icon-remove-sign': 'dispose'
+          'click .close': 'dispose'
         };
       };
 
       VenuesView.prototype.initialize = function() {
+        var _this = this;
         this.id = Math.random().toString(36).substring(7);
         _.bindAll(this, 'render');
-        return this.collection.bind('reset', this.render);
+        this.collection.bind('reset', this.render);
+        return Bronson.Core.subscribe('FoursquareModule', 'message', function(msg) {
+          return $(_this.el).prepend("<div class='alert alert-success'>HEY FUCKER</div>");
+        });
       };
 
       VenuesView.prototype.render = function() {

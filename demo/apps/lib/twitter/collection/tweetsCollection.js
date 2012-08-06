@@ -23,6 +23,14 @@
         return response.results;
       };
 
+      TweetsCollection.prototype.dispose = function() {
+        this.reset([], {
+          silent: true
+        });
+        this.off();
+        return typeof Object.freeze === "function" ? Object.freeze(this) : void 0;
+      };
+
       return TweetsCollection;
 
     })(Backbone.Collection);

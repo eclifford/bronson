@@ -36,7 +36,7 @@
             return $(_this.el).append(_this.carouselView.render().el);
           }
         });
-        Bronson.Core.subscribe('InstagramModule', 'geoUpdate', function(data) {
+        Bronson.Api.subscribe('InstagramModule', 'geoUpdate', function(data) {
           return _this.imagesCollection.fetch({
             data: {
               client_id: "b3481714257943a4974e4e7ba99eb357",
@@ -46,7 +46,7 @@
             silent: false
           });
         });
-        return Bronson.Core.subscribe('InstagramModule', 'dispose', function() {});
+        return Bronson.Api.subscribe('InstagramModule', 'dispose', function() {});
       };
 
       InstagramModule.prototype.dispose = function() {

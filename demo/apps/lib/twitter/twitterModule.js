@@ -20,15 +20,20 @@
       }
 
       TwitterModule.prototype.initialize = function() {
-        var tweetView, tweetsCollection;
+        var tweetView, tweetsCollection,
+          _this = this;
         tweetsCollection = new TweetsCollection();
         tweetView = new TweetsView({
-          el: this.el,
           collection: tweetsCollection
         });
         tweetsCollection.fetch({
           data: {
-            geocode: "37.781157,-122.398720,1mi"
+            geocode: "37.781157,-122.398720,1mi",
+            rpp: 4
+          },
+          silent: true,
+          success: function() {
+            return $(_this.el).append(tweetView.render().el);
           }
         });
         return Bronson.Core.subscribe('TwitterModule', 'geoUpdate', function(data) {

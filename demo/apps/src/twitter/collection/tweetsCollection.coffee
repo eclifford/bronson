@@ -11,4 +11,9 @@ define [
     parse: (response) ->
 
       return response.results
-      
+    
+    dispose: ->
+      @reset [], silent: true
+      @off()
+
+      Object.freeze? @

@@ -11,12 +11,17 @@ define [
     className: 'module foursquare'
 
     events: ->
-      'click .icon-remove-sign': 'dispose'
+      'click .close': 'dispose'
       
     initialize: ->
       @id = Math.random().toString(36).substring(7)
       _.bindAll @, 'render'
       @collection.bind 'reset', @render
+
+      Bronson.Core.subscribe 'FoursquareModule', 'message', (msg) =>
+        $(@el).prepend("<div class='alert alert-success'>HEY FUCKER</div>")
+        
+
 
     render: ->
       $(@el).html(_.template(VenuesTemplate, {id: @id}))

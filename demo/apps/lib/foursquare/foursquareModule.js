@@ -39,7 +39,7 @@
             return $(_this.el).append(_this.venuesView.render().el);
           }
         });
-        return Bronson.Core.subscribe('FoursquareModule', 'geoUpdate', function(data) {
+        return Bronson.Api.subscribe('FoursquareModule', 'geoUpdate', function(data) {
           return venuesCollection.fetch({
             data: {
               ll: "" + data.latitude + "," + data.longitude,

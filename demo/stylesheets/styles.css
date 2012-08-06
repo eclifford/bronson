@@ -2,6 +2,25 @@ body {
   padding: 40px;
 }
 
+@import url(https://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,700);
+
+@font-face {
+    font-family: 'PincoyablackBlack';
+    src: url('fonts/pincoyablack-webfont.eot');
+    src: url('fonts/pincoyablack-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/pincoyablack-webfont.woff') format('woff'),
+         url('fonts/pincoyablack-webfont.ttf') format('truetype'),
+         url('fonts/pincoyablack-webfont.svg#PincoyablackBlack') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+h1.fontface {
+  font: 70px/78px 'PincoyablackBlack', Arial, sans-serif;letter-spacing: 0;
+}
+
+
 .module {
   width: 306px;
   height: 306px;
@@ -19,6 +38,7 @@ body {
 
 .searchResult {
   clear: both;
+  margin: 5px;
 }
 
 .searchResult .icon {
