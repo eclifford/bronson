@@ -32,6 +32,7 @@ define [
       @map = new google.maps.Map $(@el).get(0), mapOptions
 
       google.maps.event.addListener(@map, 'click', (event) => 
+        console.log 'test'
         #center = @map.getCenter()
         # console.log center, 'center'
         coord =

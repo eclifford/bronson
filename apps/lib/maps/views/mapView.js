@@ -46,6 +46,7 @@
         this.map = new google.maps.Map($(this.el).get(0), mapOptions);
         google.maps.event.addListener(this.map, 'click', function(event) {
           var coord;
+          console.log('test');
           coord = {
             latitude: event.latLng.Ya,
             longitude: event.latLng.Za
