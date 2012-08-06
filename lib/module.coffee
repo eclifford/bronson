@@ -26,14 +26,14 @@ class Bronson.Module
     return if @disposed
 
     # Dispose and delete all members which are disposable
-    for own prop of this
-      obj = this[prop]
-      if obj and typeof obj.dispose is 'function'
-        obj.dispose()
-        delete this[prop]
+    # for own prop of this
+    #   obj = this[prop]
+    #   if obj and typeof obj.dispose is 'function'
+    #     obj.dispose()
+    #     delete this[prop]
 
     # Stop this module and remove all events
-    Bronson.Core.stopModule id
+    Bronson.Core.stopModule @id, ->
 
     # Finished
     @disposed = true

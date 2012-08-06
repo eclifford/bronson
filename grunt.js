@@ -36,12 +36,19 @@ module.exports = function(grunt) {
       tasks: 'rig buster coffee min'
     },
     coffee: {
-      app: {
+      build: {
         src: ['build/bronson.coffee'],
         dest: 'build',
         options: {
           bare: false
         }
+      },
+      demo: {
+        src: ['build/bronson.coffee'],
+        dest: 'demo/javascripts/vendor/bronson',
+        options: {
+          bare: false
+        }    
       }
     },
     buster: {

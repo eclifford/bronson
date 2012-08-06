@@ -1,0 +1,36 @@
+body {
+  padding: 40px;
+}
+
+.module {
+  width: 306px;
+  height: 306px;
+  float: left;
+  overflow: hidden;
+  margin: 20px;
+}
+
+#logger {
+  width: 100%;
+  height: 400px;
+  overflow-y: scroll;
+  background-color: #ccc;
+}
+
+.searchResult {
+  clear: both;
+}
+
+.searchResult .icon {
+  float: left;
+  width: 50px;
+}
+
+.searchResult .info {
+  float: left;
+}
+
+.searchResult .extra {
+  float: right;
+  width: 115px;
+}

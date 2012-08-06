@@ -1,4 +1,4 @@
-# Bronson -v 0.1.0 - 2012-08-01
+# Bronson -v 0.1.0 - 2012-08-05
 # http://github.com/eclifford/bronson
 # Copyright (c) 2012 Eric Clifford; Licensed MIT
 ((root, factory) ->
@@ -363,14 +363,14 @@
       return if @disposed
   
       # Dispose and delete all members which are disposable
-      for own prop of this
-        obj = this[prop]
-        if obj and typeof obj.dispose is 'function'
-          obj.dispose()
-          delete this[prop]
+      # for own prop of this
+      #   obj = this[prop]
+      #   if obj and typeof obj.dispose is 'function'
+      #     obj.dispose()
+      #     delete this[prop]
   
       # Stop this module and remove all events
-      Bronson.Core.stopModule id
+      Bronson.Core.stopModule @id, ->
   
       # Finished
       @disposed = true
