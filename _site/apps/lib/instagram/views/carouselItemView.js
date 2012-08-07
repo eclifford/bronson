@@ -24,7 +24,12 @@
       CarouselItemView.prototype.initialize = function() {};
 
       CarouselItemView.prototype.notify = function() {
-        return Bronson.Api.publish('addMarker', this.model.toJSON());
+        var coords;
+        coords = {
+          latitude: this.model.get('location').latitude,
+          longitude: this.model.get('location').longitude
+        };
+        return Bronson.Api.publish('addMarker', coords);
       };
 
       CarouselItemView.prototype.render = function() {

@@ -15,7 +15,21 @@
         return VenueItemView.__super__.constructor.apply(this, arguments);
       }
 
+      VenueItemView.prototype.events = {
+        "click": 'notify'
+      };
+
       VenueItemView.prototype.initialize = function() {};
+
+      VenueItemView.prototype.notify = function() {
+        var coords;
+        coords = {
+          title: this.model.get('name'),
+          latitude: this.model.get('location').lat,
+          longitude: this.model.get('location').lng
+        };
+        return Bronson.Api.publish('addMarker', coords);
+      };
 
       VenueItemView.prototype.render = function() {
         $(this.el).html(_.template(VenueItemTemplate, this.model.toJSON()));

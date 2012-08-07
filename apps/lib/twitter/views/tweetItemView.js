@@ -15,7 +15,23 @@
         return TweetItemView.__super__.constructor.apply(this, arguments);
       }
 
+      TweetItemView.prototype.events = {
+        "click": 'notify'
+      };
+
       TweetItemView.prototype.initialize = function() {};
+
+      TweetItemView.prototype.notify = function() {
+        var coords;
+        if (this.model.get('geo') != null) {
+          coords = {
+            title: this.model.get('from_user'),
+            latitude: this.model.get('geo').coordinates[0],
+            longitude: this.model.get('geo').coordinates[1]
+          };
+          return Bronson.Api.publish('addMarker', coords);
+        }
+      };
 
       TweetItemView.prototype.render = function() {
         $(this.el).html(_.template(TweetItemTemplate, this.model.toJSON()));

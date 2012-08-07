@@ -23,7 +23,7 @@ define [
     render: ->
       
       mapOptions =
-        zoom: 10
+        zoom: 14
         center: new google.maps.LatLng(35.689488, 139.691706)
         mapTypeId: google.maps.MapTypeId.ROADMAP  
 
@@ -42,12 +42,12 @@ define [
       )
 
       Bronson.Api.subscribe 'MapsModule', 'addMarker', (data) =>
-        console.log @map
-        latlng = new google.maps.LatLng(data.location.latitude, data.location.longitude)
+        latlng = new google.maps.LatLng(data.latitude, data.longitude)
         marker = new google.maps.Marker
           animation: google.maps.Animation.DROP,
           position: latlng
           map: @map
+        @map.panTo latlng
 
 
       $(@el).prepend(_.template(MapTemplate, {id: @id}))

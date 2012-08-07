@@ -46,13 +46,16 @@
       };
       return Bronson.Api.publish('geoUpdate', coords);
     });
-    return $('#btnSetPositionToLondon').click(function() {
+    $('#btnSetPositionToLondon').click(function() {
       var coords;
       coords = {
         latitude: '51.500152',
         longitude: '-0.126236'
       };
       return Bronson.Api.publish('geoUpdate', coords);
+    });
+    return $('#btnRemoveModules').click(function() {
+      return Bronson.Api.stopAllModules();
     });
   });
 

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>Bronson Demo</title>
+  <link rel='stylesheet' type='text/css' href='stylesheets/bootstrap.css'/>
+  <link rel='stylesheet' type='text/css' href='stylesheets/styles.css'/>
+  <link rel='stylesheet' type='text/css' href='stylesheets/pygment_trac.css'/> 
+  <script src='javascripts/vendor/jquery/jquery.js'></script>
+  <script src='javascripts/vendor/bootstrap/bootstrap.js'></script>
+  <script data-main='apps/lib/app' src='javascripts/vendor/requirejs/require.js'></script>
+  <script src='javascripts/vendor/requirejs/require-conf.js'></script>
+</head>
+  <body>
+    <h1 class='fontface'>BronsonJS</h1>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <ul class="nav">
+            <li class="active">
+              <a href="index.html">Home</a>
+            </li>
+            <li>
+              <a href="documentation.html">Documentation</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+      <div class="well" style="padding: 8px 0;">
+        <ul class="nav nav-list">
+          <li class='nav-header'>
+            Introduction
+          </li>
+          <li>
+            <a href="#" id='btnAddInstagram'>
+              Features
+            </a>
+          </li>
+          <li>
+            <a href="#" id='btnAddInstagram'>
+              Dependencies
+            </a>
+          </li>
+          <li class='nav-header'>
+            Api
+          </li>
+          <li>
+            <a href="#" id='btnGetCurrentPosition'>
+              Overview
+            </a>
+          </li>
+          <li>
+            <a href="#" id='btnGetCurrentPosition'>
+              CreateModule
+            </a>
+          </li>
+          <li>
+            <a href="#" id='btnGetCurrentPosition'>
+              StopModule
+            </a>
+          </li>
+          <li>
+            <a href="#" id='btnGetCurrentPosition'>
+              Publish
+            </a>
+          </li>
+          <li>
+            <a href="#" id='btnGetCurrentPosition'>
+              Subscribe
+            </a>
+          </li>
+          <li>
+            <a href="#" id='btnGetCurrentPosition'>
+              Unsubscribe
+            </a>
+          </li>
+          <li>
+            <a href="#" id='btnGetCurrentPosition'>
+              UnsubscribeAll
+            </a>
+          </li>
+          <li class='nav-header'>
+            Core
+          </li>
+          <li class='nav-header'>
+            Permissions
+          </li>
+          <li class='nav-header'>
+            Module
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="span10">
+       <h2>Introduction</h2>
+
+            <p>Bronson was borne from desire to build a highly decoupled, testable, scalable interoperable modules on top of the greatness that is RequireJS. Bronson is heavily inspired by the work of Nicholas Zaka's talk on scalable javascript as well as Addy Osmani's articles and frameworks. At it's core Bronson & RequireJS free you to build sophisticated modules without the trappings of complicated woven interdepdencies.</p>
+
+            <h3>Features</h3>
+            <ul>
+              <li><code>Advanced publish/subscribe framework</code></li>
+              <li><code>Module loading/unloading sandboxing</code></li>
+              <li><code>Base Module for bootstrapping mini applications</code></li>
+            </ul>
+
+            <h3>Dependencies</h3>
+            <ul>
+              <li>JQuery</li>
+              <li>RequireJS</li>
+            </ul>
+
+            <h2>Api</h2>
+            <p>The API layer is the public programming interface for communicating with R8. The API abstracts the Core and Permissions layer and presents a closed to modification interface.</p>
+
+            <h3>Overview</h3>
+            <ul>
+              <li>Provide interface to pass module loading to core</li>
+              <li>Coordinate with Permissions layer to validate events</li>
+              <li>Provide interface to pass publish/subscribe events to core</li>
+            </ul>
+
+            <h3>createModule()</h3>
+            <p>
+            The createModule loads a module via RequireJS and initializes it. Your module should bootstrap your mini application.</p>
+
+            <strong>Simple Example</strong>
+<div class="highlight"><pre><code class="coffeescript"><span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
+  <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Api</span><span class="p">.</span><span class="nx">createModule</span> <span class="s">&#39;example/path/sampleModule&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+    <span class="c1"># Module has been created</span>
+</code></pre>
+</div>
+
+            <strong>Example with Configuration Object</strong>
+            <p>It is also possible to pass configuration object during the construction of the module. This configuration object will be passed to the constructor your module bootstrapper when you extend <code>Bronson.Module</code></p>
+    
+<div class="highlight"><pre><code class="coffeescript"><span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
+  <span class="c1"># Sample data to be passed to module</span>
+  <span class="nv">configurationObject =</span>
+    <span class="nv">el: </span><span class="s">&#39;div#modules&#39;</span>
+    <span class="nv">url: </span><span class="s">&#39;http://example.com/api/data.json&#39;</span>
+
+  <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Api</span><span class="p">.</span><span class="nx">createModule</span> <span class="s">&#39;example/path/sampleModule&#39;</span><span class="p">,</span> <span class="nx">configurationObject</span><span class="p">,</span> <span class="o">-&gt;</span>
+    <span class="c1"># Module has been created</span>
+</code></pre>
+</div>
+
+
+            <h3>stopModule()</h3>
+            <p>
+            Unloads the artifiacts loaded in when createModule was initially called. </p>
+<div class="highlight"><pre><code class="coffeescript"><span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
+  <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Api</span><span class="p">.</span><span class="nx">stopModule</span> <span class="s">&#39;example/path/sampleModule&#39;</span><span class="p">,</span> <span class="o">-&gt;</span>
+    <span class="c1"># Module has been stopped</span>
+</code></pre>
+</div>
+
+            <h3>subscribe</h3>
+
+            <h4>Methods</h4>
+            <ul>
+              <li>api.publish(module, event, data)</li>
+              <li>api.subscribe(event, data, callback)</li>
+              <li>api.unsubscribe(event)</li>
+            </ul>
+
+            <h4>Examples</h4>
+            <h5>Simple Publish</h5>
+<div class="highlight"><pre><code class="coffeescript"><span class="c1"># With AMD</span>
+<span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
+  <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">publish</span> <span class="s">&#39;TestEvent&#39;</span>
+
+<span class="c1"># Without</span>
+<span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">publish</span> <span class="s">&#39;TestEvent&#39;</span>
+</code></pre>
+</div>
+
+
+            <h5>Simple Subscribing</h5>
+<div class="highlight"><pre><code class="coffeescript"><span class="c1"># With AMD</span>
+<span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
+  <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">subscribe</span> <span class="s">&#39;TestModule&#39;</span><span class="p">,</span> <span class="s">&#39;TestEvent&#39;</span><span class="p">,</span> <span class="nf">(msg) -&gt;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;successfully subscribe&#39;</span>
+
+<span class="c1"># Without</span>
+<span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">subscribe</span> <span class="s">&#39;TestModule&#39;</span><span class="p">,</span> <span class="s">&#39;TestEvent&#39;</span><span class="p">,</span> <span class="nf">(msg) -&gt;</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;sucessfully subscribed&#39;</span>
+</code></pre>
+</div>
+
+
+            <h5>Publishing with Data</h5>
+
+<div class="highlight"><pre><code class="coffeescript"><span class="c1"># With AMD</span>
+<span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
+  <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">publish</span> <span class="s">&#39;TestEvent&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nv">foo: </span><span class="s">&#39;bar&#39;</span> <span class="p">}</span> <span class="nf">(msg) -&gt;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;successfully published&#39;</span>
+</code></pre>
+</div>
+ 
+
+            <h5>Sending data to a subscriber</h5>
+        <div class="highlight"><pre><code class="coffeescript">        <span class="c1"># With AMD</span>
+        <span class="nx">require</span> <span class="p">[</span><span class="s">&#39;bronson&#39;</span><span class="p">],</span> <span class="nf">(Bronson) -&gt;</span>
+          <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">subscribe</span> <span class="s">&#39;TestModule&#39;</span><span class="p">,</span> <span class="s">&#39;TestEvent&#39;</span><span class="p">,</span> <span class="nf">(msg) -&gt;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;thanks for the #{msg}&#39;</span>
+
+          <span class="nx">Bronson</span><span class="p">.</span><span class="nx">Core</span><span class="p">.</span><span class="nx">publish</span> <span class="s">&#39;TestEvent&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nv">foo: </span><span class="s">&#39;bar&#39;</span> <span class="p">}</span> <span class="nf">(msg) -&gt;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;successfully published&#39;</span>
+
+        
+</code></pre>
+</div>
+ 
+
+        <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+
+        <h3>Designer Templates</h3>
+
+        <p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+
+        <h3>Rather Drive Stick?</h3>
+
+        <p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+
+        <h3>Authors and Contributors</h3>
+
+        <p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+
+        <h3>Support or Contact</h3>
+
+        <p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+    </div>
+  </div>
+</div>
+ 
+  </body>
+</html>

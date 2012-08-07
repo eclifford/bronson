@@ -15,7 +15,11 @@ define [
 
     notify: ->
 
-      Bronson.Api.publish 'addMarker', @model.toJSON() 
+      coords = 
+        latitude: @model.get('location').latitude
+        longitude: @model.get('location').longitude
+
+      Bronson.Api.publish 'addMarker', coords
 
     render: ->
       $(@el).html(_.template(CarouselItemTemplate, @model.toJSON()))

@@ -6,13 +6,15 @@ require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
     , ->
 
   $('#btnAddTwitter').click ->
-    Bronson.Api.createModule 'apps/lib/twitter/twitterModule',
+    Bronson.Api.createModule 'apps/lib/twitter/twitterModule', 
       el: '#modules'
     , ->
+
   $('#btnAddWeather').click ->
     Bronson.Api.createModule 'apps/lib/weather/weatherModule',
       el: '#modules'
     , ->
+
   $('#btnAddMaps').click ->
     Bronson.Api.createModule 'apps/lib/maps/mapsModule',
       el: '#modules'
@@ -45,3 +47,6 @@ require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
       longitude: '-0.126236'
 
     Bronson.Api.publish 'geoUpdate', coords 
+
+  $('#btnRemoveModules').click ->
+    Bronson.Api.stopAllModules()
