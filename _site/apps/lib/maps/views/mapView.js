@@ -46,10 +46,9 @@
         this.map = new google.maps.Map($(this.el).get(0), mapOptions);
         google.maps.event.addListener(this.map, 'click', function(event) {
           var coord;
-          console.log('test');
           coord = {
-            latitude: event.latLng.Ya,
-            longitude: event.latLng.Za
+            latitude: event.latLng.Xa,
+            longitude: event.latLng.Ya
           };
           return Bronson.Core.publish('geoUpdate', coord);
         });

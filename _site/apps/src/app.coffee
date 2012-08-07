@@ -1,5 +1,31 @@
 require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
 
+  Bronson.Api.createModule 'apps/lib/instagram/instagramModule',
+    el: '#modules'
+  , ->
+
+  Bronson.Api.createModule 'apps/lib/twitter/twitterModule', 
+    el: '#modules'
+  , ->
+
+  Bronson.Api.createModule 'apps/lib/weather/weatherModule',
+    el: '#modules'
+  , ->
+
+  Bronson.Api.createModule 'apps/lib/maps/mapsModule',
+    el: '#modules'
+  , ->
+
+  Bronson.Api.createModule 'apps/lib/foursquare/foursquareModule',
+    el: '#modules'
+  , ->
+
+
+  $('#btnAddFourSquare').click ->
+    Bronson.Api.createModule 'apps/lib/foursquare/foursquareModule',
+      el: '#modules'
+    , ->
+
   $('#btnAddInstagram').click ->
     Bronson.Api.createModule 'apps/lib/instagram/instagramModule',
       el: '#modules'

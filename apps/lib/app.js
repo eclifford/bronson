@@ -2,6 +2,26 @@
 (function() {
 
   require(['underscore', 'backbone', 'bronson'], function(_, Backbone, Bronson) {
+    Bronson.Api.createModule('apps/lib/instagram/instagramModule', {
+      el: '#modules'
+    }, function() {});
+    Bronson.Api.createModule('apps/lib/twitter/twitterModule', {
+      el: '#modules'
+    }, function() {});
+    Bronson.Api.createModule('apps/lib/weather/weatherModule', {
+      el: '#modules'
+    }, function() {});
+    Bronson.Api.createModule('apps/lib/maps/mapsModule', {
+      el: '#modules'
+    }, function() {});
+    Bronson.Api.createModule('apps/lib/foursquare/foursquareModule', {
+      el: '#modules'
+    }, function() {});
+    $('#btnAddFourSquare').click(function() {
+      return Bronson.Api.createModule('apps/lib/foursquare/foursquareModule', {
+        el: '#modules'
+      }, function() {});
+    });
     $('#btnAddInstagram').click(function() {
       return Bronson.Api.createModule('apps/lib/instagram/instagramModule', {
         el: '#modules'

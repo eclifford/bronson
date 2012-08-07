@@ -165,12 +165,12 @@ body {
 }
 
 a {
-  color: #0088cc;
+  color: #D14;
   text-decoration: none;
 }
 
 a:hover {
-  color: #005580;
+  color: #D14;
   text-decoration: underline;
 }
 
@@ -3818,7 +3818,7 @@ input[type="submit"].btn.btn-mini {
 
 .navbar .nav .active > a,
 .navbar .nav .active > a:hover {
-  color: #ffffff;
+  color: #ffffff !important;
   text-decoration: none;
   background-color: #222222;
 }

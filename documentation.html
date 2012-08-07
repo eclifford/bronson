@@ -11,51 +11,56 @@ title: "Bronson"
             Introduction
           </li>
           <li>
-            <a href="#" id='btnAddInstagram'>
-              Features
+            <a href="#features">
+              features
             </a>
           </li>
           <li>
-            <a href="#" id='btnAddInstagram'>
-              Dependencies
+            <a href="#depedencies">
+              depedencies
             </a>
           </li>
           <li class='nav-header'>
             Api
           </li>
           <li>
-            <a href="#" id='btnGetCurrentPosition'>
-              Overview
+            <a href="#overview">
+              overview
             </a>
           </li>
           <li>
-            <a href="#" id='btnGetCurrentPosition'>
-              CreateModule
+            <a href="#createModule">
+              createModule
             </a>
           </li>
           <li>
-            <a href="#" id='btnGetCurrentPosition'>
-              StopModule
+            <a href="#stopModule">
+              stopModule
             </a>
           </li>
           <li>
-            <a href="#" id='btnGetCurrentPosition'>
-              Publish
+            <a href="#stopAllModules">
+              stopAllModules 
             </a>
           </li>
           <li>
-            <a href="#" id='btnGetCurrentPosition'>
-              Subscribe
+            <a href="#subscribe">
+              subscribe
             </a>
           </li>
           <li>
-            <a href="#" id='btnGetCurrentPosition'>
-              Unsubscribe
+            <a href="#publish">
+              publish 
             </a>
           </li>
           <li>
-            <a href="#" id='btnGetCurrentPosition'>
-              UnsubscribeAll
+            <a href="#unsubscribe">
+              unsubscribe 
+            </a>
+          </li>
+          <li>
+            <a href="#unsubscribeAll">
+              unsubscribeAll
             </a>
           </li>
           <li class='nav-header'>
@@ -72,45 +77,50 @@ title: "Bronson"
     </div>
     <div class="span10">
        <h2>Introduction</h2>
+            <p>Bronson is an opinonated application framework comprising of the tools necessary to build large scalable web applications as outlined by Nicholas Zakas and Addy Osmani. Bronson sit's on top of RequireJS & JQuery offering libraries for the loading, unloading, messaging and bootstraping of modules. These modules in turn acts as small loosely coupled applications in the context of a large appication. By building our larger applications as a series of smaller applications we greatly increase the performance, testability and maintainability of our code base.</p>
 
-            <p>Bronson was borne from desire to build a highly decoupled, testable, scalable interoperable modules on top of the greatness that is RequireJS. Bronson is heavily inspired by the work of Nicholas Zaka's talk on scalable javascript as well as Addy Osmani's articles and frameworks. At it's core Bronson & RequireJS free you to build sophisticated modules without the trappings of complicated woven interdepdencies.</p>
-
-            <h3>Features</h3>
+            <h3>Acknowledgements</h3>
             <ul>
-              <li><code>Advanced publish/subscribe framework</code></li>
-              <li><code>Module loading/unloading sandboxing</code></li>
-              <li><code>Base Module for bootstrapping mini applications</code></li>
+              <li><a href='http://www.youtube.com/watch?v=vXjVFPosQHw'>Nicholas Zakas: Scalable Javascript Application Architecture</a></li>
+              <li><a href='http://addyosmani.com/largescalejavascript'>Addy Osmani: Patterns For Large-Scale JavaScript Application Architecture</a></li>
+            </ul>
+            
+            <h3><a name='features'>Features</a></h3>
+            <ul>
+              <li>Module loading & unloading through <code>Bronson.Core</code>(mediator pattern)</li>
+              <li>Univeral interface offered through <code>Bronson.Api</code>(fascade pattern)</li> 
+              <li>Managed publish & subscribing of events through <code>Bronson.Core</code> & <code>Bronson.Permissions</code></li>
             </ul>
 
-            <h3>Dependencies</h3>
+            <h3><a name='dependencies'>Dependencies</a></h3>
             <ul>
-              <li>JQuery</li>
-              <li>RequireJS</li>
+              <li><a href='http://jquery.com/'>jQuery</a></li>
+              <li><a href='http://requirejs.org'>RequireJS</a></li>
             </ul>
 
             <h2>Api</h2>
-            <p>The API layer is the public programming interface for communicating with R8. The API abstracts the Core and Permissions layer and presents a closed to modification interface.</p>
+            <p><code>Bronson.Api</code> acts as the <strong>Fascade</strong> in <strong>Bronson</strong> and is the public programming interface for communicating with Bronson. The Api abstracts the <code>Bronson.Core</code> & <code>Bronson.Permission</code> layer's presenting a closed to modification interface.</p>
 
-            <h3>Overview</h3>
+            <h3><a name='overview'>Overview</a></h3>
             <ul>
               <li>Provide interface to pass module loading to core</li>
               <li>Coordinate with Permissions layer to validate events</li>
               <li>Provide interface to pass publish/subscribe events to core</li>
             </ul>
 
-            <h3>createModule()</h3>
+            <h3><a name='createModule'>createModule</a></h3>
             <p>
-            The createModule loads a module via RequireJS and initializes it. Your module should bootstrap your mini application.</p>
+            The createModule loads a module via RequireJS and initializes it. Your implemented module should bootstrap your mini application.</p>
 
-            <strong>Simple Example</strong>
+            <h4>Simple Example</h4>
 {% highlight coffeescript %}
 require ['bronson'], (Bronson) ->
   Bronson.Api.createModule 'example/path/sampleModule', ->
     # Module has been created
 
 {% endhighlight %}
-            <strong>Example with Configuration Object</strong>
-            <p>It is also possible to pass configuration object during the construction of the module. This configuration object will be passed to the constructor your module bootstrapper when you extend <code>Bronson.Module</code></p>
+            <h4>Example with Configuration Object</h4>
+            <p>It is also possible to pass the configuration object during the construction of the module. This configuration object will be passed to the constructor of your module bootstrapper when you extend <code>Bronson.Module</code>.</p>
     
 {% highlight coffeescript %}
 require ['bronson'], (Bronson) ->
@@ -124,7 +134,7 @@ require ['bronson'], (Bronson) ->
 
 {% endhighlight %}
 
-            <h3>stopModule()</h3>
+            <h3><a name='stopModule'>stopModule</a></h3>
             <p>
             Unloads the artifiacts loaded in when createModule was initially called. </p>
 {% highlight coffeescript %}
@@ -133,60 +143,78 @@ require ['bronson'], (Bronson) ->
     # Module has been stopped
 
 {% endhighlight %}
-            <h3>subscribe</h3>
 
-            <h4>Methods</h4>
-            <ul>
-              <li>api.publish(module, event, data)</li>
-              <li>api.subscribe(event, data, callback)</li>
-              <li>api.unsubscribe(event)</li>
-            </ul>
-
-            <h4>Examples</h4>
-            <h5>Simple Publish</h5>
+            <h3><a name='stopAllModules'>stopAllModules</a></h3>
+            <p>
+            Unloads the artifiacts loaded for all created modules calling stopModule on each in turn.</p>
 {% highlight coffeescript %}
-# With AMD
 require ['bronson'], (Bronson) ->
-  Bronson.Core.publish 'TestEvent'
+  Bronson.Api.stopAllModules ->
+    # All modules have been stopped
 
-# Without
-Bronson.Core.publish 'TestEvent'
 {% endhighlight %}
 
-            <h5>Simple Subscribing</h5>
-{% highlight coffeescript %}
-# With AMD
-require ['bronson'], (Bronson) ->
-  Bronson.Core.subscribe 'TestModule', 'TestEvent', (msg) ->
-    console.log 'successfully subscribe'
+            <h3><a name='subscribe'>subscribe</a></h3>
+            <p>Subscribe a module to an event and if <code>Bronson.Permission</code> is enabled validate the event.</p>
 
-# Without
-Bronson.Core.subscribe 'TestModule', 'TestEvent', (msg) ->
-  console.log 'sucessfully subscribed'
+            <h4>Simple Example</h4>
+{% highlight coffeescript %}
+require ['bronson'], (Bronson) ->
+  Bronson.Api.subscribe 'example/path/sampleModule', 'TestEvent', ->
+    # Module subscribed
 {% endhighlight %}
 
-            <h5>Publishing with Data</h5>
-
+            <h4>Example recieving data</h4>
 {% highlight coffeescript %}
-# With AMD
 require ['bronson'], (Bronson) ->
-  Bronson.Core.publish 'TestEvent', { foo: 'bar' } (msg) ->
-    console.log 'successfully published'
+  Bronson.Api.subscribe 'example/path/sampleModule', 'TestEvent', (data) ->
+    # Event triggered with data
+    console.log data
+{% endhighlight %}
 
-{% endhighlight %} 
+            <h3><a name='publish'>publish</a></h3>
+            <p>Publishes an event to all subscribers</p>
+            <h4>Simple Example</h4>
+{% highlight coffeescript %}
+require ['bronson'], (Bronson) ->
+  Bronson.Api.publish 'TestEvent', ->
+    # Event published
 
-            <h5>Sending data to a subscriber</h5>
-        {% highlight coffeescript %}
-        # With AMD
-        require ['bronson'], (Bronson) ->
-          Bronson.Core.subscribe 'TestModule', 'TestEvent', (msg) ->
-            console.log 'thanks for the #{msg}'
+{% endhighlight %}
 
-          Bronson.Core.publish 'TestEvent', { foo: 'bar' } (msg) ->
-            console.log 'successfully published'
+            <h4>Example with data</h4>
+            <p>It's also possible to pass data along with the event</p>
+{% highlight coffeescript %}
+require ['bronson'], (Bronson) ->
+  Bronson.Api.publish 'TestEvent', { foo: 'bar' } ->
+    # Event published
 
-        {% endhighlight %} 
+{% endhighlight %}
 
+            <h3><a name='unsubscribe'>unsubscribe</a></h3>
+            <p>Unsubscribes an event from a module</p>
+{% highlight coffeescript %}
+require ['bronson'], (Bronson) ->
+  Bronson.Api.unsubscribe 'example/path/sampleModule', 'TestEvent', ->
+    # Event unsubscribed
+
+{% endhighlight %}
+
+            <h3><a name='unsubscribeAll'>unsubscribeAll</a></h3>
+            <p>Unsubscribes all events from a module</p>
+{% highlight coffeescript %}
+require ['bronson'], (Bronson) ->
+  Bronson.Api.unsubscribeAll 'example/path/sampleModule', ->
+    # All events unsubscribed 
+
+{% endhighlight %}
+
+        <h2>Core</h2>
+
+        <h2>Permissions</h2>
+
+        <h2>Module</h2>
+   
         <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
 
         <h3>Designer Templates</h3>
