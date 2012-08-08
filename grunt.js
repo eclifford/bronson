@@ -21,7 +21,7 @@ module.exports = function(grunt) {
     },
     rig: {
       amd: {
-        src: ['<banner:meta.csbanner>', 'lib/bronson.coffee'],
+        src: ['<banner:meta.csbanner>', 'bronson/bronson.coffee'],
         dest: 'build/bronson.coffee'
       }
     },
@@ -32,7 +32,7 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ['lib/*.coffee', 'test/**/*.spec.coffee'],
+      files: ['bronson/*.coffee', 'test/**/*.spec.coffee'],
       tasks: 'rig buster coffee min'
     },
     coffee: {
