@@ -12,7 +12,7 @@ Util = Bronson.Util =
         if not object[key]? or typeof val isnt "object"
           object[key] = val
         else
-          object[key] = extend object[key], val
+          object[key] = @extend object[key], val
 
     object
 

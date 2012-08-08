@@ -1,4 +1,4 @@
-# Bronson -v 0.1.0 - 2012-08-06
+# Bronson -v 0.1.0 - 2012-08-07
 # http://github.com/eclifford/bronson
 # Copyright (c) 2012 Eric Clifford; Licensed MIT
 ((root, factory) ->
@@ -33,66 +33,49 @@
   # @version 0.0.1
   #
   Api = Bronson.Api = 
-    # Publish an event to a channel
-    # @param channel [String] the channel to publish to
+    # Publish an event to a event
+    # @param event [String] the event to publish to
     #
     # @example
     #   Bronson.Api.publish 'TestEvent'
     #
-    publish: (channel) ->
-      if not channel? || typeof channel isnt "string"
-        throw new Error "Bronson.Api#publish: a valid channel must be supplied"
-  
+    publish: (event) ->
       # Pass to the core
-      Bronson.Core.publish channel, arguments[1]
-      
+      Bronson.Core.publish event, arguments[1]
+  
     # Subscribe a module to an event while validating a modules
     # permission to subscribe to said event
     #
     # @param subscriber [String] The module to subscribe
-    # @param channel [String] The channel to listen on
+    # @param event [String] The event to listen on
     # @param callback [Function] the callback
     #
     # @example 
     #   Bronson.Api.subscribe 'TestModule', 'TestEvent', ->
     #     console.log 'subscription successful'
     #
-    subscribe: (subscriber, channel, callback) -> 
-      # Validate inputs
-      if not subscriber? || typeof subscriber isnt "string"
-        throw new Error "Bronson.Api#subscribe: a valid subscriber must be supplied"
-      if not channel? || typeof channel isnt "string" 
-        throw new Error "Bronson.Api#subscribe: a valid channel must be supplied"
-      if callback? && typeof callback isnt "function"
-        throw new Error "Bronson.Api#subscribe: callback must be a function"
-  
+    subscribe: (subscriber, event, callback) ->   
       # Validate permissions of this module to subscribe
-      if Permissions.validate subscriber, channel
-        Bronson.Core.subscribe subscriber, channel, callback
+      if Permissions.validate subscriber, event 
+        Bronson.Core.subscribe subscriber, event, callback
       else 
-        throw new Error "Bronson.Api#subscribe: Subscriber #{subscriber} not allowed to listen on channel #{channel}"
+        throw new Error "Bronson.Api#subscribe: Subscriber #{subscriber} not allowed to listen on event #{event}"
   
-    # Unsubscribe a subscriber from a channel
+    # Unsubscribe a subscriber from a event
     # @param subscriber [String] The module to subscribe
-    # @param channel [String] The channel to listen on
+    # @param event [String] The event to listen on
     # 
     # @example 
     #   Bronson.Api.unsubscribe 'TestModule', 'TestEvent', ->
     #     console.log 'unsubscribe successful'
     #
-    unsubscribe: (subscriber, channel) ->
-      # Validate inputs
-      if not subscriber? || typeof subscriber isnt "string"
-        throw new Error "Bronson.Api#unsubscribe: a valid subscriber must be supplied"
-      if not channel? || typeof channel isnt "string"
-        throw new Error "Bronson.Api#unsubscribe: a valid channel must be supplied"
-  
+    unsubscribe: (subscriber, event, callback) ->    
       # Pass to the core
-      Bronson.Core.unsubscribe subscriber, channel
+      Bronson.Core.unsubscribe subscriber, event, callback
    
-    # Create a module
+    # Load a module
     #
-    # @param moduleId [String] the AMD module to load
+    # @param module [String] the AMD module to load
     # @param obj... [Object] the optional configuration object
     # @param callback [Function] the callback
     #
@@ -106,38 +89,49 @@
     #   Bronson.Api.createModule 'TestModule', {foo: 'bar'}, ->
     #     console.log 'module has been created'
     #
-    createModule: (moduleId, obj..., callback) ->  
-      # Validate inputs
-      if not moduleId || typeof moduleId isnt "string"
-        throw new Error "Bronson.Api#createModule: a valid module alias or path must be supplied"
-      if callback? and typeof callback isnt "function" 
-        throw new Error "Bronson.Api#createModule: callback must be a function"
-  
+    loadModule: (moduleId, obj..., callback, autostart=true) ->  
       # Pass to core
-      Bronson.Core.createModule moduleId, obj..., callback
+      Bronson.Core.loadModule moduleId, autostart, obj..., callback
   
     # Stop all modues
     #
     # @example
     #   Bronson.Api.stopAllModules()
     #
-    stopAllModules: ->
-      Bronson.Core.stopAllModules()
+    unloadAllModules: ->
+      Bronson.Core.unloadAllModules()
   
     # Stop module
     #
     # @example
     #   Bronson.Api.stopModule 'TestModule'
     #
-    stopModule: (moduleId, callback)->
-      # Validate inputs
-      if not moduleId || typeof moduleId isnt "string"
-        throw new Error "Bronson.Api#stopModule: a valid module alias or path must be supplied"
-      if callback? and typeof callback isnt "function"
-        throw new Error "Bronson.Api#stopModule: callback must be a function"
-  
+    unloadModule: (moduleId, callback)->
       # Pass to core
-      Bronson.Core.stopModule moduleId, callback
+      Bronson.Core.unloadModule moduleId, callback
+  
+    startModule: (id) ->
+      Bronson.Core.startModule moduleId
+  
+    stopModule: (id) ->
+      Bronson.Core.stopModule moduleId
+  
+    # Set the application permissions
+    #
+    # @param permissions [Object] the object containing permissions
+    #
+    #
+    setPermissions: (permissions) ->
+      Bronson.Permissions.set permissions
+  
+    getModulesInfo: ->
+      return Bronson.Core.modules
+  
+    getEventsInfo: ->
+      return Bronson.Core.events
+  
+  
+  
   # Bronson Permissions 
   # Permissions layer for Bronson
   #
@@ -152,8 +146,8 @@
     rules: {}
   
     # Overwrite the application rules
-    extend: (props) ->
-      rules = Bronson.Util.extend(rules, props)
+    set: (props) ->
+      @rules = Bronson.Util.extend(@rules, props)
   
     # Validate a subscribers permission for subscribing to a channel
     #
@@ -178,29 +172,29 @@
   # @version 0.0.1
   #
   Core = Bronson.Core = 
-    channels: {}
+    events: {}
     modules: {}
   
-    # Publish an event to a channel
-    # @param channel [String] the channel to publish to
+    # Publish an event to it's subscribers
+    # @param event [String] the event to publish to
     #
     # @example
     #   Bronson.Core.publish 'TestEvent'
     #
-    publish: (channel) ->
+    publish: (event) ->
       # Verify our input parameters
-      if not channel?
-        throw new Error "Bronson.Core#publish: channel must be defined"
+      if not event?
+        throw new Error "Bronson.Core#publish: event must be defined"
   
-      if typeof channel isnt "string"
-        throw new Error "Bronson.Core#publish: channel must be a string" 
+      if typeof event isnt "string"
+        throw new Error "Bronson.Core#publish: event must be a string" 
   
-      # Verify that the channel exists
-      if !@channels[channel]
+      # Verify that the event exists
+      if !@events[event]
         return true
   
-      # Get all subscribers to this channel
-      subscribers = @channels[channel].slice()
+      # Get all subscribers to this event
+      subscribers = @events[event].slice()
   
       # Get the arguments
       args = [].slice.call(arguments, 1)
@@ -212,65 +206,68 @@
     # Subscribe a module to an event
     #
     # @param subscriber [String] The module to subscribe
-    # @param channel [String] The channel to listen on
+    # @param event [String] The event to listen on
     # @param callback [Function] the callback
     #
     # @example
     #   Bronson.Core.subscribe 'TestModule', 'TestEvent', ->
     #     console.log 'Module succesfully subscribed'
     #
-    subscribe: (subscriber, channel, callback) -> 
+    subscribe: (subscriber, event, callback) -> 
       # Verify our input parameters
       if not subscriber? || typeof subscriber isnt "string"
         throw new Error "Bronson.Core#subscribe: must supply a valid subscriber"
      
-      if not channel? || typeof channel isnt "string"
-        throw new Error "Bronson.Core#subscribe: must supply a valid channel"
+      if not event? || typeof event isnt "string"
+        throw new Error "Bronson.Core#subscribe: must supply a valid event"
   
       if callback? and typeof callback isnt "function"
         throw new Error "Bronson.Core#subscribe: callback must be a function"   
   
-      # Create the channel if it doesn't exist otherwise select it
-      @channels[channel] = (if (not @channels[channel]) then [] else @channels[channel])
+      # Create the event if it doesn't exist otherwise select it
+      @events[event] = (if (not @events[event]) then [] else @events[event])
   
       # Push the event
-      @channels[channel].push 
+      @events[event].push 
         subscriber: subscriber
         callback: callback
   
-    # Unsubscribe a subscriber from a channel
+    # Unsubscribe a subscriber from a event
     # @param subscriber [String] The module to subscribe
-    # @param channel [String] The channel to listen on
+    # @param event [String] The event to listen on
     # 
     # @example
     #   Bronson.Core.unsubscribe 'TestModule', 'TestEvent', ->
     #     console.log 'Module succesfully unsubscribed'
     #
-    unsubscribe: (subscriber, channel) ->
-      for item, i in @channels[channel]
+    unsubscribe: (subscriber, event, callback) ->
+      for item, i in @events[event]
         if item.subscriber == subscriber
-          @channels[channel].splice i, 1
+          @events[event].splice i, 1
+      callback()
   
-    # Unsubscribe subscriber from all channels
+    # Unsubscribe subscriber from all events
     # @param subscriber [String] The module to unsubscribe
     #
     # @example
     #   Bronson.Core.unsubscribeAll 'TestModule'
     #
-    unsubscribeAll: (subscriber) ->
-      for channel of @channels
-        if @channels.hasOwnProperty(channel) 
-          # Iterate through channels and remove subscribers
-          for subscriber, y in @channels[channel]
+    unsubscribeAll: (subscriber, callback) ->
+      for event of @events
+        if @events.hasOwnProperty(event) 
+          # Iterate through events and remove subscribers
+          for subscriber, y in @events[event]
             if subscriber == subscriber
-              @channels[channel].splice y, 1
-          # If channel is empty delete it
-          if @channels[channel].length == 0
-            delete @channels[channel]
+              @events[event].splice y, 1
+          # If event is empty delete it
+          if @events[event].length == 0
+            delete @events[event]
+      callback()      
      
     # Create a module
     #
     # @param moduleId [String] the AMD module to load(alias or relative path)
+    # @param autostart [Boolean] whether or not to autostart the module
     # @param obj... [Object] the optional configuration object
     # @param callback [Function] the callback
     #
@@ -284,22 +281,38 @@
     #   Bronson.Core.createModule 'TestModule', {foo: 'bar'}, ->
     #     console.log 'module has been created'
     #
-    createModule: (moduleId, obj..., callback) ->  
+    loadModule: (module, obj..., callback, autostart) ->  
       # Verify the input paramaters
-      if not moduleId?
-        throw new Error "Bronson.Core#createModule: moduleId must be defined"
+      if not module?
+        throw new Error "Bronson.Core#createModule: module must be defined"
   
-      if typeof moduleId isnt 'string'
-        throw new Error "Bronson.Core#createModule: moduleId must be a string"
+      if typeof module isnt 'string'
+        throw new Error "Bronson.Core#createModule: module must be a string"
+  
+      if autostart? and typeof autostart isnt 'boolean'
+        throw new Error "Bronson.Core#createModule: autostart must be a valid boolean"
   
       obj = obj[0]
   
       # Load the module through RequireJS
-      require [moduleId], (module) =>
+      require ['module', module], (Module, LoadedModule) =>
         try 
-          _module = new module(obj)
-          _module.id = moduleId
-          @modules[moduleId] = _module      
+          _module = new LoadedModule(obj)
+          _module.id = Module.id
+  
+          # Create the module if it doesn't exist otherwise select it
+          @modules[module] = (if (not @modules[module]) then [] else @modules[module])
+  
+          # Store the loaded module
+          @modules[module].push
+            id: _module.id 
+            timeStamp: new Date()
+            start: _module.start
+            stop: _module.stop
+  
+          # State the module if specified
+          _module.start() if autostart
+  
           callback(_module)
         catch e 
           throw new Error "Bronson.Core#createModule: #{e}"
@@ -309,31 +322,50 @@
     # @example
     #   Bronson.Core.stopAllModules()
     #
-    stopAllModules: ->
+    unloadAllModules: (callback) ->
       for id of modules
-        @stopModule id
+        @unloadModule id
+      callback()
   
     # Stop module
     #
     # @example
     #   Bronson.Core.stopModule 'TestModule'
     #
-    stopModule: (moduleId, callback)->
+    unloadModule: (module, callback)->
       # Validate input parameters
-      if not moduleId? || typeof moduleId isnt "string"
-        throw new Error "Bronson.Core#stopModule: moduleId must be valid"
+      if not module? || typeof module isnt "string"
+        throw new Error "Bronson.Core#stopModule: module must be valid"
   
-      if not @modules[moduleId]?
-        throw new Error "Bronson.Core#stopModule: that moduleId is not loaded"
+      if not @modules[module]?
+        throw new Error "Bronson.Core#stopModule: that module is not loaded"
   
       try 
-        require.undef(moduleId) 
-        @unsubscribeAll(moduleId) 
+        require.undef(module) 
+        @unsubscribeAll module, -> 
   
       catch e
         throw new Error "Bronson.Core#stopModule: #{e}"
      
       callback()
+  
+    startModule: (id) ->
+      for module of @modules
+        if @modules.hasOwnProperty(module) 
+          for instance, y in @modules[module]
+            if instance.id == id
+              instance.start()
+  
+    stopModule: (id) ->
+      for module of @modules
+        if @modules.hasOwnProperty(module) 
+          for instance, y in @modules[module]
+            if instance.id == id
+              instance.stop()
+  
+  
+  
+  
   
   # Bronson Module
   #
@@ -354,6 +386,16 @@
     initialize: ->
       throw new Error "Bronson.Module#initialize: must override initialize"
   
+    # Start
+    #
+    start: ->
+      throw new Error "Bronson.Module#start: must override start"
+  
+    # Stop
+    #
+    stop: ->
+      throw new Error "Bronson.Module#stop: must override stop"
+  
     # Cleanup this controller
     # 
     # @example
@@ -363,14 +405,14 @@
       return if @disposed
   
       # Dispose and delete all members which are disposable
-      # for own prop of this
-      #   obj = this[prop]
-      #   if obj and typeof obj.dispose is 'function'
-      #     obj.dispose()
-      #     delete this[prop]
+      for own prop of this
+        obj = this[prop]
+        if obj and typeof obj.dispose is 'function'
+          obj.dispose()
+          delete this[prop]
   
       # Stop this module and remove all events
-      Bronson.Core.stopModule @id, ->
+      #Bronson.Core.stopModule @id, ->
   
       # Finished
       @disposed = true
@@ -391,7 +433,7 @@
           if not object[key]? or typeof val isnt "object"
             object[key] = val
           else
-            object[key] = extend object[key], val
+            object[key] = @extend object[key], val
   
       object
   

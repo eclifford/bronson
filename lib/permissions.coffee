@@ -12,8 +12,8 @@ Permissions = Bronson.Permissions =
   rules: {}
 
   # Overwrite the application rules
-  extend: (props) ->
-    rules = Bronson.Util.extend(rules, props)
+  set: (props) ->
+    @rules = Bronson.Util.extend(@rules, props)
 
   # Validate a subscribers permission for subscribing to a channel
   #

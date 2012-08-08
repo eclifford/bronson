@@ -17,6 +17,16 @@ class Bronson.Module
   initialize: ->
     throw new Error "Bronson.Module#initialize: must override initialize"
 
+  # Start
+  #
+  start: ->
+    throw new Error "Bronson.Module#start: must override start"
+
+  # Stop
+  #
+  stop: ->
+    throw new Error "Bronson.Module#stop: must override stop"
+
   # Cleanup this controller
   # 
   # @example

@@ -15,7 +15,7 @@ define [
       it "should successfully subscribe an event", ->
         Bronson.Api.subscribe 'TestModule', 'TestEvent', @spy
         Bronson.Api.publish 'TestEvent'
-        Bronson.Api.unsubscribe 'TestModule', 'TestEvent'
+        Bronson.Api.unsubscribe 'TestModule', 'TestEvent', ->
 
         assert.calledOnce @spy
 
@@ -23,5 +23,18 @@ define [
       it "should successfully publish an event", ->
         Bronson.Api.subscribe 'TestModule', 'TestEvent', @spy
         Bronson.Api.publish 'TestEvent', {foo: 'bar'}
-        Bronson.Api.unsubscribe 'TestModule', 'TestEvent'
+        Bronson.Api.unsubscribe 'TestModule', 'TestEvent', ->
         assert.calledOnceWith @spy, {foo: 'bar'}
+
+      it "should throw if passed invalid data", ->
+        assert.exception ->
+          Bronson.Api.publish 8, ->
+        , "Error"
+
+    describe "setPermissions()", ->
+      it "should successfully set permissions", ->
+        @rules = 
+          "TestModule":
+            "TestEvent": false
+        Bronson.Api.setPermissions @rules
+        assert.equals Bronson.Permissions.rules, @rules
