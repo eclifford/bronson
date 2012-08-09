@@ -1,9 +1,9 @@
 define [], () ->
   class TestModule extends Bronson.Module
-    initialize: ->
+    load: ->
 
     start: ->
 
     stop: ->
 
-    dipose: ->
+    unload: ->

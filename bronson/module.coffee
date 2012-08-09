@@ -10,11 +10,11 @@ class Bronson.Module
   # Constructor
   #
   constructor: ->
-    @initialize arguments...
+    @load arguments...
 
   # Initialize
   #
-  initialize: ->
+  load: ->
     throw new Error "Bronson.Module#initialize: must override initialize"
 
   # Start
@@ -32,7 +32,7 @@ class Bronson.Module
   # @example
   #   @dipose()
   #
-  dispose: ->
+  unload: ->
     return if @disposed
 
     # Dispose and delete all members which are disposable

@@ -133,19 +133,23 @@
           callback: callback
         });
       },
-      unsubscribe: function(subscriber, event, callback) {
-        var i, item, _i, _len, _ref;
+      unsubscribe: function(subscriber, event) {
+        var i, item, _i, _len, _ref, _results;
         _ref = this.events[event];
+        _results = [];
         for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
           item = _ref[i];
           if (item.subscriber === subscriber) {
-            this.events[event].splice(i, 1);
+            _results.push(this.events[event].splice(i, 1));
+          } else {
+            _results.push(void 0);
           }
         }
-        return callback();
+        return _results;
       },
-      unsubscribeAll: function(subscriber, callback) {
-        var event, y, _i, _len, _ref;
+      unsubscribeAll: function(subscriber) {
+        var event, y, _i, _len, _ref, _results;
+        _results = [];
         for (event in this.events) {
           if (this.events.hasOwnProperty(event)) {
             _ref = this.events[event];
@@ -156,11 +160,15 @@
               }
             }
             if (this.events[event].length === 0) {
-              delete this.events[event];
+              _results.push(delete this.events[event]);
+            } else {
+              _results.push(void 0);
             }
+          } else {
+            _results.push(void 0);
           }
         }
-        return callback();
+        return _results;
       },
       loadModule: function() {
         var autostart, callback, module, obj, _i,
@@ -185,8 +193,10 @@
             _this.modules[module].push({
               id: _module.id,
               timeStamp: new Date(),
+              load: _module.load,
               start: _module.start,
-              stop: _module.stop
+              stop: _module.stop,
+              unload: _module.unload
             });
             if (autostart) {
               _module.start();
@@ -197,27 +207,37 @@
           }
         });
       },
-      unloadAllModules: function(callback) {
+      unloadAllModules: function() {
         var id;
         for (id in modules) {
           this.unloadModule(id);
         }
         return callback();
       },
-      unloadModule: function(module, callback) {
-        if (!(module != null) || typeof module !== "string") {
-          throw new Error("Bronson.Core#stopModule: module must be valid");
-        }
-        if (!(this.modules[module] != null)) {
-          throw new Error("Bronson.Core#stopModule: that module is not loaded");
+      unloadModule: function(id) {
+        var instance, module, y, _i, _len, _ref;
+        if (!(id != null) || typeof id !== "string") {
+          throw new Error("Bronson.Core#stopModule: id must be valid");
         }
         try {
-          require.undef(module);
-          this.unsubscribeAll(module, function() {});
+          for (module in this.modules) {
+            if (this.modules.hasOwnProperty(module)) {
+              _ref = this.modules[module];
+              for (y = _i = 0, _len = _ref.length; _i < _len; y = ++_i) {
+                instance = _ref[y];
+                if (instance.id === id) {
+                  instance.unload();
+                  delete this.modules[module][y];
+                }
+              }
+            }
+          }
+          if (this.modules[module].length === 0) {
+            return require.undef(module);
+          }
         } catch (e) {
           throw new Error("Bronson.Core#stopModule: " + e);
         }
-        return callback();
       },
       startModule: function(id) {
         var instance, module, y, _results;
@@ -277,10 +297,10 @@
       Module.prototype.disposed = false;
 
       function Module() {
-        this.initialize.apply(this, arguments);
+        this.load.apply(this, arguments);
       }
 
-      Module.prototype.initialize = function() {
+      Module.prototype.load = function() {
         throw new Error("Bronson.Module#initialize: must override initialize");
       };
 
@@ -292,7 +312,7 @@
         throw new Error("Bronson.Module#stop: must override stop");
       };
 
-      Module.prototype.dispose = function() {
+      Module.prototype.unload = function() {
         var obj, prop;
         if (this.disposed) {
           return;

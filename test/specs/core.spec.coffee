@@ -5,77 +5,79 @@ define [
   buster.spec.expose()
 
   describe "Core", ->
+    beforeAll ->
 
-    after: ->
-      Bronson.Core.unloadAllModules()
-
-    beforeEach ->
-      @spy = @spy()
-
-    afterEach ->
-      @spy.reset()
+    afterAll ->
 
     describe "subscribe()", ->
       it "should successfully subscribe given valid paramaters", ->
-        Bronson.Core.subscribe 'TestModule', 'TestEvent', @spy
+        spy = sinon.spy()
+        Bronson.Core.subscribe 'TestModule', 'TestEvent', spy
         Bronson.Core.publish 'TestEvent'
-        Bronson.Core.unsubscribe 'TestModule', 'TestEvent', ->
-        assert.calledOnce @spy
+        Bronson.Core.unsubscribe 'TestModule', 'TestEvent' 
+        assert.calledOnce spy
 
       it "should successfully recieve data passed to it", ->
-        Bronson.Core.subscribe 'TestModule', 'TestEvent', @spy
+        spy = sinon.spy()
+        Bronson.Core.subscribe 'TestModule', 'TestEvent', spy
         Bronson.Core.publish 'TestEvent', {foo: 'bar'}
-        Bronson.Core.unsubscribe 'TestModule', 'TestEvent', ->
-        assert.calledOnceWith @spy, {foo: 'bar'}
+        Bronson.Core.unsubscribe 'TestModule', 'TestEvent' 
+        assert.calledOnceWith spy, {foo: 'bar'}
 
       it "should throw if passed invalid paramaters", ->
         assert.exception ->
-          Bronson.Core.subscribe 8, 8, ->
+          Bronson.Core.subscribe 8, 8 
         , "Error"
 
     describe "unsubscribe()", ->
       it "should successfully unsubscribe", ->
-        Bronson.Core.subscribe 'TestModule', 'TestEvent', @spy
-        Bronson.Core.unsubscribe 'TestModule', 'TestEvent', ->
+        spy = sinon.spy()
+        Bronson.Core.subscribe 'TestModule', 'TestEvent', spy
+        Bronson.Core.unsubscribe 'TestModule', 'TestEvent' 
         Bronson.Core.publish 'TestEvent'
-        refute.calledOnce @spy
-
-    describe "loadModule()", ->
-      it "should successfully load a module", (done) ->
-        Bronson.Core.loadModule 'test/fixtures/TestModule', (module) ->
-          assert.isFunction module.dispose
-          assert.isFunction module.initialize
-          done()
+        refute.calledOnce spy
 
     describe "unsubscribeAll()", ->
       it "should successfully remove all subscribed channels from subscriber", ->
         refute.exception ->
-          Bronson.Core.subscribe 'TestModule', 'TestEvent', ->
-          Bronson.Core.subscribe 'TestModule', 'TestEvent2', ->
-          Bronson.Core.subscribe 'TestModule', 'TestEvent3', ->
-          Bronson.Core.unsubscribeAll 'TestModule', ->
+          Bronson.Core.subscribe 'TestModule', 'TestEvent' 
+          Bronson.Core.subscribe 'TestModule', 'TestEvent2' 
+          Bronson.Core.subscribe 'TestModule', 'TestEvent3' 
+          Bronson.Core.unsubscribeAll 'TestModule' 
           assert.equals Bronson.Core.events, {}
 
-    describe "unloadModule()", ->
+    describe "loadModule()", ->
+      it "should successfully load a module", (done) ->
+        Bronson.Core.loadModule 'test/fixtures/TestModule', (module) ->
+          assert.isFunction module.unload
+          assert.isFunction module.load
+          done()
+        , false
+  
+    describe "stopModule()", ->
       it "should succesfully stop a module without erroring", (done) ->
         refute.exception ->
           Bronson.Core.loadModule 'test/fixtures/TestModule', (module) ->
-            Bronson.Core.unloadModule 'test/fixtures/TestModule', ->
-              done()
+            Bronson.Core.stopModule module.id 
+            done()
 
-    # describe "startModule", ->
-    #   it "should succesfully start a module", (done) ->
+    describe "startModule()", ->
+      it "should succesfully stop a module without erroring", (done) ->
+        refute.exception ->
+          Bronson.Core.loadModule 'test/fixtures/TestModule', (module) ->
+            Bronson.Core.startModule module.id 
+            done()
+
+    # describe "unloadModule()", ->
+    #   it "should successfully unload a module", (done) ->
     #     refute.exception ->
     #       Bronson.Core.loadModule 'test/fixtures/TestModule', (module) ->
-    #         Bronson.Core.startModule module.id
+    #         Bronson.Core.unloadModule module.id
     #         done()
 
-    # describe "stopModule", ->
-    #   it "should succesfully stop a module", (done) ->
-    #     refute.exception ->
-    #       Bronson.Core.loadModule 'test/fixtures/TestModule', (module) ->
-    #         Bronson.Core.stopModule module.id
-    #         done()
+    
+
+
 
 
 

@@ -39,11 +39,11 @@ Core = Bronson.Core =
   #
   # @param subscriber [String] The module to subscribe
   # @param event [String] The event to listen on
-  # @param callback [Function] the callback
+  # @param callback [Function] the method to invoke 
   #
   # @example
   #   Bronson.Core.subscribe 'TestModule', 'TestEvent', ->
-  #     console.log 'Module succesfully subscribed'
+  #     console.log 'Event has been triggered'
   #
   subscribe: (subscriber, event, callback) -> 
     # Verify our input parameters
@@ -72,11 +72,10 @@ Core = Bronson.Core =
   #   Bronson.Core.unsubscribe 'TestModule', 'TestEvent', ->
   #     console.log 'Module succesfully unsubscribed'
   #
-  unsubscribe: (subscriber, event, callback) ->
+  unsubscribe: (subscriber, event) ->
     for item, i in @events[event]
       if item.subscriber == subscriber
         @events[event].splice i, 1
-    callback()
 
   # Unsubscribe subscriber from all events
   # @param subscriber [String] The module to unsubscribe
@@ -84,7 +83,7 @@ Core = Bronson.Core =
   # @example
   #   Bronson.Core.unsubscribeAll 'TestModule'
   #
-  unsubscribeAll: (subscriber, callback) ->
+  unsubscribeAll: (subscriber) ->
     for event of @events
       if @events.hasOwnProperty(event) 
         # Iterate through events and remove subscribers
@@ -93,10 +92,9 @@ Core = Bronson.Core =
             @events[event].splice y, 1
         # If event is empty delete it
         if @events[event].length == 0
-          delete @events[event]
-    callback()      
+          delete @events[event]  
    
-  # Create a module
+  # Load a module
   #
   # @param moduleId [String] the AMD module to load(alias or relative path)
   # @param autostart [Boolean] whether or not to autostart the module
@@ -139,8 +137,10 @@ Core = Bronson.Core =
         @modules[module].push
           id: _module.id 
           timeStamp: new Date()
+          load: _module.load
           start: _module.start
           stop: _module.stop
+          unload: _module.unload
 
         # State the module if specified
         _module.start() if autostart
@@ -154,7 +154,7 @@ Core = Bronson.Core =
   # @example
   #   Bronson.Core.stopAllModules()
   #
-  unloadAllModules: (callback) ->
+  unloadAllModules: () ->
     for id of modules
       @unloadModule id
     callback()
@@ -164,23 +164,41 @@ Core = Bronson.Core =
   # @example
   #   Bronson.Core.stopModule 'TestModule'
   #
-  unloadModule: (module, callback)->
+  unloadModule: (id) ->
     # Validate input parameters
-    if not module? || typeof module isnt "string"
-      throw new Error "Bronson.Core#stopModule: module must be valid"
+    if not id? || typeof id isnt "string"
+      throw new Error "Bronson.Core#stopModule: id must be valid"
 
-    if not @modules[module]?
-      throw new Error "Bronson.Core#stopModule: that module is not loaded"
+    # if not @modules[module]?
+    #   throw new Error "Bronson.Core#stopModule: that module is not loaded"
 
     try 
-      require.undef(module) 
-      @unsubscribeAll module, -> 
+      #require.undef(module) 
+      #delete @modules[module]
+      #if @modules[
+      #@unsubscribeAll module
+
+      for module of @modules
+        if @modules.hasOwnProperty(module) 
+          for instance, y in @modules[module]
+            if instance.id == id
+              instance.unload()
+              delete @modules[module][y] 
+
+      if @modules[module].length == 0
+        require.undef module
 
     catch e
       throw new Error "Bronson.Core#stopModule: #{e}"
-   
-    callback()
 
+  # startModule
+  # A module by default may not be started and may need done so manually
+  #
+  # @param @id [string] The RequireJS id of the loaded module instance
+  #
+  # @example
+  #   Bronson.Core.startModule 'TestModule'
+  #
   startModule: (id) ->
     for module of @modules
       if @modules.hasOwnProperty(module) 
@@ -188,6 +206,11 @@ Core = Bronson.Core =
           if instance.id == id
             instance.start()
 
+  # stopModule
+  # A module may be stopped manually
+  # 
+  # param @id [string] The RequireJS id of the loaded module instance
+  #
   stopModule: (id) ->
     for module of @modules
       if @modules.hasOwnProperty(module) 
