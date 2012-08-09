@@ -1,51 +1,64 @@
 require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
 
-  Bronson.Api.loadModule 'apps/lib/instagram/instagramModule',
+  Bronson.Api.loadModule 'apps/lib/instagram/instagramModule', (->
+  ),
     el: '#modules'
-  , ->
+  , true
+
+  Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', (->
+  ),
+    el: '#modules'
+  , true
 
 
-  Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', 
+  Bronson.Api.loadModule 'apps/lib/weather/weatherModule', (->
+  ),
     el: '#modules'
-  , ->
+  , true
 
-  Bronson.Api.loadModule 'apps/lib/weather/weatherModule',
-    el: '#modules'
-  , ->
 
-  Bronson.Api.loadModule 'apps/lib/maps/mapsModule',
+  Bronson.Api.loadModule 'apps/lib/maps/mapsModule', (->
+  ),
     el: '#modules'
-  , ->
+  , true
 
-  Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule',
+
+  Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule', (->
+  ),
     el: '#modules'
-  , ->
+  , true
+
 
 
   $('#btnAddFourSquare').click ->
-    Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule',
+    Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule', (->
+    ),
       el: '#modules'
-    , ->
+    , true
 
   $('#btnAddInstagram').click ->
-    Bronson.Api.loadModule 'apps/lib/instagram/instagramModule',
+    Bronson.Api.loadModule 'apps/lib/instagram/instagramModule', (->
+    ),
       el: '#modules'
-    , ->
+    , true
 
   $('#btnAddTwitter').click ->
-    Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', 
+    Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', (->
+    ),
       el: '#modules'
-    , ->
+    , true
 
   $('#btnAddWeather').click ->
-    Bronson.Api.loadModule 'apps/lib/weather/weatherModule',
+    Bronson.Api.loadModule 'apps/lib/weather/weatherModule', (->
+    ),
       el: '#modules'
-    , ->
+    , true
 
   $('#btnAddMaps').click ->
-    Bronson.Api.loadModule 'apps/lib/maps/mapsModule',
+    Bronson.Api.loadModule 'apps/lib/maps/mapsModule', (->
+    ),
       el: '#modules'
-    , ->
+    , true
 
   $('#btnAddFourSquare').click ->
     Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule',

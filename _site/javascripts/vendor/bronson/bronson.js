@@ -1,6 +1,6 @@
 (function() {
-  var __slice = [].slice,
-    __hasProp = {}.hasOwnProperty;
+  var __hasProp = {}.hasOwnProperty,
+    __slice = [].slice;
 
   (function(root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -38,13 +38,14 @@
       unsubscribe: function(subscriber, event, callback) {
         return Bronson.Core.unsubscribe(subscriber, event, callback);
       },
-      loadModule: function() {
-        var autostart, callback, moduleId, obj, _i, _ref;
-        moduleId = arguments[0], obj = 4 <= arguments.length ? __slice.call(arguments, 1, _i = arguments.length - 2) : (_i = 1, []), callback = arguments[_i++], autostart = arguments[_i++];
+      loadModule: function(moduleId, callback, config, autostart) {
+        if (config == null) {
+          config = {};
+        }
         if (autostart == null) {
           autostart = true;
         }
-        return (_ref = Bronson.Core).loadModule.apply(_ref, [moduleId].concat(__slice.call(obj), [callback], [autostart]));
+        return Bronson.Core.loadModule(moduleId, config, callback, autostart);
       },
       unloadAllModules: function() {
         return Bronson.Core.unloadAllModules();
@@ -170,10 +171,8 @@
         }
         return _results;
       },
-      loadModule: function() {
-        var autostart, callback, module, obj, _i,
-          _this = this;
-        module = arguments[0], obj = 4 <= arguments.length ? __slice.call(arguments, 1, _i = arguments.length - 2) : (_i = 1, []), callback = arguments[_i++], autostart = arguments[_i++];
+      loadModule: function(module, config, callback, autostart) {
+        var _this = this;
         if (!(module != null)) {
           throw new Error("Bronson.Core#createModule: module must be defined");
         }
@@ -183,11 +182,10 @@
         if ((autostart != null) && typeof autostart !== 'boolean') {
           throw new Error("Bronson.Core#createModule: autostart must be a valid boolean");
         }
-        obj = obj[0];
         return require(['module', module], function(Module, LoadedModule) {
           var _module;
           try {
-            _module = new LoadedModule(obj);
+            _module = new LoadedModule(config);
             _module.id = Module.id;
             _this.modules[module] = (!_this.modules[module] ? [] : _this.modules[module]);
             _this.modules[module].push({

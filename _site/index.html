@@ -7,20 +7,26 @@
   <link rel='stylesheet' type='text/css' href='stylesheets/pygment_trac.css'/> 
   <script src='javascripts/vendor/jquery/jquery.js'></script>
   <script src='javascripts/vendor/bootstrap/bootstrap.js'></script>
-  <script data-main='apps/lib/app' src='javascripts/vendor/requirejs/require.js'></script>
-  <script src='javascripts/vendor/requirejs/require-conf.js'></script>
+
 </head>
   <body>
+ <a href="https://github.com/eclifford/bronson"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
     <h1 class='fontface'>BronsonJS</h1>
     <div class="navbar">
       <div class="navbar-inner">
         <div class="container">
           <ul class="nav">
             <li class="active">
-              <a href="index.html">Home</a>
+              <a href="index.html">Overview</a>
             </li>
             <li>
-              <a href="documentation.html">Documentation</a>
+              <a href="demo.html">Demo</a>
+            </li>
+            <li>
+              <a href="reference.html">Reference</a>
+            </li>
+            <li>
+              <a href="tutorials.html">Tutorials</a>
             </li>
           </ul>
         </div>
@@ -31,60 +37,32 @@
     <div class="span2">
       <div class="well" style="padding: 8px 0;">
         <ul class="nav nav-list">
-          <li class='nav-header'>
-            Modules
-          </li>
-          <li>
-            <a href="#" id='btnAddInstagram'>
-              <i class="icon-plus-sign"></i>
-              Add Instagram
-            </a>
-            <a href="#" id='btnAddTwitter'>
-              <i class="icon-plus-sign"></i>
-              Add Twitter
-            </a>
-            <a href="#" id='btnAddWeather'>
-              <i class="icon-plus-sign"></i>
-              Add Weather
-            </a>
-            <a href="#" id='btnAddMaps'>
-              <i class="icon-plus-sign"></i>
-              Add Google Maps
-            </a>
-            <a href="#" id='btnAddFourSquare'>
-              <i class="icon-plus-sign"></i>
-              Add Four Square
-            </a>
-          </li>
-          <li class='nav-header'>
-            Events
-          </li>
-          <li>
-            <a href="#" id='btnGetCurrentPosition'>
-              <i class="icon-plus-sign"></i>
-              Send Current Position
-            </a>
-            <a href="#" id='btnSetPositionToTokyo'>
-              <i class="icon-plus-sign"></i>
-              Set to Tokyo
-            </a>
-            <a href="#" id='btnSetPositionToLondon'>
-              <i class="icon-plus-sign"></i>
-              Set to London
-            </a>
-          </li>
-          <li class='Events'>
-            <a href="#" id='btnRemoveModules'>
-              <i class="icon-plus-sign"></i>
-              Stop All Modules
-            </a>
-          </li>
+         
         </ul>
       </div>
     </div>
     <div class="span10">
-      <ul id='modules'>
-      </ul>
+      <h2>Introduction</h2>
+          <p>Bronson is an opinonated application framework comprising of the tools necessary to build large scalable web applications as outlined by Nicholas Zakas and Addy Osmani. Bronson sit's on top of RequireJS & JQuery offering libraries for the loading, unloading, messaging and bootstraping of modules. These modules in turn acts as small loosely coupled applications in the context of a large appication. By building our larger applications as a series of smaller applications we greatly increase the performance, testability and maintainability of our code base.</p>
+
+          <h3>Acknowledgements</h3>
+          <ul>
+            <li><a href='http://www.youtube.com/watch?v=vXjVFPosQHw'>Nicholas Zakas: Scalable Javascript Application Architecture</a></li>
+            <li><a href='http://addyosmani.com/largescalejavascript'>Addy Osmani: Patterns For Large-Scale JavaScript Application Architecture</a></li>
+          </ul>
+          
+          <h3><a name='features'>Features</a></h3>
+          <ul>
+            <li>Module loading & unloading through <code>Bronson.Core</code></li>
+            <li>Univeral interface offered through <code>Bronson.Api</code></li> 
+            <li>Managed publish & subscribing of events through <code>Bronson.Core</code> & <code>Bronson.Permissions</code></li>
+          </ul>
+
+          <h3><a name='dependencies'>Dependencies</a></h3>
+          <ul>
+            <li><a href='http://jquery.com/'>jQuery</a></li>
+            <li><a href='http://requirejs.org'>RequireJS</a></li>
+          </ul> 
     </div>
   </div>
 </div>

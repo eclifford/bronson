@@ -8,19 +8,6 @@ title: "Bronson"
       <div class="well" style="padding: 8px 0;">
         <ul class="nav nav-list">
           <li class='nav-header'>
-            Introduction
-          </li>
-          <li>
-            <a href="#features">
-              features
-            </a>
-          </li>
-          <li>
-            <a href="#depedencies">
-              depedencies
-            </a>
-          </li>
-          <li class='nav-header'>
             Api
           </li>
           <li>
@@ -29,8 +16,98 @@ title: "Bronson"
             </a>
           </li>
           <li>
-            <a href="#createModule">
-              createModule
+            <a href="#loadModule">
+              loadModule
+            </a>
+          </li>
+          </li>
+          <li>
+            <a href="#unloadModule">
+              unloadModule
+            </a>
+          </li>
+          <li>
+            <a href="#unloadAllModues">
+              unloadAllModues
+            </a>
+          </li>
+          <li>
+            <a href="#startModule">
+             startModule 
+            </a>
+          </li>
+          <li>
+            <a href="#stopModule">
+              stopModule
+            </a>
+          </li>
+          <li>
+            <a href="#stopAllModules">
+              stopAllModules 
+            </a>
+          </li>
+          <li>
+            <a href="#subscribe">
+              subscribe
+            </a>
+          </li>
+          <li>
+            <a href="#publish">
+              publish 
+            </a>
+          </li>
+          <li>
+            <a href="#unsubscribe">
+              unsubscribe 
+            </a>
+          </li>
+          <li>
+            <a href="#unsubscribeAll">
+              unsubscribeAll
+            </a>
+          </li>
+          <li>
+            <a href="#getModules">
+              getModules
+            </a>
+          </li>
+          <li>
+            <a href="#getEvents">
+              getEvents
+            </a>
+          </li>
+          <li>
+            <a href="#setPermissions">
+              setPermissions
+            </a>
+          </li>
+          <li class='nav-header'>
+            Core
+          </li>
+          <li>
+            <a href="#coreOverview">
+              overview
+            </a>
+          </li>
+          <li>
+            <a href="#coreLoadModule">
+              loadModule
+            </a>
+          </li>
+          </li>
+          <li>
+            <a href="#coreUnloadModule">
+              unloadModule
+            </a>
+          </li>
+          <li>
+            <a href="#unloadAllModues">
+              unloadAllModues
+            </a>
+          </li>
+          <li>
+            <a href="#startModule">
+             startModule 
             </a>
           </li>
           <li>
@@ -64,9 +141,6 @@ title: "Bronson"
             </a>
           </li>
           <li class='nav-header'>
-            Core
-          </li>
-          <li class='nav-header'>
             Permissions
           </li>
           <li class='nav-header'>
@@ -76,28 +150,7 @@ title: "Bronson"
       </div>
     </div>
     <div class="span10">
-       <h2>Introduction</h2>
-            <p>Bronson is an opinonated application framework comprising of the tools necessary to build large scalable web applications as outlined by Nicholas Zakas and Addy Osmani. Bronson sit's on top of RequireJS & JQuery offering libraries for the loading, unloading, messaging and bootstraping of modules. These modules in turn acts as small loosely coupled applications in the context of a large appication. By building our larger applications as a series of smaller applications we greatly increase the performance, testability and maintainability of our code base.</p>
-
-            <h3>Acknowledgements</h3>
-            <ul>
-              <li><a href='http://www.youtube.com/watch?v=vXjVFPosQHw'>Nicholas Zakas: Scalable Javascript Application Architecture</a></li>
-              <li><a href='http://addyosmani.com/largescalejavascript'>Addy Osmani: Patterns For Large-Scale JavaScript Application Architecture</a></li>
-            </ul>
-            
-            <h3><a name='features'>Features</a></h3>
-            <ul>
-              <li>Module loading & unloading through <code>Bronson.Core</code>(mediator pattern)</li>
-              <li>Univeral interface offered through <code>Bronson.Api</code>(fascade pattern)</li> 
-              <li>Managed publish & subscribing of events through <code>Bronson.Core</code> & <code>Bronson.Permissions</code></li>
-            </ul>
-
-            <h3><a name='dependencies'>Dependencies</a></h3>
-            <ul>
-              <li><a href='http://jquery.com/'>jQuery</a></li>
-              <li><a href='http://requirejs.org'>RequireJS</a></li>
-            </ul>
-
+    
             <h2>Api</h2>
             <p><code>Bronson.Api</code> acts as the <strong>Fascade</strong> in <strong>Bronson</strong> and is the public programming interface for communicating with Bronson. The Api abstracts the <code>Bronson.Core</code> & <code>Bronson.Permission</code> layer's presenting a closed to modification interface.</p>
 
@@ -108,14 +161,14 @@ title: "Bronson"
               <li>Provide interface to pass publish/subscribe events to core</li>
             </ul>
 
-            <h3><a name='createModule'>createModule</a></h3>
+            <h3><a name='loadModule'>loadModule</a></h3>
             <p>
-            The createModule loads a module via RequireJS and initializes it. Your implemented module should bootstrap your mini application.</p>
+            Loads a module via RequireJS and calls your modules load method.</p>
 
             <h4>Simple Example</h4>
 {% highlight coffeescript %}
 require ['bronson'], (Bronson) ->
-  Bronson.Api.createModule 'example/path/sampleModule', ->
+  Bronson.Api.loadModule 'example/path/sampleModule', ->
     # Module has been created
 
 {% endhighlight %}
@@ -129,19 +182,37 @@ require ['bronson'], (Bronson) ->
     el: 'div#modules'
     url: 'http://example.com/api/data.json'
 
-  Bronson.Api.createModule 'example/path/sampleModule', configurationObject, ->
-    # Module has been created
+  Bronson.Api.loadModule 'example/path/sampleModule', (-> 
+    # module loaded
+  ),
+    configurationObject       # The configuration object to pass to the module
+  , false                     # Whether or not to autostart the module
 
 {% endhighlight %}
 
-            <h3><a name='stopModule'>stopModule</a></h3>
+            <h3><a name='unloadModule'>unloadModule</a></h3>
             <p>
-            Unloads the artifiacts loaded in when createModule was initially called. </p>
+            Unloads a module. Call's the unload method of the module whose instance id you provide. Typically used to clean up memory.  </p>
 {% highlight coffeescript %}
 require ['bronson'], (Bronson) ->
-  Bronson.Api.stopModule 'example/path/sampleModule', ->
-    # Module has been stopped
+  Bronson.Api.unloadModule module.id 
+{% endhighlight %}
 
+            <h3><a name='unloadAllModules'>unloadAllModules</a></h3>
+            <p>
+            Calls unload method of every instanced module. </p>
+{% highlight coffeescript %}
+require ['bronson'], (Bronson) ->
+  Bronson.Api.unloadAllModules 
+{% endhighlight %}
+
+
+            <h3><a name='stopModule'>stopModule</a></h3>
+            <p>
+            Stops a module. Call's the stop method of the module whose instance id you provide. Typically used when you want to remove an item from the DOM but keep it in memory. </p>
+{% highlight coffeescript %}
+require ['bronson'], (Bronson) ->
+  Bronson.Api.stopModule module.id 
 {% endhighlight %}
 
             <h3><a name='stopAllModules'>stopAllModules</a></h3>
@@ -160,14 +231,14 @@ require ['bronson'], (Bronson) ->
             <h4>Simple Example</h4>
 {% highlight coffeescript %}
 require ['bronson'], (Bronson) ->
-  Bronson.Api.subscribe 'example/path/sampleModule', 'TestEvent', ->
+  Bronson.Api.subscribe 'TestSubscriber', 'TestEvent', ->
     # Module subscribed
 {% endhighlight %}
 
             <h4>Example recieving data</h4>
 {% highlight coffeescript %}
 require ['bronson'], (Bronson) ->
-  Bronson.Api.subscribe 'example/path/sampleModule', 'TestEvent', (data) ->
+  Bronson.Api.subscribe 'TestSubscriber', 'TestEvent', (data) ->
     # Event triggered with data
     console.log data
 {% endhighlight %}
@@ -211,27 +282,20 @@ require ['bronson'], (Bronson) ->
 
         <h2>Core</h2>
 
+        <h3><a href="#coreOverview">Overview</a></h3>
+
         <h2>Permissions</h2>
 
+        <h3><a href="#coreOverview">Overview</a></h3>
+
         <h2>Module</h2>
-   
-        <p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
 
-        <h3>Designer Templates</h3>
+        <h3><a href="#coreOverview">Overview</a></h3>
 
-        <p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+        <h2>Support</h2>
 
-        <h3>Rather Drive Stick?</h3>
-
-        <p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-        <h3>Authors and Contributors</h3>
-
-        <p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-        <h3>Support or Contact</h3>
-
-        <p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+        <h2>Authors and Contributors</h2>
+  
     </div>
   </div>
 </div>

@@ -1,45 +1,45 @@
 (function() {
 
   require(['underscore', 'backbone', 'bronson'], function(_, Backbone, Bronson) {
-    Bronson.Api.loadModule('apps/lib/instagram/instagramModule', {
+    Bronson.Api.loadModule('apps/lib/instagram/instagramModule', (function() {}), {
       el: '#modules'
-    }, function() {});
-    Bronson.Api.loadModule('apps/lib/twitter/twitterModule', {
+    }, true);
+    Bronson.Api.loadModule('apps/lib/twitter/twitterModule', (function() {}), {
       el: '#modules'
-    }, function() {});
-    Bronson.Api.loadModule('apps/lib/weather/weatherModule', {
+    }, true);
+    Bronson.Api.loadModule('apps/lib/weather/weatherModule', (function() {}), {
       el: '#modules'
-    }, function() {});
-    Bronson.Api.loadModule('apps/lib/maps/mapsModule', {
+    }, true);
+    Bronson.Api.loadModule('apps/lib/maps/mapsModule', (function() {}), {
       el: '#modules'
-    }, function() {});
-    Bronson.Api.loadModule('apps/lib/foursquare/foursquareModule', {
+    }, true);
+    Bronson.Api.loadModule('apps/lib/foursquare/foursquareModule', (function() {}), {
       el: '#modules'
-    }, function() {});
+    }, true);
     $('#btnAddFourSquare').click(function() {
-      return Bronson.Api.loadModule('apps/lib/foursquare/foursquareModule', {
+      return Bronson.Api.loadModule('apps/lib/foursquare/foursquareModule', (function() {}), {
         el: '#modules'
-      }, function() {});
+      }, true);
     });
     $('#btnAddInstagram').click(function() {
-      return Bronson.Api.loadModule('apps/lib/instagram/instagramModule', {
+      return Bronson.Api.loadModule('apps/lib/instagram/instagramModule', (function() {}), {
         el: '#modules'
-      }, function() {});
+      }, true);
     });
     $('#btnAddTwitter').click(function() {
-      return Bronson.Api.loadModule('apps/lib/twitter/twitterModule', {
+      return Bronson.Api.loadModule('apps/lib/twitter/twitterModule', (function() {}), {
         el: '#modules'
-      }, function() {});
+      }, true);
     });
     $('#btnAddWeather').click(function() {
-      return Bronson.Api.loadModule('apps/lib/weather/weatherModule', {
+      return Bronson.Api.loadModule('apps/lib/weather/weatherModule', (function() {}), {
         el: '#modules'
-      }, function() {});
+      }, true);
     });
     $('#btnAddMaps').click(function() {
-      return Bronson.Api.loadModule('apps/lib/maps/mapsModule', {
+      return Bronson.Api.loadModule('apps/lib/maps/mapsModule', (function() {}), {
         el: '#modules'
-      }, function() {});
+      }, true);
     });
     $('#btnAddFourSquare').click(function() {
       return Bronson.Api.loadModule('apps/lib/foursquare/foursquareModule', {
