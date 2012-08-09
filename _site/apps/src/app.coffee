@@ -3,7 +3,7 @@ require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
   Bronson.Api.loadModule 'apps/lib/instagram/instagramModule',
     el: '#modules'
   , ->
-  , true
+
 
   Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', 
     el: '#modules'

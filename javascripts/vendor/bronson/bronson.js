@@ -44,7 +44,7 @@
         if (autostart == null) {
           autostart = true;
         }
-        return (_ref = Bronson.Core).loadModule.apply(_ref, [moduleId, autostart].concat(__slice.call(obj), [callback]));
+        return (_ref = Bronson.Core).loadModule.apply(_ref, [moduleId].concat(__slice.call(obj), [callback], [autostart]));
       },
       unloadAllModules: function() {
         return Bronson.Core.unloadAllModules();
