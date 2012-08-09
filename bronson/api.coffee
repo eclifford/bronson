@@ -63,7 +63,7 @@ Api = Bronson.Api =
   #
   loadModule: (moduleId, obj..., callback, autostart=true) ->  
     # Pass to core
-    Bronson.Core.loadModule moduleId, autostart, obj..., callback
+    Bronson.Core.loadModule moduleId, obj..., callback, autostart
 
   # Stop all modues
   #
