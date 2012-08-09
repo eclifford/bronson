@@ -61,9 +61,9 @@ Api = Bronson.Api =
   #   Bronson.Api.createModule 'TestModule', {foo: 'bar'}, ->
   #     console.log 'module has been created'
   #
-  loadModule: (moduleId, obj..., callback, autostart=true) ->  
+  loadModule: (moduleId, callback, config={}, autostart=true) ->  
     # Pass to core
-    Bronson.Core.loadModule moduleId, obj..., callback, autostart
+    Bronson.Core.loadModule moduleId, config, callback, autostart
 
   # Stop all modues
   #

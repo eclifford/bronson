@@ -11,6 +11,13 @@ define [
     afterEach ->
       @spy.reset()
 
+    describe "loadModule()", ->
+      it "should succesfully load a moudle", (done) ->
+        Bronson.Api.loadModule 'test/fixtures/TestModule', (module) ->
+          assert.isFunction module.unload
+          assert.isFunction module.load
+          done()
+
     describe "subscribe()", ->
       it "should successfully subscribe an event", ->
         Bronson.Api.subscribe 'TestModule', 'TestEvent', @spy

@@ -48,7 +48,7 @@ define [
 
     describe "loadModule()", ->
       it "should successfully load a module", (done) ->
-        Bronson.Core.loadModule 'test/fixtures/TestModule', (module) ->
+        Bronson.Core.loadModule 'test/fixtures/TestModule', {}, (module) ->
           assert.isFunction module.unload
           assert.isFunction module.load
           done()
@@ -57,16 +57,18 @@ define [
     describe "stopModule()", ->
       it "should succesfully stop a module without erroring", (done) ->
         refute.exception ->
-          Bronson.Core.loadModule 'test/fixtures/TestModule', (module) ->
+          Bronson.Core.loadModule 'test/fixtures/TestModule', {}, (module) ->
             Bronson.Core.stopModule module.id 
             done()
+          , false
 
     describe "startModule()", ->
       it "should succesfully stop a module without erroring", (done) ->
         refute.exception ->
-          Bronson.Core.loadModule 'test/fixtures/TestModule', (module) ->
+          Bronson.Core.loadModule 'test/fixtures/TestModule', {}, (module) ->
             Bronson.Core.startModule module.id 
             done()
+          , false
 
     # describe "unloadModule()", ->
     #   it "should successfully unload a module", (done) ->

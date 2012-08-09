@@ -111,7 +111,7 @@ Core = Bronson.Core =
   #   Bronson.Core.createModule 'TestModule', {foo: 'bar'}, ->
   #     console.log 'module has been created'
   #
-  loadModule: (module, obj..., callback, autostart) ->  
+  loadModule: (module, config, callback, autostart) -> 
     # Verify the input paramaters
     if not module?
       throw new Error "Bronson.Core#createModule: module must be defined"
@@ -122,12 +122,10 @@ Core = Bronson.Core =
     if autostart? and typeof autostart isnt 'boolean'
       throw new Error "Bronson.Core#createModule: autostart must be a valid boolean"
 
-    obj = obj[0]
-
     # Load the module through RequireJS
     require ['module', module], (Module, LoadedModule) =>
       try 
-        _module = new LoadedModule(obj)
+        _module = new LoadedModule(config)
         _module.id = Module.id
 
         # Create the module if it doesn't exist otherwise select it
