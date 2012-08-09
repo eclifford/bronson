@@ -11,8 +11,13 @@ define [
       @el = parameters.el
       super
 
-    initialize: ->
+    load: ->
+      console.log 'load called'
       mapView = new MapView()
       $(@el).append mapView.render().el
 
-    dispose: ->
+    start: ->
+
+    stop: ->
+
+    unload: ->

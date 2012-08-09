@@ -11,7 +11,7 @@ define [
       @el = parameters.el
       super
 
-    initialize: ->
+    load: ->
       tweetsCollection = new TweetsCollection()
 
       tweetView = new TweetsView 
@@ -30,5 +30,8 @@ define [
           data: 
             geocode: "#{data.latitude},#{data.longitude},1mi"
 
+    start: ->
 
-    dispose: ->
+    stop: ->
+      
+    unload: ->

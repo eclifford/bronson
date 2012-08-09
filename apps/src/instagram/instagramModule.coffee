@@ -11,7 +11,7 @@ define [
       @el = parameters.el
       super
 
-    initialize: ->
+    load: ->
       @imagesCollection = new ImagesCollection()
 
       @carouselView = new CarouselView
@@ -37,6 +37,10 @@ define [
 
       Bronson.Api.subscribe 'InstagramModule', 'dispose', =>
         #@dispose()
+        
+    start: ->
 
-    dispose: ->
+    stop: ->
+
+    unload: ->
       super

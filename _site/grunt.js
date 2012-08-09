@@ -15,7 +15,8 @@ module.exports = function(grunt) {
         dest: 'apps/lib',
         options: {
           bare: false,
-          preserve_dirs: false
+          preserve_dirs: true,
+          base_path: 'apps/src'
         }
       }
     },

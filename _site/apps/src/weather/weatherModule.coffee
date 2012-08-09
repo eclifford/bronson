@@ -13,7 +13,7 @@ define [
       @el = parameters.el
       super
 
-    initialize: ->
+    load: ->
       weatherModel = new WeatherModel()
 
       @weatherView = new WeatherView 
@@ -33,5 +33,9 @@ define [
       #Bronson.Core.subscribe 'WeatherModule', 'dispose', =>
         #@dispose()
 
-    dispose: ->
+    start: ->
+
+    stop: ->
+
+    unload: ->
       #super

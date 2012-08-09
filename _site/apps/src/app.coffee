@@ -1,53 +1,54 @@
 require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
 
-  Bronson.Api.createModule 'apps/lib/instagram/instagramModule',
+  Bronson.Api.loadModule 'apps/lib/instagram/instagramModule',
+    el: '#modules'
+  , ->
+  , true
+
+  Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', 
     el: '#modules'
   , ->
 
-  Bronson.Api.createModule 'apps/lib/twitter/twitterModule', 
+  Bronson.Api.loadModule 'apps/lib/weather/weatherModule',
     el: '#modules'
   , ->
 
-  Bronson.Api.createModule 'apps/lib/weather/weatherModule',
+  Bronson.Api.loadModule 'apps/lib/maps/mapsModule',
     el: '#modules'
   , ->
 
-  Bronson.Api.createModule 'apps/lib/maps/mapsModule',
-    el: '#modules'
-  , ->
-
-  Bronson.Api.createModule 'apps/lib/foursquare/foursquareModule',
+  Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule',
     el: '#modules'
   , ->
 
 
   $('#btnAddFourSquare').click ->
-    Bronson.Api.createModule 'apps/lib/foursquare/foursquareModule',
+    Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule',
       el: '#modules'
     , ->
 
   $('#btnAddInstagram').click ->
-    Bronson.Api.createModule 'apps/lib/instagram/instagramModule',
+    Bronson.Api.loadModule 'apps/lib/instagram/instagramModule',
       el: '#modules'
     , ->
 
   $('#btnAddTwitter').click ->
-    Bronson.Api.createModule 'apps/lib/twitter/twitterModule', 
+    Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', 
       el: '#modules'
     , ->
 
   $('#btnAddWeather').click ->
-    Bronson.Api.createModule 'apps/lib/weather/weatherModule',
+    Bronson.Api.loadModule 'apps/lib/weather/weatherModule',
       el: '#modules'
     , ->
 
   $('#btnAddMaps').click ->
-    Bronson.Api.createModule 'apps/lib/maps/mapsModule',
+    Bronson.Api.loadModule 'apps/lib/maps/mapsModule',
       el: '#modules'
     , ->
 
   $('#btnAddFourSquare').click ->
-    Bronson.Api.createModule 'apps/lib/foursquare/foursquareModule',
+    Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule',
       el: '#modules'
     , ->
 

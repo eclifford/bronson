@@ -11,7 +11,7 @@ define [
       @el = parameters.el
       super
 
-    initialize: ->
+    load: ->
       venuesCollection = new VenuesCollection()
 
       @venuesView = new VenuesView 
@@ -37,4 +37,8 @@ define [
             limit: 5
             section: 'food'
 
-    dispose: ->
+    start: ->
+
+    stop: ->
+
+    unload: ->
