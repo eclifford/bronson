@@ -58,7 +58,7 @@ Api = Bronson.Api =
   #     garbage collection
   #
   # @example
-  #   Bronson.Api.createModule 'TestModule', {foo: 'bar'}, ->
+  #   Bronson.Api.loadModule 'TestModule', {foo: 'bar'}, ->
   #     console.log 'module has been created'
   #
   loadModule: (moduleId, callback, config={}, autostart=true) ->  

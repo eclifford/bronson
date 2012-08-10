@@ -1,13 +1,13 @@
-# Bronson -v 0.1.0 - 2012-08-08
+# Bronson -v 0.1.0 - 2012-08-10
 # http://github.com/eclifford/bronson
 # Copyright (c) 2012 Eric Clifford; Licensed MIT
 ((root, factory) ->
   if typeof define is "function" and define.amd
     # AMD. Register as an anonymous module.
-    define [], factory
+    define [], factory()
   else   
     # Browser globals
-    root.Bronson = factory(root.b)
+    root.Bronson = factory()
 ) this, () ->
 
   Bronson = window.Bronson =
@@ -86,7 +86,7 @@
     #     garbage collection
     #
     # @example
-    #   Bronson.Api.createModule 'TestModule', {foo: 'bar'}, ->
+    #   Bronson.Api.loadModule 'TestModule', {foo: 'bar'}, ->
     #     console.log 'module has been created'
     #
     loadModule: (moduleId, callback, config={}, autostart=true) ->  
@@ -276,19 +276,19 @@
     #     garbage collection
     #
     # @example
-    #   Bronson.Core.createModule 'TestModule', {foo: 'bar'}, ->
+    #   Bronson.Core.loadModule 'TestModule', {foo: 'bar'}, ->
     #     console.log 'module has been created'
     #
     loadModule: (module, config, callback, autostart) -> 
       # Verify the input paramaters
       if not module?
-        throw new Error "Bronson.Core#createModule: module must be defined"
+        throw new Error "Bronson.Core#loadModule: module must be defined"
   
       if typeof module isnt 'string'
-        throw new Error "Bronson.Core#createModule: module must be a string"
+        throw new Error "Bronson.Core#loadModule: module must be a string"
   
       if autostart? and typeof autostart isnt 'boolean'
-        throw new Error "Bronson.Core#createModule: autostart must be a valid boolean"
+        throw new Error "Bronson.Core#loadModule: autostart must be a valid boolean"
   
       # Load the module through RequireJS
       require ['module', module], (Module, LoadedModule) =>
@@ -308,12 +308,15 @@
             stop: _module.stop
             unload: _module.unload
   
-          # State the module if specified
+          # Load the module
+          _module.load()
+  
+          # Start the module if specified
           _module.start() if autostart
   
           callback(_module)
         catch e 
-          throw new Error "Bronson.Core#createModule: #{e}"
+          throw new Error "Bronson.Core#loadModule: #{e}"
   
     # Stop all modues
     #

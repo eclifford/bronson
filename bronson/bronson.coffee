@@ -1,10 +1,10 @@
 ((root, factory) ->
   if typeof define is "function" and define.amd
     # AMD. Register as an anonymous module.
-    define [], factory
+    define [], factory()
   else   
     # Browser globals
-    root.Bronson = factory(root.b)
+    root.Bronson = factory()
 ) this, () ->
 
   Bronson = window.Bronson =
