@@ -1,4 +1,4 @@
-require ['underscore', 'backbone'], (_, Backbone) ->
+require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
 
   Bronson.Api.loadModule 'apps/lib/instagram/instagramModule', (->
   ),

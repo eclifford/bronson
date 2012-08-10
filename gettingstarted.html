@@ -2,21 +2,12 @@
 layout: layout
 title: "Bronson"
 ---
-<div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span2">
-      <div class="well" style="padding: 8px 0;">
-        <ul class="nav nav-list">
-         
-        </ul>
-      </div>
-    </div>
-    <div class="span10">
       <h2>Getting Started</h2>
 
-      <h3>Setting up your project</h3>
-      Below is an example of a simple HTML page with JQuery, RequireJS & Bronson (in that order).
-
+      <h3>Simple example</h3>
+      <p>
+        To get a simple bronson example up and running simply create a simple html page with jquery and requirejs loaded and then require bronson. We'll create a module shortly to load.
+      </p>
 {% highlight html %}
 <!DOCTYPE html>
 <html>
@@ -24,37 +15,96 @@ title: "Bronson"
     <title>Bronson Demo</title> 
       <script src='javascripts/vendor/jquery/jquery.js'></script>
       <script src='javascripts/vendor/requirejs/requirejs.js'></script>
-      <script src='javascripts/vendor/bronson/bronson.js'></script>
+      
+      <script>
+        require(['javascripts/vendor/bronson/bronson'], function(Bronson) {
+          // Bronson is loaded
+          Bronson.Api.loadModule('app/lib/loggerModule', function() {
+            // module loaded 
+          }, { el: '#log'}, true);
+        });
+      </script>
   </head>
   <body>
-
+    <div id='#log'></div>
   </body>
 </html>
 {% endhighlight %}
 
+<p>
+  Now we must create the module we are trying to load above. The module you create must be wrapped in a requireJS define block and should map it's external dependencies. Next we extend the Bronson.Module base class to give us access to the load, start, stop and unload methods. 
+
+  The example we are creating here is a simple logging module. It will listen for logevent's and simply append the message to the DOM element passed to it in the loadModule method above. 
+</p>
 
 {% highlight coffeescript %}
 define [
   'jquery',
-], ($) ->
-  class ExampleModule extends Bronson.Module
+  'bronson'
+], ($, Bronson) ->
+  class Logger extends Bronson.Module
     constructor: (parameters={}) ->
+      # Assigned the passed in el(DOM element) so we know where to build our module
+      @el = parameters.el
       super
 
-    load: ->
-        
+    load: ->     
+      # Listen for all global events
+      Bronson.Api.subscribe 'logger', 'logevent', (event) ->
+        $(@el).append event
+
+      # Example of how you could notify other modules you've loaded
+      Bronson.Api.publish 'moduleLoaded', { type: 'Logger', id @id }
+
     start: ->
+      $(@el).html('Log Events');
 
     stop: ->
+      $(@el).empty();
 
     unload: ->
+      # Clean up the event
+      Bronson.Api.unsubscribe('logger', 'logevent');
       
 
 {% endhighlight %}   
 
+<p>
+  Finally let's revist the HTML page and add a simple form to enter logging events and publish them to the logging module.
+</p>
 
-      <h3>Creating a module</h3>
+{% highlight html %}
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>Bronson Demo</title> 
+        <script src='javascripts/vendor/jquery/jquery.js'></script>
+        <script src='javascripts/vendor/requirejs/requirejs.js'></script>
+        
+        <script>
+          require(['javascripts/vendor/bronson/bronson'], function(Bronson) {
+            // Bronson is loaded
+            Bronson.Api.loadModule('app/lib/loggerModule', function() {
+              // module loaded 
+            }, { el: '#log'}, true);
+          });
 
-    </div>
-  </div>
-</div>
+          $(function() {
+            $('#btnAddLogEvent').click(function() {
+              Bronson.Api.publish('logevent', { msg: $('#txtLogEvent').val() });
+            });
+          });
+        </script>
+    </head>
+    <body>
+      <div>
+        <input id='txtLogEvent' type='text'></input>
+        <button id='btnAddLogEvent' value='add'></button>
+      </div>
+      <div id='#log'></div>
+    </body>
+  </html> 
+{% endhighlight %}
+
+
+

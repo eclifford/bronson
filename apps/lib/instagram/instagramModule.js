@@ -2,7 +2,7 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  define(['jquery', 'underscore', 'backbone', 'bronson', 'apps/lib/instagram/views/carouselView', 'apps/lib/instagram/collection/imagesCollection'], function($, _, Backbone, Bronson, CarouselView, ImagesCollection) {
+  define(['jquery', 'underscore', 'backbone', 'apps/lib/instagram/views/carouselView', 'apps/lib/instagram/collection/imagesCollection'], function($, _, Backbone, CarouselView, ImagesCollection) {
     var InstagramModule;
     return InstagramModule = (function(_super) {
 
