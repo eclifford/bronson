@@ -17,7 +17,10 @@
       }
 
       Logger.prototype.load = function() {
-        Bronson.Api.subscribe('logger', 'logevent', function() {});
+        var _this = this;
+        Bronson.Api.subscribe('logger', 'logevent', function(event) {
+          return $(_this.el).append("<div>" + event.msg + "</div>");
+        });
         return Bronson.Api.publish('moduleLoaded', {
           type: 'Logger',
           id: this.id
@@ -25,14 +28,6 @@
       };
 
       Logger.prototype.start = function() {
-        var _this = this;
-        Bronson.Api.subscribe('logger', 'logevent', function(event) {
-          return $(_this.el).append("<div>" + event.msg + "</div>");
-        });
-        Bronson.Api.publish('moduleLoaded', {
-          type: 'Logger',
-          id: this.id
-        });
         return $(this.el).html('Log Events');
       };
 
