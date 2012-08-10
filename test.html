@@ -7,12 +7,7 @@
         <script src='javascripts/vendor/requirejs/require-conf.js'></script>
         <script>
           require(['bronson'], function(Bronson) {
-
-            // Bronson.Api.loadModule('apps/lib/instagram/instagramModule', (function() {}), {
-            //   el: '#modules'
-            // }, true);
-            // Bronson is loaded
-            Bronson.Api.loadModule('apps/lib/logger/loggerModule', (function() { console.log('loaded'); }), { el: '#log'}, true);
+            Bronson.Api.loadModule('apps/lib/logger/loggerModule', (function() { }), { el: '#log'}, true);
           });
 
           $(function() {

@@ -9,20 +9,13 @@ define [
 
     load: ->     
       # Listen for all global events
-      Bronson.Api.subscribe 'logger', 'logevent', ->
-        # $(@el).append event.msg
-
-      # Example of how you could notify other modules you've loaded
-      Bronson.Api.publish 'moduleLoaded', { type: 'Logger', id: @id }
-
-    start: ->
-      # Listen for all global events
       Bronson.Api.subscribe 'logger', 'logevent', (event) =>
         $(@el).append "<div>#{event.msg}</div>"
 
       # Example of how you could notify other modules you've loaded
       Bronson.Api.publish 'moduleLoaded', { type: 'Logger', id: @id }
 
+    start: ->
       $(@el).html('Log Events');
 
     stop: ->

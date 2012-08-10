@@ -174,13 +174,13 @@
       loadModule: function(module, config, callback, autostart) {
         var _this = this;
         if (!(module != null)) {
-          throw new Error("Bronson.Core#createModule: module must be defined");
+          throw new Error("Bronson.Core#loadModule: module must be defined");
         }
         if (typeof module !== 'string') {
-          throw new Error("Bronson.Core#createModule: module must be a string");
+          throw new Error("Bronson.Core#loadModule: module must be a string");
         }
         if ((autostart != null) && typeof autostart !== 'boolean') {
-          throw new Error("Bronson.Core#createModule: autostart must be a valid boolean");
+          throw new Error("Bronson.Core#loadModule: autostart must be a valid boolean");
         }
         return require(['module', module], function(Module, LoadedModule) {
           var _module;
@@ -196,12 +196,13 @@
               stop: _module.stop,
               unload: _module.unload
             });
+            _module.load();
             if (autostart) {
               _module.start();
             }
             return callback(_module);
           } catch (e) {
-            throw new Error("Bronson.Core#createModule: " + e);
+            throw new Error("Bronson.Core#loadModule: " + e);
           }
         });
       },

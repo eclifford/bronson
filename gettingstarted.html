@@ -15,13 +15,11 @@ title: "Bronson"
     <title>Bronson Demo</title> 
       <script src='javascripts/vendor/jquery/jquery.js'></script>
       <script src='javascripts/vendor/requirejs/requirejs.js'></script>
+      <script src='javascripts/vendor/requirejs/require-conf.js'></script>
       
       <script>
         require(['javascripts/vendor/bronson/bronson'], function(Bronson) {
-          // Bronson is loaded
-          Bronson.Api.loadModule('app/lib/loggerModule', function() {
-            // module loaded 
-          }, { el: '#log'}, true);
+          Bronson.Api.loadModule('app/lib/loggerModule', function() {}, { el: '#log' }, true);
         });
       </script>
   </head>
@@ -29,6 +27,20 @@ title: "Bronson"
     <div id='#log'></div>
   </body>
 </html>
+{% endhighlight %}
+
+<p>
+  It's usually best practice to put your RequireJS configuration settings in a seperate file named require-conf.js or something similar.
+</p>
+{% highlight javascript %}
+  require.config({
+    baseUrl: '.',
+    paths: {
+      'jquery'      : 'javascripts/vendor/jquery/jquery',
+      'bronson'     : 'javascripts/vendor/bronson/bronson'
+    },
+    waitSeconds: 30
+  });
 {% endhighlight %}
 
 <p>
@@ -44,17 +56,16 @@ define [
 ], ($, Bronson) ->
   class Logger extends Bronson.Module
     constructor: (parameters={}) ->
-      # Assigned the passed in el(DOM element) so we know where to build our module
       @el = parameters.el
       super
 
     load: ->     
       # Listen for all global events
-      Bronson.Api.subscribe 'logger', 'logevent', (event) ->
-        $(@el).append event
+      Bronson.Api.subscribe 'logger', 'logevent', (event) =>
+        $(@el).append "<div>#{event.msg}</div>"
 
       # Example of how you could notify other modules you've loaded
-      Bronson.Api.publish 'moduleLoaded', { type: 'Logger', id @id }
+      Bronson.Api.publish 'moduleLoaded', { type: 'Logger', id: @id }
 
     start: ->
       $(@el).html('Log Events');
@@ -65,7 +76,6 @@ define [
     unload: ->
       # Clean up the event
       Bronson.Api.unsubscribe('logger', 'logevent');
-      
 
 {% endhighlight %}   
 
@@ -74,19 +84,16 @@ define [
 </p>
 
 {% highlight html %}
-  <!DOCTYPE html>
+<!DOCTYPE html>
   <html>
     <head>
       <title>Bronson Demo</title> 
         <script src='javascripts/vendor/jquery/jquery.js'></script>
-        <script src='javascripts/vendor/requirejs/requirejs.js'></script>
-        
+        <script src='javascripts/vendor/requirejs/require.js'></script>
+        <script src='javascripts/vendor/requirejs/require-conf.js'></script>
         <script>
-          require(['javascripts/vendor/bronson/bronson'], function(Bronson) {
-            // Bronson is loaded
-            Bronson.Api.loadModule('app/lib/loggerModule', function() {
-              // module loaded 
-            }, { el: '#log'}, true);
+          require(['bronson'], function(Bronson) {
+            Bronson.Api.loadModule('apps/lib/logger/loggerModule', function() {}, { el: '#log'}, true);
           });
 
           $(function() {
@@ -101,10 +108,15 @@ define [
         <input id='txtLogEvent' type='text'></input>
         <button id='btnAddLogEvent' value='add'></button>
       </div>
-      <div id='#log'></div>
+      <div id='log'></div>
     </body>
   </html> 
 {% endhighlight %}
+
+<p>
+  In the end you should see something like the following image.
+</p>
+<img src='images/example.png'></img>
 
 
 
