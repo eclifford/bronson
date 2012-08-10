@@ -19,7 +19,29 @@ body {
 h1.fontface {
   font: 70px/78px 'PincoyablackBlack', Arial, sans-serif;letter-spacing: 0;
 }
+h2.fontface {
+  font: 50px/58px 'PincoyablackBlack', Arial, sans-serif;letter-spacing: 0;
+}
 
+.btn-primary {
+  background-color: #dd1144;
+  *background-color: #dd1144;
+  background-image: -ms-linear-gradient(top, #dd1144, #ed1148);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#dd1144), to(#ed1148));
+  background-image: -webkit-linear-gradient(top, #dd1144, #ed1148);
+  background-image: -o-linear-gradient(top, #dd1144, #ed1148);
+  background-image: -moz-linear-gradient(top, #dd1144, #ed1148);
+  background-image: linear-gradient(top, #dd1144, #ed1148);
+  background-repeat: repeat-x;
+  border-color: #dd1144 #dd1144 #ed1148;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#0088cc', endColorstr='#0055cc', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+
+.btn-primary:hover {
+  background-color: #D14; 
+}
 
 .module {
   width: 306px;

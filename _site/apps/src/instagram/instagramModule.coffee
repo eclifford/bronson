@@ -2,10 +2,9 @@ define [
   'jquery',
   'underscore',
   'backbone',
-  'bronson',
   'apps/lib/instagram/views/carouselView',
   'apps/lib/instagram/collection/imagesCollection'
-], ($, _, Backbone, Bronson, CarouselView, ImagesCollection) ->
+], ($, _, Backbone, CarouselView, ImagesCollection) ->
   class InstagramModule extends Bronson.Module
     constructor: (parameters={}) ->
       @el = parameters.el

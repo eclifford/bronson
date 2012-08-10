@@ -4,9 +4,9 @@
 
   (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-      return define([], factory);
+      return define([], factory());
     } else {
-      return root.Bronson = factory(root.b);
+      return root.Bronson = factory();
     }
   })(this, function() {
     var Api, Bronson, Core, Permissions, Util;

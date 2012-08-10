@@ -20,6 +20,9 @@
               <a href="index.html">Overview</a>
             </li>
             <li>
+              <a href="gettingstarted.html">Getting Started</a>
+            </li>
+            <li>
               <a href="demo.html">Demo</a>
             </li>
             <li>
@@ -32,16 +35,19 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span2">
-      <div class="well" style="padding: 8px 0;">
-        <ul class="nav nav-list">
-         
-        </ul>
-      </div>
-    </div>
-    <div class="span10">
+          <header class='hero-unit'>
+        <img src='images/bronson.jpeg' width='300px' style='float: left; padding-right: 20px' />
+        <h2 class='fontface'>BronsonJS</h2>
+        <p>
+          Module application framework for building large scalable web applications.
+        </p>
+        <p class="download-info">
+      <a href="https://github.com/eclifford/bronson/" class="btn btn-primary btn-large" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'GitHub Project', 'View project on GitHub']);">View project on GitHub</a>
+      <a href="https://raw.github.com/eclifford/bronson/master/build/bronson.js" class="btn btn-large" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'Download', 'Download 2.0.4']);">Download Bronson <small>(v0.0.1)</small></a>
+      <a href="assets/bootstrap.zip" class="btn btn-large" onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'Download', 'Download 2.0.4']);">Download Minified Bronson <small>(v0.0.1)</small></a>
+      <div class='clearfix'></div>
+    </p>
+      </header>
       <h2>Introduction</h2>
           <p>Bronson is an opinonated application framework comprising of the tools necessary to build large scalable web applications as outlined by Nicholas Zakas and Addy Osmani. Bronson sit's on top of RequireJS & JQuery offering libraries for the loading, unloading, messaging and bootstraping of modules. These modules in turn acts as small loosely coupled applications in the context of a large appication. By building our larger applications as a series of smaller applications we greatly increase the performance, testability and maintainability of our code base.</p>
 
@@ -51,21 +57,19 @@
             <li><a href='http://addyosmani.com/largescalejavascript'>Addy Osmani: Patterns For Large-Scale JavaScript Application Architecture</a></li>
           </ul>
           
-          <h3><a name='features'>Features</a></h3>
+          <h3>Features</h3>
           <ul>
             <li>Module loading & unloading through <code>Bronson.Core</code></li>
             <li>Univeral interface offered through <code>Bronson.Api</code></li> 
             <li>Managed publish & subscribing of events through <code>Bronson.Core</code> & <code>Bronson.Permissions</code></li>
           </ul>
 
-          <h3><a name='dependencies'>Dependencies</a></h3>
+          <h3>Dependencies</h3>
           <ul>
             <li><a href='http://jquery.com/'>jQuery</a></li>
             <li><a href='http://requirejs.org'>RequireJS</a></li>
           </ul> 
-    </div>
-  </div>
-</div>
+
  
   </body>
 </html>

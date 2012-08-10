@@ -1,0 +1,60 @@
+---
+layout: layout
+title: "Bronson"
+---
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+      <div class="well" style="padding: 8px 0;">
+        <ul class="nav nav-list">
+         
+        </ul>
+      </div>
+    </div>
+    <div class="span10">
+      <h2>Getting Started</h2>
+
+      <h3>Setting up your project</h3>
+      Below is an example of a simple HTML page with JQuery, RequireJS & Bronson (in that order).
+
+{% highlight html %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bronson Demo</title> 
+      <script src='javascripts/vendor/jquery/jquery.js'></script>
+      <script src='javascripts/vendor/requirejs/requirejs.js'></script>
+      <script src='javascripts/vendor/bronson/bronson.js'></script>
+  </head>
+  <body>
+
+  </body>
+</html>
+{% endhighlight %}
+
+
+{% highlight coffeescript %}
+define [
+  'jquery',
+], ($) ->
+  class ExampleModule extends Bronson.Module
+    constructor: (parameters={}) ->
+      super
+
+    load: ->
+        
+    start: ->
+
+    stop: ->
+
+    unload: ->
+      
+
+{% endhighlight %}   
+
+
+      <h3>Creating a module</h3>
+
+    </div>
+  </div>
+</div>
