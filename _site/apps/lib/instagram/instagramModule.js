@@ -50,9 +50,7 @@
 
       InstagramModule.prototype.stop = function() {};
 
-      InstagramModule.prototype.unload = function() {
-        return InstagramModule.__super__.unload.apply(this, arguments);
-      };
+      InstagramModule.prototype.unload = function() {};
 
       return InstagramModule;
 

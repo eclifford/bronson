@@ -13,7 +13,6 @@
           parameters = {};
         }
         this.el = parameters.el;
-        TwitterModule.__super__.constructor.apply(this, arguments);
       }
 
       TwitterModule.prototype.load = function() {

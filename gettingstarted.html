@@ -6,7 +6,7 @@ title: "Bronson"
 
       <h3>Simple example</h3>
       <p>
-        To get a simple bronson example up and running simply create a simple html page with jquery and requirejs loaded and then require bronson. We'll create a module shortly to load.
+        To get a simple Bronson example up and running simply create a simple html page with jQuery and RequireJS loaded and then require Bronson. We'll create a module shortly to load.
       </p>
 {% highlight html %}
 <!DOCTYPE html>
@@ -30,7 +30,7 @@ title: "Bronson"
 {% endhighlight %}
 
 <p>
-  It's usually best practice to put your RequireJS configuration settings in a seperate file named require-conf.js or something similar.
+  It's usually best practice to put your RequireJS configuration settings in a separate file named require-conf.js or something similar.
 </p>
 {% highlight javascript %}
   require.config({
@@ -46,7 +46,7 @@ title: "Bronson"
 <p>
   Now we must create the module we are trying to load above. The module you create must be wrapped in a requireJS define block and should map it's external dependencies. Next we extend the Bronson.Module base class to give us access to the load, start, stop and unload methods. 
 
-  The example we are creating here is a simple logging module. It will listen for logevent's and simply append the message to the DOM element passed to it in the loadModule method above. 
+  The example we are creating here is a simple logging module. It will listen for log events and simply append the message to the DOM element passed to it in the loadModule method above. 
 </p>
 
 {% highlight coffeescript %}
@@ -80,7 +80,7 @@ define [
 {% endhighlight %}   
 
 <p>
-  Finally let's revist the HTML page and add a simple form to enter logging events and publish them to the logging module.
+  Finally let's revisit the HTML page and add a simple form to enter logging events and publish them to the logging module.
 </p>
 
 {% highlight html %}

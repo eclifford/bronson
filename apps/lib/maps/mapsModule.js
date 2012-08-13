@@ -14,12 +14,10 @@
         }
         this.id = Math.random().toString(36).substring(7);
         this.el = parameters.el;
-        MapModule.__super__.constructor.apply(this, arguments);
       }
 
       MapModule.prototype.load = function() {
         var mapView;
-        console.log('load called');
         mapView = new MapView();
         return $(this.el).append(mapView.render().el);
       };

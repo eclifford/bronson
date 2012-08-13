@@ -39,6 +39,8 @@ define [
         Bronson.Core.publish 'geoUpdate', coord
       )
 
+
+
       Bronson.Api.subscribe 'MapsModule', 'addMarker', (data) =>
         latlng = new google.maps.LatLng(data.latitude, data.longitude)
         marker = new google.maps.Marker
@@ -53,9 +55,9 @@ define [
 
     dispose: ->
       #Bronson.Core.publish 'dispose'
-      @collection.unbind 'change'
-      @collection.dispose()
-      $(@el).remove()
+      # @collection.unbind 'change'
+      # @collection.dispose()
+      # $(@el).remove()
 
 
 

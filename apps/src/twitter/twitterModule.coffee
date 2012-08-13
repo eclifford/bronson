@@ -9,7 +9,7 @@ define [
   class TwitterModule extends Bronson.Module
     constructor: (parameters={}) ->
       @el = parameters.el
-      super
+      #super
 
     load: ->
       tweetsCollection = new TweetsCollection()

@@ -42,4 +42,4 @@ define [
     stop: ->
 
     unload: ->
-      super
+      #super

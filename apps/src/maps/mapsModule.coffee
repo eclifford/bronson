@@ -9,10 +9,9 @@ define [
     constructor: (parameters={}) ->
       @id = Math.random().toString(36).substring(7)
       @el = parameters.el
-      super
+      #super
 
     load: ->
-      console.log 'load called'
       mapView = new MapView()
       $(@el).append mapView.render().el
 

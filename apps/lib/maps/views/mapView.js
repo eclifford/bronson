@@ -65,11 +65,7 @@
         return this;
       };
 
-      MapView.prototype.dispose = function() {
-        this.collection.unbind('change');
-        this.collection.dispose();
-        return $(this.el).remove();
-      };
+      MapView.prototype.dispose = function() {};
 
       return MapView;
 

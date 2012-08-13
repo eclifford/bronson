@@ -207,7 +207,7 @@ title: "Bronson"
             <strong>Bronson.Api.loadModule(module, {config}, callback, autostart)</strong>
             <ul>
               <li>module: [string] path or requirejs alias to module</li>
-              <li>config: [object] configuration object to pass to module contructor</li>
+              <li>config: [object] configuration object to pass to module constructor</li>
               <li>callback: [function] function to call upon completion of module load</li>
               <li>autostart: [boolean] whether or not to call the modules start method automatically. Defaults to true.</li>
             </ul>
@@ -239,7 +239,7 @@ require ['bronson'], (Bronson) ->
 
             <h3><a name='apiUnloadModule'>unloadModule</a></h3>
             <p>
-            Unloads a module. Call's the unload method of the module whose instance id you provide. Typically used to clean up memory.  </p>
+            Unloads a module. Calls the unload method of the module whose instance id you provide. Typically used to clean up memory.  </p>
             <strong>Bronson.Api.unloadModule(id)</strong>
             <ul>
               <li>id: [string] the id of the module instance</li>
@@ -261,7 +261,7 @@ require ['bronson'], (Bronson) ->
 
             <h3><a name='apiStopModule'>stopModule</a></h3>
             <p>
-            Stops a module. Call's the stop method of the module whose instance id you provide. Typically used when you want to remove an item from the DOM but keep it in memory.</p>
+            Stops a module. Calls the stop method of the module whose instance id you provide. Typically used when you want to remove an item from the DOM but keep it in memory.</p>
             <strong>Bronson.Api.stopModule(id)</strong>
             <ul>
               <li>id: [string] the id of the module instance</li>
@@ -273,7 +273,7 @@ require ['bronson'], (Bronson) ->
 
             <h3><a name='apiStopAllModules'>stopAllModules</a></h3>
             <p>
-            Unloads the artifiacts loaded for all created modules calling stopModule on each in turn.</p>
+            Unloads the artifacts loaded for all created modules calling stopModule on each in turn.</p>
             <strong>Bronson.Api.stopAllModules()</strong>
            
 {% highlight coffeescript %}
