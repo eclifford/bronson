@@ -39,7 +39,7 @@
 
       FoursquareModule.prototype.start = function() {
         var _this = this;
-        return Bronson.Api.subscribe('foursquaremodule', 'geoUpdate', function(data) {
+        Bronson.Api.subscribe('foursquaremodule', 'geoUpdate', function(data) {
           return _this.venuesCollection.fetch({
             data: {
               ll: "" + data.latitude + "," + data.longitude,
@@ -50,13 +50,17 @@
             }
           });
         });
+        return FoursquareModule.__super__.start.call(this);
       };
 
       FoursquareModule.prototype.stop = function() {
-        return Bronson.Api.unsubscribe('foursquaremodule', 'geoUpdate');
+        Bronson.Api.unsubscribe('foursquaremodule', 'geoUpdate');
+        return FoursquareModule.__super__.stop.call(this);
       };
 
-      FoursquareModule.prototype.unload = function() {};
+      FoursquareModule.prototype.unload = function() {
+        return FoursquareModule.__super__.unload.call(this);
+      };
 
       return FoursquareModule;
 

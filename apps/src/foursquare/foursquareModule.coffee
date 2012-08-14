@@ -37,8 +37,11 @@ define [
             v: '20120805'
             limit: 5
             section: 'food'
+      super()
 
     stop: ->
       Bronson.Api.unsubscribe 'foursquaremodule', 'geoUpdate'
+      super()
 
     unload: ->
+      super()
