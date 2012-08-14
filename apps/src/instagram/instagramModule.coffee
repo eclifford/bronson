@@ -6,8 +6,8 @@ define [
   'apps/lib/instagram/collection/imagesCollection'
 ], ($, _, Backbone, CarouselView, ImagesCollection) ->
   class InstagramModule extends Bronson.Module
-    constructor: (parameters={}) ->
-      @el = parameters.el
+    constructor: (config={}) ->
+      @el = config.el
       super
 
     load: ->
@@ -24,9 +24,9 @@ define [
         silent: true
         success: =>
           $(@el).append @carouselView.render().el
-
-
-      Bronson.Api.subscribe 'InstagramModule', 'geoUpdate', (data) =>
+        
+    start: ->
+      Bronson.Api.subscribe 'instagrammodule', 'geoUpdate', (data) =>
         @imagesCollection.fetch
           data:
             client_id: "b3481714257943a4974e4e7ba99eb357"
@@ -34,12 +34,11 @@ define [
             lng: data.longitude
           silent: false
 
-      Bronson.Api.subscribe 'InstagramModule', 'dispose', =>
-        #@dispose()
-        
-    start: ->
+      super()
 
     stop: ->
+      Bronson.Api.unsubscribe 'instagrammodule', 'geoUpdate'
+      super()
 
     unload: ->
-      #super
+      super()

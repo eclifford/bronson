@@ -134,18 +134,15 @@ var __slice = [].slice,
       });
     },
     unsubscribe: function(subscriber, event) {
-      var i, item, _i, _len, _ref, _results;
+      var i, item, _i, _len, _ref;
       _ref = this.events[event];
-      _results = [];
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         item = _ref[i];
         if (item.subscriber === subscriber) {
-          _results.push(this.events[event].splice(i, 1));
-        } else {
-          _results.push(void 0);
+          this.events[event].splice(i, 1);
+          return;
         }
       }
-      return _results;
     },
     unsubscribeAll: function(subscriber) {
       var event, y, _i, _len, _ref, _results;

@@ -1,32 +1,32 @@
 require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
 
-  Bronson.Api.loadModule 'apps/lib/instagram/instagramModule', (->
-  ),
-    el: '#modules'
-  , true
+  # Bronson.Api.loadModule 'apps/lib/instagram/instagramModule', (->
+  # ),
+  #   el: '#modules'
+  # , true
 
-  Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', (->
-  ),
-    el: '#modules'
-  , true
-
-
-  Bronson.Api.loadModule 'apps/lib/weather/weatherModule', (->
-  ),
-    el: '#modules'
-  , true
+  # Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', (->
+  # ),
+  #   el: '#modules'
+  # , true
 
 
-  Bronson.Api.loadModule 'apps/lib/maps/mapsModule', (->
-  ),
-    el: '#modules'
-  , true
+  # Bronson.Api.loadModule 'apps/lib/weather/weatherModule', (->
+  # ),
+  #   el: '#modules'
+  # , true
 
 
-  Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule', (->
-  ),
-    el: '#modules'
-  , true
+  # Bronson.Api.loadModule 'apps/lib/maps/mapsModule', (->
+  # ),
+  #   el: '#modules'
+  # , true
+
+
+  # Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule', (->
+  # ),
+  #   el: '#modules'
+  # , true
 
 
 
@@ -59,11 +59,6 @@ require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
     ),
       el: '#modules'
     , true
-
-  $('#btnAddFourSquare').click ->
-    Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule',
-      el: '#modules'
-    , ->
 
   $('#btnGetCurrentPosition').click ->
     if navigator && navigator.geolocation

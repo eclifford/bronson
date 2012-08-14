@@ -7,14 +7,14 @@ define [
   'apps/lib/foursquare/views/venuesView'
 ], ($, _, Backbone, Bronson, VenuesCollection, VenuesView) ->
   class FoursquareModule extends Bronson.Module
-    constructor: (parameters={}) ->
-      @el = parameters.el
-      super
+    constructor: (config={}) ->
+      @el = config.el
 
     load: ->
       @venuesCollection = new VenuesCollection()
 
-      @venuesView = new VenuesView 
+      @venuesView = new VenuesView
+        moduleId: @id 
         collection: @venuesCollection 
 
       @venuesCollection.fetch
@@ -37,9 +37,11 @@ define [
             v: '20120805'
             limit: 5
             section: 'food'
+
       super()
 
     stop: ->
+      console.log 'stopping module'
       Bronson.Api.unsubscribe 'foursquaremodule', 'geoUpdate'
       super()
 

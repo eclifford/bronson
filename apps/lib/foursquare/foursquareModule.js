@@ -8,18 +8,18 @@
 
       __extends(FoursquareModule, _super);
 
-      function FoursquareModule(parameters) {
-        if (parameters == null) {
-          parameters = {};
+      function FoursquareModule(config) {
+        if (config == null) {
+          config = {};
         }
-        this.el = parameters.el;
-        FoursquareModule.__super__.constructor.apply(this, arguments);
+        this.el = config.el;
       }
 
       FoursquareModule.prototype.load = function() {
         var _this = this;
         this.venuesCollection = new VenuesCollection();
         this.venuesView = new VenuesView({
+          moduleId: this.id,
           collection: this.venuesCollection
         });
         return this.venuesCollection.fetch({
@@ -54,6 +54,7 @@
       };
 
       FoursquareModule.prototype.stop = function() {
+        console.log('stopping module');
         Bronson.Api.unsubscribe('foursquaremodule', 'geoUpdate');
         return FoursquareModule.__super__.stop.call(this);
       };

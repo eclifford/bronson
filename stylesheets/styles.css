@@ -27,6 +27,10 @@ h2.fontface {
   font: 50px/58px 'PincoyablackBlack', Arial, sans-serif;letter-spacing: 0;
 }
 
+.inactive {
+  opacity: .5;
+}
+
 .btn-primary {
   background-color: #dd1144;
   *background-color: #dd1144;

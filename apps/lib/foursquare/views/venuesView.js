@@ -12,30 +12,25 @@
         return VenuesView.__super__.constructor.apply(this, arguments);
       }
 
+      VenuesView.prototype.moduleId = null;
+
       VenuesView.prototype.tagName = 'li';
 
       VenuesView.prototype.className = 'module foursquare';
 
       VenuesView.prototype.events = function() {
         return {
-          'click .close': 'dispose'
+          'click .icon-stop': 'stop'
         };
       };
 
       VenuesView.prototype.initialize = function() {
-        var _this = this;
-        this.id = Math.random().toString(36).substring(7);
         _.bindAll(this, 'render');
-        this.collection.bind('reset', this.render);
-        return Bronson.Core.subscribe('FoursquareModule', 'message', function(msg) {
-          return $(_this.el).prepend("<div class='alert alert-success'>HEY FUCKER</div>");
-        });
+        return this.collection.bind('reset', this.render);
       };
 
       VenuesView.prototype.render = function() {
-        $(this.el).html(_.template(VenuesTemplate, {
-          id: this.id
-        }));
+        $(this.el).html(_.template(VenuesTemplate, null));
         _.each(this.collection.models, (function(item) {
           return this.renderItem(item);
         }), this);
@@ -50,7 +45,13 @@
         return $(this.el).append(venueItemView.render().el);
       };
 
+      VenuesView.prototype.stop = function() {
+        console.log('stop clicked');
+        return Bronson.Core.stopAllModules();
+      };
+
       VenuesView.prototype.dispose = function() {
+        Bronson.Api.unloadModule(this.moduleId);
         this.collection.unbind('change');
         this.collection.dispose();
         return $(this.el).remove();

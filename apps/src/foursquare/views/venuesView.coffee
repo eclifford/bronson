@@ -7,24 +7,20 @@ define [
   'text!apps/src/foursquare/templates/venuesTemplate.html'
 ], ($, _, Backbone, Bronson, VenueItemView, VenuesTemplate) ->
   class VenuesView extends Backbone.View
+    moduleId: null
     tagName: 'li'
     className: 'module foursquare'
 
     events: ->
-      'click .close': 'dispose'
+      # 'click': 'dispose'
+      'click .icon-stop': 'stop'
       
     initialize: ->
-      @id = Math.random().toString(36).substring(7)
       _.bindAll @, 'render'
       @collection.bind 'reset', @render
 
-      Bronson.Core.subscribe 'FoursquareModule', 'message', (msg) =>
-        $(@el).prepend("<div class='alert alert-success'>HEY FUCKER</div>")
-        
-
-
     render: ->
-      $(@el).html(_.template(VenuesTemplate, {id: @id}))
+      $(@el).html(_.template(VenuesTemplate, null))
 
       _.each @collection.models, ((item) ->
         @renderItem item
@@ -36,8 +32,12 @@ define [
         model: item
       $(@el).append venueItemView.render().el
 
+    stop: ->
+      console.log 'stop clicked'
+      Bronson.Core.stopAllModules()
+
     dispose: ->
-      #Bronson.Core.publish 'dispose'
+      Bronson.Api.unloadModule @moduleId
       @collection.unbind 'change'
       @collection.dispose()
       $(@el).remove()
