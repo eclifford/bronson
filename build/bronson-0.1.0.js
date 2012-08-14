@@ -37,6 +37,9 @@ var __slice = [].slice,
     unsubscribe: function(subscriber, event) {
       return Bronson.Core.unsubscribe(subscriber, event);
     },
+    unsubscribeAll: function(subscriber) {
+      return Bronson.Core.unsubscribeAll(subscriber);
+    },
     loadModule: function(module, callback, config, autostart) {
       if (config == null) {
         config = {};
@@ -49,14 +52,14 @@ var __slice = [].slice,
     unloadAllModules: function() {
       return Bronson.Core.unloadAllModules();
     },
-    unloadModule: function(moduleId) {
-      return Bronson.Core.unloadModule(moduleId, callback);
+    unloadModule: function(id) {
+      return Bronson.Core.unloadModule(id);
     },
     startModule: function(id) {
-      return Bronson.Core.startModule(moduleId);
+      return Bronson.Core.startModule(id);
     },
     stopModule: function(id) {
-      return Bronson.Core.stopModule(moduleId);
+      return Bronson.Core.stopModule(id);
     },
     stopAllModules: function() {
       return Bronson.Core.stopAllModules();

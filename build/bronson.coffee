@@ -72,6 +72,13 @@
     unsubscribe: (subscriber, event) ->    
       # Pass to the core
       Bronson.Core.unsubscribe subscriber, event
+  
+    # Unsubscribe all
+    # 
+    # @param subscriber [String] The module to subscribe
+    #
+    unsubscribeAll: (subscriber) ->
+      Bronson.Core.unsubscribeAll subscriber
    
     # Load a module
     #
@@ -109,9 +116,9 @@
     # @example
     #   Bronson.Api.unloadModule 'TestModule'
     #
-    unloadModule: (moduleId)->
+    unloadModule: (id)->
       # Pass to core
-      Bronson.Core.unloadModule moduleId, callback
+      Bronson.Core.unloadModule id
   
     # Start the module
     #
@@ -119,7 +126,7 @@
     #   Bronson.Api.startModule 'r11'
     #
     startModule: (id) ->
-      Bronson.Core.startModule moduleId
+      Bronson.Core.startModule id
   
     # Stop the module
     #
@@ -127,7 +134,7 @@
     #   Bronson.Api.stopModule 'r11'
     #
     stopModule: (id) ->
-      Bronson.Core.stopModule moduleId
+      Bronson.Core.stopModule id
   
     # stopAllModules
     # Stop all instanced modules
