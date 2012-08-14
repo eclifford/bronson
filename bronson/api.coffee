@@ -101,6 +101,12 @@ Api = Bronson.Api =
   stopModule: (id) ->
     Bronson.Core.stopModule moduleId
 
+  # stopAllModules
+  # Stop all instanced modules
+  #
+  stopAllModules: () ->
+    Bronson.Core.stopAllModules()
+
   # Set the application permissions
   #
   # @param permissions [Object] the object containing permissions

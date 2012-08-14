@@ -129,6 +129,12 @@
     stopModule: (id) ->
       Bronson.Core.stopModule moduleId
   
+    # stopAllModules
+    # Stop all instanced modules
+    #
+    stopAllModules: () ->
+      Bronson.Core.stopAllModules()
+  
     # Set the application permissions
     #
     # @param permissions [Object] the object containing permissions
@@ -320,6 +326,8 @@
           @modules[module].push
             id: _module.id 
             timeStamp: new Date()
+            started: _module.started
+            disposed: _module.disposed
             load: _module.load
             start: _module.start
             stop: _module.stop
@@ -331,7 +339,8 @@
           # Start the module if specified
           _module.start() if autostart
   
-          callback(_module)
+          # Return a reference to the module we added
+          callback(@modules[module][@modules[module].length - 1])
         catch e 
           throw new Error "Bronson.Core#loadModule: #{e}"
   
@@ -343,7 +352,6 @@
     unloadAllModules: () ->
       for id of modules
         @unloadModule id
-      callback()
   
     # Stop module
     #
@@ -396,6 +404,13 @@
             if instance.id == id
               instance.stop()
   
+    # stopAllModules
+    # Stop all instanced modules
+    #
+    stopAllModules: () ->
+      for id of @modules
+        @stopModule id
+  
   
   
   
@@ -408,6 +423,7 @@
   class Bronson.Module
     id: "" 
     disposed: false 
+    started: false
   
     # Constructor
     #
@@ -421,12 +437,12 @@
     # Start
     #
     start: ->
-      throw new Error "Bronson.Module#start: must override start"
+      @started = true
   
     # Stop
     #
     stop: ->
-      throw new Error "Bronson.Module#stop: must override stop"
+      @started = false
   
     # Cleanup this controller
     # 

@@ -59,23 +59,35 @@ define [
         refute.exception ->
           Bronson.Core.loadModule 'test/fixtures/TestModule', {}, (module) ->
             Bronson.Core.stopModule module.id 
+            assert.equals module.started, false
             done()
-          , false
+          , true
+
+    describe "stopAllModules()", ->
+      it "should succesfully stop all modules", (done) ->
+        refute.exception ->
+          Bronson.Core.loadModule 'test/fixtures/TestModule', {}, (module) ->
+            Bronson.Core.stopAllModules()
+            assert.equals module.started, false
+            done()
+          , true
 
     describe "startModule()", ->
       it "should succesfully stop a module without erroring", (done) ->
         refute.exception ->
           Bronson.Core.loadModule 'test/fixtures/TestModule', {}, (module) ->
             Bronson.Core.startModule module.id 
+            assert.equals module.started, true
             done()
           , false
 
     # describe "unloadModule()", ->
     #   it "should successfully unload a module", (done) ->
     #     refute.exception ->
-    #       Bronson.Core.loadModule 'test/fixtures/TestModule', (module) ->
+    #       Bronson.Core.loadModule 'test/fixtures/TestModule', {}, (module) ->
     #         Bronson.Core.unloadModule module.id
     #         done()
+    #       , false
 
     
 

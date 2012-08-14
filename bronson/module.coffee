@@ -6,6 +6,7 @@
 class Bronson.Module
   id: "" 
   disposed: false 
+  started: false
 
   # Constructor
   #
@@ -19,12 +20,12 @@ class Bronson.Module
   # Start
   #
   start: ->
-    throw new Error "Bronson.Module#start: must override start"
+    @started = true
 
   # Stop
   #
   stop: ->
-    throw new Error "Bronson.Module#stop: must override stop"
+    @started = false
 
   # Cleanup this controller
   # 

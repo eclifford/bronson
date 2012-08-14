@@ -3,7 +3,9 @@ define [], () ->
     load: ->
 
     start: ->
+      super()
 
     stop: ->
+      super()
 
     unload: ->

@@ -129,6 +129,8 @@ Core = Bronson.Core =
         @modules[module].push
           id: _module.id 
           timeStamp: new Date()
+          started: _module.started
+          disposed: _module.disposed
           load: _module.load
           start: _module.start
           stop: _module.stop
@@ -140,7 +142,8 @@ Core = Bronson.Core =
         # Start the module if specified
         _module.start() if autostart
 
-        callback(_module)
+        # Return a reference to the module we added
+        callback(@modules[module][@modules[module].length - 1])
       catch e 
         throw new Error "Bronson.Core#loadModule: #{e}"
 
@@ -152,7 +155,6 @@ Core = Bronson.Core =
   unloadAllModules: () ->
     for id of modules
       @unloadModule id
-    callback()
 
   # Stop module
   #
@@ -204,6 +206,13 @@ Core = Bronson.Core =
         for instance, y in @modules[module]
           if instance.id == id
             instance.stop()
+
+  # stopAllModules
+  # Stop all instanced modules
+  #
+  stopAllModules: () ->
+    for id of @modules
+      @stopModule id
 
 
 

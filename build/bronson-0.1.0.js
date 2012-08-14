@@ -58,6 +58,9 @@ var __slice = [].slice,
     stopModule: function(id) {
       return Bronson.Core.stopModule(moduleId);
     },
+    stopAllModules: function() {
+      return Bronson.Core.stopAllModules();
+    },
     setPermissions: function(permissions) {
       return Bronson.Permissions.set(permissions);
     },
@@ -184,6 +187,8 @@ var __slice = [].slice,
           _this.modules[module].push({
             id: _module.id,
             timeStamp: new Date(),
+            started: _module.started,
+            disposed: _module.disposed,
             load: _module.load,
             start: _module.start,
             stop: _module.stop,
@@ -193,18 +198,19 @@ var __slice = [].slice,
           if (autostart) {
             _module.start();
           }
-          return callback(_module);
+          return callback(_this.modules[module][_this.modules[module].length - 1]);
         } catch (e) {
           throw new Error("Bronson.Core#loadModule: " + e);
         }
       });
     },
     unloadAllModules: function() {
-      var id;
+      var id, _results;
+      _results = [];
       for (id in modules) {
-        this.unloadModule(id);
+        _results.push(this.unloadModule(id));
       }
-      return callback();
+      return _results;
     },
     unloadModule: function(id) {
       var instance, module, y, _i, _len, _ref;
@@ -280,6 +286,14 @@ var __slice = [].slice,
         }
       }
       return _results;
+    },
+    stopAllModules: function() {
+      var id, _results;
+      _results = [];
+      for (id in this.modules) {
+        _results.push(this.stopModule(id));
+      }
+      return _results;
     }
   };
   Bronson.Module = (function() {
@@ -288,6 +302,8 @@ var __slice = [].slice,
 
     Module.prototype.disposed = false;
 
+    Module.prototype.started = false;
+
     function Module() {}
 
     Module.prototype.load = function() {
@@ -295,11 +311,11 @@ var __slice = [].slice,
     };
 
     Module.prototype.start = function() {
-      throw new Error("Bronson.Module#start: must override start");
+      return this.started = true;
     };
 
     Module.prototype.stop = function() {
-      throw new Error("Bronson.Module#stop: must override stop");
+      return this.started = false;
     };
 
     Module.prototype.unload = function() {
