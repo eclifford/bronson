@@ -67,6 +67,7 @@ define [
       it "should succesfully stop all modules", (done) ->
         refute.exception ->
           Bronson.Core.loadModule 'test/fixtures/TestModule', {}, (module) ->
+            Bronson.Core.startModule module.id
             Bronson.Core.stopAllModules()
             assert.equals module.started, false
             done()

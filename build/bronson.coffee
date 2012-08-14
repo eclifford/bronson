@@ -350,8 +350,10 @@
     #   Bronson.Core.stopAllModules()
     #
     unloadAllModules: () ->
-      for id of modules
-        @unloadModule id
+      for module of @modules
+        if @modules.hasOwnProperty(module) 
+          for instance in @modules[module]
+            @unloadModule instance.id
   
     # Stop module
     #
@@ -400,7 +402,7 @@
     stopModule: (id) ->
       for module of @modules
         if @modules.hasOwnProperty(module) 
-          for instance, y in @modules[module]
+          for instance in @modules[module]
             if instance.id == id
               instance.stop()
   
@@ -408,8 +410,11 @@
     # Stop all instanced modules
     #
     stopAllModules: () ->
-      for id of @modules
-        @stopModule id
+      for module of @modules
+        if @modules.hasOwnProperty(module) 
+          for instance in @modules[module]
+            @stopModule instance.id
+  
   
   
   

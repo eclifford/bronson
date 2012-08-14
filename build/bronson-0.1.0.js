@@ -205,10 +205,23 @@ var __slice = [].slice,
       });
     },
     unloadAllModules: function() {
-      var id, _results;
+      var instance, module, _results;
       _results = [];
-      for (id in modules) {
-        _results.push(this.unloadModule(id));
+      for (module in this.modules) {
+        if (this.modules.hasOwnProperty(module)) {
+          _results.push((function() {
+            var _i, _len, _ref, _results1;
+            _ref = this.modules[module];
+            _results1 = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              instance = _ref[_i];
+              _results1.push(this.unloadModule(instance.id));
+            }
+            return _results1;
+          }).call(this));
+        } else {
+          _results.push(void 0);
+        }
       }
       return _results;
     },
@@ -263,7 +276,7 @@ var __slice = [].slice,
       return _results;
     },
     stopModule: function(id) {
-      var instance, module, y, _results;
+      var instance, module, _results;
       _results = [];
       for (module in this.modules) {
         if (this.modules.hasOwnProperty(module)) {
@@ -271,8 +284,8 @@ var __slice = [].slice,
             var _i, _len, _ref, _results1;
             _ref = this.modules[module];
             _results1 = [];
-            for (y = _i = 0, _len = _ref.length; _i < _len; y = ++_i) {
-              instance = _ref[y];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              instance = _ref[_i];
               if (instance.id === id) {
                 _results1.push(instance.stop());
               } else {
@@ -288,10 +301,23 @@ var __slice = [].slice,
       return _results;
     },
     stopAllModules: function() {
-      var id, _results;
+      var instance, module, _results;
       _results = [];
-      for (id in this.modules) {
-        _results.push(this.stopModule(id));
+      for (module in this.modules) {
+        if (this.modules.hasOwnProperty(module)) {
+          _results.push((function() {
+            var _i, _len, _ref, _results1;
+            _ref = this.modules[module];
+            _results1 = [];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              instance = _ref[_i];
+              _results1.push(this.stopModule(instance.id));
+            }
+            return _results1;
+          }).call(this));
+        } else {
+          _results.push(void 0);
+        }
       }
       return _results;
     }
