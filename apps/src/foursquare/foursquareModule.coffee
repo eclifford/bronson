@@ -12,12 +12,12 @@ define [
       super
 
     load: ->
-      venuesCollection = new VenuesCollection()
+      @venuesCollection = new VenuesCollection()
 
       @venuesView = new VenuesView 
-        collection: venuesCollection 
+        collection: @venuesCollection 
 
-      venuesCollection.fetch
+      @venuesCollection.fetch
         data:
           ll: '35.689488, 139.691706'
           oauth_token: 'O4KTMAIQA3K40AYAU522GP0ILLUY2SVSIH54WSAAGNCOCM1Y'
@@ -28,8 +28,9 @@ define [
         success: =>
           $(@el).append @venuesView.render().el
 
-      Bronson.Api.subscribe 'FoursquareModule', 'geoUpdate', (data) ->
-        venuesCollection.fetch
+    start: ->
+      Bronson.Api.subscribe 'foursquaremodule', 'geoUpdate', (data) =>
+        @venuesCollection.fetch
           data:
             ll: "#{data.latitude},#{data.longitude}"
             oauth_token: 'O4KTMAIQA3K40AYAU522GP0ILLUY2SVSIH54WSAAGNCOCM1Y'
@@ -37,8 +38,7 @@ define [
             limit: 5
             section: 'food'
 
-    start: ->
-
     stop: ->
+      Bronson.Api.unsubscribe 'foursquaremodule', 'geoUpdate'
 
     unload: ->

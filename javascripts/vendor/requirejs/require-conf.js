@@ -6,7 +6,7 @@ require.config({
     'jquery'      : 'javascripts/vendor/jquery/jquery',
     'underscore'  : 'javascripts/vendor/underscore/underscore',
     'backbone'    : 'javascripts/vendor/backbone/backbone',
-    'bronson'     : 'javascripts/vendor/bronson/bronson'
+    'bronson'     : 'javascripts/vendor/bronson/bronson-0.1.0'
   },
   waitSeconds: 45
 });

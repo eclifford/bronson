@@ -17,13 +17,12 @@
       }
 
       FoursquareModule.prototype.load = function() {
-        var venuesCollection,
-          _this = this;
-        venuesCollection = new VenuesCollection();
+        var _this = this;
+        this.venuesCollection = new VenuesCollection();
         this.venuesView = new VenuesView({
-          collection: venuesCollection
+          collection: this.venuesCollection
         });
-        venuesCollection.fetch({
+        return this.venuesCollection.fetch({
           data: {
             ll: '35.689488, 139.691706',
             oauth_token: 'O4KTMAIQA3K40AYAU522GP0ILLUY2SVSIH54WSAAGNCOCM1Y',
@@ -36,8 +35,12 @@
             return $(_this.el).append(_this.venuesView.render().el);
           }
         });
-        return Bronson.Api.subscribe('FoursquareModule', 'geoUpdate', function(data) {
-          return venuesCollection.fetch({
+      };
+
+      FoursquareModule.prototype.start = function() {
+        var _this = this;
+        return Bronson.Api.subscribe('foursquaremodule', 'geoUpdate', function(data) {
+          return _this.venuesCollection.fetch({
             data: {
               ll: "" + data.latitude + "," + data.longitude,
               oauth_token: 'O4KTMAIQA3K40AYAU522GP0ILLUY2SVSIH54WSAAGNCOCM1Y',
@@ -49,9 +52,9 @@
         });
       };
 
-      FoursquareModule.prototype.start = function() {};
-
-      FoursquareModule.prototype.stop = function() {};
+      FoursquareModule.prototype.stop = function() {
+        return Bronson.Api.unsubscribe('foursquaremodule', 'geoUpdate');
+      };
 
       FoursquareModule.prototype.unload = function() {};
 
