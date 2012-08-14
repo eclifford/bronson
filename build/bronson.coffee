@@ -263,13 +263,13 @@
     # @param event [String] The event to listen on
     # 
     # @example
-    #   Bronson.Core.unsubscribe 'TestModule', 'TestEvent', ->
-    #     console.log 'Module succesfully unsubscribed'
+    #   Bronson.Core.unsubscribe 'TestModule', 'TestEvent'
     #
     unsubscribe: (subscriber, event) ->
       for item, i in @events[event]
         if item.subscriber == subscriber
           @events[event].splice i, 1
+          return 
   
     # Unsubscribe subscriber from all events
     # @param subscriber [String] The module to unsubscribe
