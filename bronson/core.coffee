@@ -1,7 +1,7 @@
 # Bronson Core
 #
 # @author Eric Clifford
-# @version 0.0.1
+# @version 0.1.0
 #
 Core = Bronson.Core = 
   events: {}
@@ -15,11 +15,8 @@ Core = Bronson.Core =
   #
   publish: (event) ->
     # Verify our input parameters
-    if not event?
-      throw new Error "Bronson.Core#publish: event must be defined"
-
-    if typeof event isnt "string"
-      throw new Error "Bronson.Core#publish: event must be a string" 
+    if not event? || typeof event isnt "string"
+      throw new Error "Bronson.Core#publish: must supply a valid event"
 
     # Verify that the event exists
     if !@events[event]
@@ -113,11 +110,8 @@ Core = Bronson.Core =
   #
   loadModule: (module, config, callback, autostart) -> 
     # Verify the input paramaters
-    if not module?
-      throw new Error "Bronson.Core#loadModule: module must be defined"
-
-    if typeof module isnt 'string'
-      throw new Error "Bronson.Core#loadModule: module must be a string"
+    if not module? || typeof module isnt 'string'
+      throw new Error "Bronson.Core#loadModule: must supply a valid module"
 
     if autostart? and typeof autostart isnt 'boolean'
       throw new Error "Bronson.Core#loadModule: autostart must be a valid boolean"
@@ -170,15 +164,7 @@ Core = Bronson.Core =
     if not id? || typeof id isnt "string"
       throw new Error "Bronson.Core#stopModule: id must be valid"
 
-    # if not @modules[module]?
-    #   throw new Error "Bronson.Core#stopModule: that module is not loaded"
-
     try 
-      #require.undef(module) 
-      #delete @modules[module]
-      #if @modules[
-      #@unsubscribeAll module
-
       for module of @modules
         if @modules.hasOwnProperty(module) 
           for instance, y in @modules[module]

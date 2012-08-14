@@ -2,7 +2,7 @@
 # Interface layer for Bronson
 #
 # @author Eric Clifford
-# @version 0.0.1
+# @version 0.1.0
 #
 Api = Bronson.Api = 
   # Publish an event to a event
@@ -41,15 +41,16 @@ Api = Bronson.Api =
   #   Bronson.Api.unsubscribe 'TestModule', 'TestEvent', ->
   #     console.log 'unsubscribe successful'
   #
-  unsubscribe: (subscriber, event, callback) ->    
+  unsubscribe: (subscriber, event) ->    
     # Pass to the core
-    Bronson.Core.unsubscribe subscriber, event, callback
+    Bronson.Core.unsubscribe subscriber, event
  
   # Load a module
   #
   # @param module [String] the AMD module to load
-  # @param obj... [Object] the optional configuration object
   # @param callback [Function] the callback
+  # @param config [Object] the configuration object
+  # @param autostart [Boolean] whether or not to start the module
   #
   # @todo
   #   - change splat optional parameter to more terse optional argument as outlined
@@ -58,17 +59,19 @@ Api = Bronson.Api =
   #     garbage collection
   #
   # @example
-  #   Bronson.Api.loadModule 'TestModule', {foo: 'bar'}, ->
-  #     console.log 'module has been created'
+  #   Bronson.Api.loadModule 'TestModule', ->
+  #     console.log 'module has been loaded'
+  #   , {foo: 'bar'}
+  #   , true
   #
-  loadModule: (moduleId, callback, config={}, autostart=true) ->  
+  loadModule: (module, callback, config={}, autostart=true) ->  
     # Pass to core
-    Bronson.Core.loadModule moduleId, config, callback, autostart
+    Bronson.Core.loadModule module, config, callback, autostart
 
   # Stop all modues
   #
   # @example
-  #   Bronson.Api.stopAllModules()
+  #   Bronson.Api.unloadAllModules()
   #
   unloadAllModules: ->
     Bronson.Core.unloadAllModules()
@@ -76,15 +79,25 @@ Api = Bronson.Api =
   # Stop module
   #
   # @example
-  #   Bronson.Api.stopModule 'TestModule'
+  #   Bronson.Api.unloadModule 'TestModule'
   #
-  unloadModule: (moduleId, callback)->
+  unloadModule: (moduleId)->
     # Pass to core
     Bronson.Core.unloadModule moduleId, callback
 
+  # Start the module
+  #
+  # @example
+  #   Bronson.Api.startModule 'r11'
+  #
   startModule: (id) ->
     Bronson.Core.startModule moduleId
 
+  # Stop the module
+  #
+  # @example 
+  #   Bronson.Api.stopModule 'r11'
+  #
   stopModule: (id) ->
     Bronson.Core.stopModule moduleId
 
@@ -96,9 +109,19 @@ Api = Bronson.Api =
   setPermissions: (permissions) ->
     Bronson.Permissions.set permissions
 
+  # Get the module info
+  #
+  # @example
+  #   Bronson.Api.getModulesInfo
+  #
   getModulesInfo: ->
     return Bronson.Core.modules
 
+  # Get the events info
+  #
+  # @example
+  #   Bronson.Api.getEventsInfo
+  #
   getEventsInfo: ->
     return Bronson.Core.events
 

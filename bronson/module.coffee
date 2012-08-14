@@ -1,7 +1,7 @@
 # Bronson Module
 #
 # @author Eric Clifford
-# @version 0.0.1
+# @version 0.1.0
 #
 class Bronson.Module
   id: "" 
@@ -29,20 +29,10 @@ class Bronson.Module
   # Cleanup this controller
   # 
   # @example
-  #   @dipose()
+  #   @unload()
   #
   unload: ->
     return if @disposed
-
-    # Dispose and delete all members which are disposable
-    for own prop of this
-      obj = this[prop]
-      if obj and typeof obj.dispose is 'function'
-        obj.dispose()
-        delete this[prop]
-
-    # Stop this module and remove all events
-    #Bronson.Core.stopModule @id, ->
 
     # Finished
     @disposed = true

@@ -8,7 +8,7 @@
 ) this, () ->
 
   Bronson = window.Bronson =
-    version: "0.0.1"
+    version: "0.1.0"
 
   # Utility function watching for RequireJS errors
   # @ param err [String] the error 

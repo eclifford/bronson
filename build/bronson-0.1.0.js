@@ -1,5 +1,5 @@
-var __hasProp = {}.hasOwnProperty,
-  __slice = [].slice;
+var __slice = [].slice,
+  __hasProp = {}.hasOwnProperty;
 
 (function(root, factory) {
   if (typeof define === "function" && define.amd) {
@@ -10,7 +10,7 @@ var __hasProp = {}.hasOwnProperty,
 })(this, function() {
   var Api, Bronson, Core, Permissions, Util;
   Bronson = window.Bronson = {
-    version: "0.0.1"
+    version: "0.1.0"
   };
   require.onError = function(err) {
     var failedId;
@@ -34,22 +34,22 @@ var __hasProp = {}.hasOwnProperty,
         throw new Error("Bronson.Api#subscribe: Subscriber " + subscriber + " not allowed to listen on event " + event);
       }
     },
-    unsubscribe: function(subscriber, event, callback) {
-      return Bronson.Core.unsubscribe(subscriber, event, callback);
+    unsubscribe: function(subscriber, event) {
+      return Bronson.Core.unsubscribe(subscriber, event);
     },
-    loadModule: function(moduleId, callback, config, autostart) {
+    loadModule: function(module, callback, config, autostart) {
       if (config == null) {
         config = {};
       }
       if (autostart == null) {
         autostart = true;
       }
-      return Bronson.Core.loadModule(moduleId, config, callback, autostart);
+      return Bronson.Core.loadModule(module, config, callback, autostart);
     },
     unloadAllModules: function() {
       return Bronson.Core.unloadAllModules();
     },
-    unloadModule: function(moduleId, callback) {
+    unloadModule: function(moduleId) {
       return Bronson.Core.unloadModule(moduleId, callback);
     },
     startModule: function(id) {
@@ -99,11 +99,8 @@ var __hasProp = {}.hasOwnProperty,
     modules: {},
     publish: function(event) {
       var args, subscriber, subscribers, _i, _len, _results;
-      if (!(event != null)) {
-        throw new Error("Bronson.Core#publish: event must be defined");
-      }
-      if (typeof event !== "string") {
-        throw new Error("Bronson.Core#publish: event must be a string");
+      if (!(event != null) || typeof event !== "string") {
+        throw new Error("Bronson.Core#publish: must supply a valid event");
       }
       if (!this.events[event]) {
         return true;
@@ -172,11 +169,8 @@ var __hasProp = {}.hasOwnProperty,
     },
     loadModule: function(module, config, callback, autostart) {
       var _this = this;
-      if (!(module != null)) {
-        throw new Error("Bronson.Core#loadModule: module must be defined");
-      }
-      if (typeof module !== 'string') {
-        throw new Error("Bronson.Core#loadModule: module must be a string");
+      if (!(module != null) || typeof module !== 'string') {
+        throw new Error("Bronson.Core#loadModule: must supply a valid module");
       }
       if ((autostart != null) && typeof autostart !== 'boolean') {
         throw new Error("Bronson.Core#loadModule: autostart must be a valid boolean");
@@ -309,17 +303,8 @@ var __hasProp = {}.hasOwnProperty,
     };
 
     Module.prototype.unload = function() {
-      var obj, prop;
       if (this.disposed) {
         return;
-      }
-      for (prop in this) {
-        if (!__hasProp.call(this, prop)) continue;
-        obj = this[prop];
-        if (obj && typeof obj.dispose === 'function') {
-          obj.dispose();
-          delete this[prop];
-        }
       }
       this.disposed = true;
       return typeof Object.freeze === "function" ? Object.freeze(this) : void 0;

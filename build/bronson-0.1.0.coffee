@@ -1,4 +1,4 @@
-# Bronson -v 0.1.0 - 2012-08-13
+# Bronson -v 0.1.0 - 2012-08-14
 # http://github.com/eclifford/bronson
 # Copyright (c) 2012 Eric Clifford; Licensed MIT
 ((root, factory) ->
@@ -11,7 +11,7 @@
 ) this, () ->
 
   Bronson = window.Bronson =
-    version: "0.0.1"
+    version: "0.1.0"
 
   # Utility function watching for RequireJS errors
   # @ param err [String] the error 
@@ -30,7 +30,7 @@
   # Interface layer for Bronson
   #
   # @author Eric Clifford
-  # @version 0.0.1
+  # @version 0.1.0
   #
   Api = Bronson.Api = 
     # Publish an event to a event
@@ -69,15 +69,16 @@
     #   Bronson.Api.unsubscribe 'TestModule', 'TestEvent', ->
     #     console.log 'unsubscribe successful'
     #
-    unsubscribe: (subscriber, event, callback) ->    
+    unsubscribe: (subscriber, event) ->    
       # Pass to the core
-      Bronson.Core.unsubscribe subscriber, event, callback
+      Bronson.Core.unsubscribe subscriber, event
    
     # Load a module
     #
     # @param module [String] the AMD module to load
-    # @param obj... [Object] the optional configuration object
     # @param callback [Function] the callback
+    # @param config [Object] the configuration object
+    # @param autostart [Boolean] whether or not to start the module
     #
     # @todo
     #   - change splat optional parameter to more terse optional argument as outlined
@@ -86,17 +87,19 @@
     #     garbage collection
     #
     # @example
-    #   Bronson.Api.loadModule 'TestModule', {foo: 'bar'}, ->
-    #     console.log 'module has been created'
+    #   Bronson.Api.loadModule 'TestModule', ->
+    #     console.log 'module has been loaded'
+    #   , {foo: 'bar'}
+    #   , true
     #
-    loadModule: (moduleId, callback, config={}, autostart=true) ->  
+    loadModule: (module, callback, config={}, autostart=true) ->  
       # Pass to core
-      Bronson.Core.loadModule moduleId, config, callback, autostart
+      Bronson.Core.loadModule module, config, callback, autostart
   
     # Stop all modues
     #
     # @example
-    #   Bronson.Api.stopAllModules()
+    #   Bronson.Api.unloadAllModules()
     #
     unloadAllModules: ->
       Bronson.Core.unloadAllModules()
@@ -104,15 +107,25 @@
     # Stop module
     #
     # @example
-    #   Bronson.Api.stopModule 'TestModule'
+    #   Bronson.Api.unloadModule 'TestModule'
     #
-    unloadModule: (moduleId, callback)->
+    unloadModule: (moduleId)->
       # Pass to core
       Bronson.Core.unloadModule moduleId, callback
   
+    # Start the module
+    #
+    # @example
+    #   Bronson.Api.startModule 'r11'
+    #
     startModule: (id) ->
       Bronson.Core.startModule moduleId
   
+    # Stop the module
+    #
+    # @example 
+    #   Bronson.Api.stopModule 'r11'
+    #
     stopModule: (id) ->
       Bronson.Core.stopModule moduleId
   
@@ -124,9 +137,19 @@
     setPermissions: (permissions) ->
       Bronson.Permissions.set permissions
   
+    # Get the module info
+    #
+    # @example
+    #   Bronson.Api.getModulesInfo
+    #
     getModulesInfo: ->
       return Bronson.Core.modules
   
+    # Get the events info
+    #
+    # @example
+    #   Bronson.Api.getEventsInfo
+    #
     getEventsInfo: ->
       return Bronson.Core.events
   
@@ -136,7 +159,7 @@
   # Permissions layer for Bronson
   #
   # @author Eric Clifford
-  # @version 0.0.1
+  # @version 0.1.0
   #
   Permissions = Bronson.Permissions =
     # Whether or not the permissions are activated
@@ -169,7 +192,7 @@
   # Bronson Core
   #
   # @author Eric Clifford
-  # @version 0.0.1
+  # @version 0.1.0
   #
   Core = Bronson.Core = 
     events: {}
@@ -183,11 +206,8 @@
     #
     publish: (event) ->
       # Verify our input parameters
-      if not event?
-        throw new Error "Bronson.Core#publish: event must be defined"
-  
-      if typeof event isnt "string"
-        throw new Error "Bronson.Core#publish: event must be a string" 
+      if not event? || typeof event isnt "string"
+        throw new Error "Bronson.Core#publish: must supply a valid event"
   
       # Verify that the event exists
       if !@events[event]
@@ -281,11 +301,8 @@
     #
     loadModule: (module, config, callback, autostart) -> 
       # Verify the input paramaters
-      if not module?
-        throw new Error "Bronson.Core#loadModule: module must be defined"
-  
-      if typeof module isnt 'string'
-        throw new Error "Bronson.Core#loadModule: module must be a string"
+      if not module? || typeof module isnt 'string'
+        throw new Error "Bronson.Core#loadModule: must supply a valid module"
   
       if autostart? and typeof autostart isnt 'boolean'
         throw new Error "Bronson.Core#loadModule: autostart must be a valid boolean"
@@ -338,15 +355,7 @@
       if not id? || typeof id isnt "string"
         throw new Error "Bronson.Core#stopModule: id must be valid"
   
-      # if not @modules[module]?
-      #   throw new Error "Bronson.Core#stopModule: that module is not loaded"
-  
       try 
-        #require.undef(module) 
-        #delete @modules[module]
-        #if @modules[
-        #@unsubscribeAll module
-  
         for module of @modules
           if @modules.hasOwnProperty(module) 
             for instance, y in @modules[module]
@@ -394,7 +403,7 @@
   # Bronson Module
   #
   # @author Eric Clifford
-  # @version 0.0.1
+  # @version 0.1.0
   #
   class Bronson.Module
     id: "" 
@@ -422,20 +431,10 @@
     # Cleanup this controller
     # 
     # @example
-    #   @dipose()
+    #   @unload()
     #
     unload: ->
       return if @disposed
-  
-      # Dispose and delete all members which are disposable
-      for own prop of this
-        obj = this[prop]
-        if obj and typeof obj.dispose is 'function'
-          obj.dispose()
-          delete this[prop]
-  
-      # Stop this module and remove all events
-      #Bronson.Core.stopModule @id, ->
   
       # Finished
       @disposed = true
@@ -446,7 +445,7 @@
   # Permissions layer for Bronson
   #
   # @author Eric Clifford
-  # @version 0.0.1
+  # @version 0.1.0
   #
   Util = Bronson.Util =
     extend: (object, extenders...) ->
