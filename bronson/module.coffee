@@ -4,13 +4,12 @@
 # @version 0.0.1
 #
 class Bronson.Module
-  id: ""
+  id: "" 
   disposed: false 
 
   # Constructor
   #
   constructor: ->
-    @load arguments...
 
   # Initialize
   #

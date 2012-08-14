@@ -10,6 +10,11 @@ define [
         "TestModule":
           "TestEvent": false
 
+    describe "set()", ->
+      it "should sucessfully set permissions", ->
+        Bronson.Permissions.set @rules 
+        assert.equals Bronson.Permissions.rules, @rules
+
     describe "validate()", ->
       it "should succesfully validate permissions", ->
         Bronson.Permissions.enabled = true
