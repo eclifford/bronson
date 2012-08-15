@@ -41,5 +41,4 @@ define [
       super()
 
     unload: ->
-      Bronson.Api.unloadModule @id
       super()

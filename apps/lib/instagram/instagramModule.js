@@ -56,7 +56,6 @@
       };
 
       InstagramModule.prototype.unload = function() {
-        Bronson.Api.unloadModule(this.id);
         return InstagramModule.__super__.unload.call(this);
       };
 

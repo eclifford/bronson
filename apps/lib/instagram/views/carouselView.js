@@ -74,7 +74,7 @@
       };
 
       CarouselView.prototype.dispose = function() {
-        Bronson.Core.publish('dispose');
+        Bronson.Api.unloadModule(this.moduleId);
         this.collection.unbind('change');
         this.collection.dispose();
         return $(this.el).remove();

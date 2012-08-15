@@ -90,8 +90,6 @@
 
       MapView.prototype.dispose = function() {
         Bronson.Api.unloadModule(this.moduleId);
-        this.collection.unbind('change');
-        this.collection.dispose();
         return $(this.el).remove();
       };
 

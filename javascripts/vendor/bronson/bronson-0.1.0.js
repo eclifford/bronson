@@ -222,15 +222,16 @@ var __slice = [].slice,
               instance = _ref[y];
               if (instance.id === id) {
                 instance.unload();
-                unsubscribeAll(id);
-                delete this.modules[module][y];
+                this.unsubscribeAll(id);
+                this.modules[module].splice(y, 1);
                 return;
               }
             }
           }
         }
         if (this.modules[module].length === 0) {
-          return require.undef(module);
+          require.undef(module);
+          return delete this.modules[module];
         }
       } catch (e) {
         throw new Error("Bronson.Core#unloadModule: " + e);
@@ -298,7 +299,7 @@ var __slice = [].slice,
             _results1 = [];
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               instance = _ref[_i];
-              _results1.push(this.stopModule(instance.id));
+              _results1.push(instance.stop());
             }
             return _results1;
           }).call(this));

@@ -57,7 +57,7 @@ define [
       $('div.carousel-inner', @el).append carouselItemView.render().el
 
     dispose: ->
-      Bronson.Core.publish 'dispose'
+      Bronson.Api.unloadModule @moduleId
       @collection.unbind 'change'
       @collection.dispose()
       $(@el).remove()

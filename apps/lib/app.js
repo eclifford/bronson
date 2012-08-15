@@ -1,6 +1,18 @@
 (function() {
 
   require(['underscore', 'backbone', 'bronson'], function(_, Backbone, Bronson) {
+    Bronson.Api.loadModule('apps/lib/instagram/instagramModule', (function() {}), {
+      el: '#modules'
+    }, true);
+    Bronson.Api.loadModule('apps/lib/twitter/twitterModule', (function() {}), {
+      el: '#modules'
+    }, true);
+    Bronson.Api.loadModule('apps/lib/maps/mapsModule', (function() {}), {
+      el: '#modules'
+    }, true);
+    Bronson.Api.loadModule('apps/lib/foursquare/foursquareModule', (function() {}), {
+      el: '#modules'
+    }, true);
     $('#btnAddFourSquare').click(function() {
       return Bronson.Api.loadModule('apps/lib/foursquare/foursquareModule', (function() {}), {
         el: '#modules'
@@ -53,8 +65,13 @@
       };
       return Bronson.Api.publish('geoUpdate', coords);
     });
-    return $('#btnRemoveModules').click(function() {
-      return Bronson.Api.stopAllModules();
+    return $('#btnSetPositionToParis').click(function() {
+      var coords;
+      coords = {
+        latitude: '48.858844300000001',
+        longitude: ' 2.2943506'
+      };
+      return Bronson.Api.publish('geoUpdate', coords);
     });
   });
 

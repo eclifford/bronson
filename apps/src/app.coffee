@@ -1,14 +1,14 @@
 require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
 
-  # Bronson.Api.loadModule 'apps/lib/instagram/instagramModule', (->
-  # ),
-  #   el: '#modules'
-  # , true
+  Bronson.Api.loadModule 'apps/lib/instagram/instagramModule', (->
+  ),
+    el: '#modules'
+  , true
 
-  # Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', (->
-  # ),
-  #   el: '#modules'
-  # , true
+  Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', (->
+  ),
+    el: '#modules'
+  , true
 
 
   # Bronson.Api.loadModule 'apps/lib/weather/weatherModule', (->
@@ -17,16 +17,16 @@ require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
   # , true
 
 
-  # Bronson.Api.loadModule 'apps/lib/maps/mapsModule', (->
-  # ),
-  #   el: '#modules'
-  # , true
+  Bronson.Api.loadModule 'apps/lib/maps/mapsModule', (->
+  ),
+    el: '#modules'
+  , true
 
 
-  # Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule', (->
-  # ),
-  #   el: '#modules'
-  # , true
+  Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule', (->
+  ),
+    el: '#modules'
+  , true
 
 
 
@@ -83,5 +83,9 @@ require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
 
     Bronson.Api.publish 'geoUpdate', coords 
 
-  $('#btnRemoveModules').click ->
-    Bronson.Api.stopAllModules()
+  $('#btnSetPositionToParis').click ->
+    coords =
+      latitude: '48.858844300000001'
+      longitude: ' 2.2943506'
+
+    Bronson.Api.publish 'geoUpdate', coords 

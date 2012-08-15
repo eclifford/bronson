@@ -55,6 +55,7 @@ define [
       $(@el).append tweetItemView.render().el
 
     dispose: ->
+      Bronson.Api.unloadModule @moduleId
       @collection.unbind 'change'
       @collection.dispose()
       $(@el).remove()   
