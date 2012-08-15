@@ -12,18 +12,23 @@
         return TweetsView.__super__.constructor.apply(this, arguments);
       }
 
+      TweetsView.prototype.moduleId = null;
+
       TweetsView.prototype.tagName = 'li';
 
       TweetsView.prototype.className = 'module twitter';
 
+      TweetsView.prototype.started = true;
+
       TweetsView.prototype.events = function() {
         return {
-          'click .icon-remove-sign': 'dispose'
+          'click .close': 'dispose',
+          'click .icon-stop': 'stop',
+          'click .icon-play': 'start'
         };
       };
 
       TweetsView.prototype.initialize = function() {
-        this.id = Math.random().toString(36).substring(7);
         _.bindAll(this, 'render');
         return this.collection.bind('reset', this.render);
       };
@@ -33,7 +38,28 @@
         _.each(this.collection.models, (function(item) {
           return this.renderItem(item);
         }), this);
+        if (this.started) {
+          $('.icon-play', this.el).removeClass('inactive');
+          $('.icon-stop', this.el).addClass('inactive');
+        } else {
+          $('.icon-stop', this.el).removeClass('inactive');
+          $('.icon-play', this.el).addClass('inactive');
+        }
         return this;
+      };
+
+      TweetsView.prototype.stop = function() {
+        Bronson.Api.stopModule(this.moduleId);
+        $('.icon-stop', this.el).removeClass('inactive');
+        $('.icon-play', this.el).addClass('inactive');
+        return this.started = false;
+      };
+
+      TweetsView.prototype.start = function() {
+        Bronson.Api.startModule(this.moduleId);
+        $('.icon-play', this.el).removeClass('inactive');
+        $('.icon-stop', this.el).addClass('inactive');
+        return this.started = true;
       };
 
       TweetsView.prototype.renderItem = function(item) {

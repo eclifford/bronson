@@ -8,39 +8,46 @@
 
       __extends(WeatherModule, _super);
 
-      function WeatherModule(parameters) {
-        if (parameters == null) {
-          parameters = {};
+      function WeatherModule(config) {
+        if (config == null) {
+          config = {};
         }
-        this.el = parameters.el;
-        WeatherModule.__super__.constructor.apply(this, arguments);
+        this.el = config.el;
       }
 
       WeatherModule.prototype.load = function() {
-        var weatherModel,
-          _this = this;
-        weatherModel = new WeatherModel();
+        var _this = this;
+        this.weatherModel = new WeatherModel();
         this.weatherView = new WeatherView({
-          model: weatherModel
+          model: this.weatherModel
         });
-        weatherModel.url = 'http://api.wunderground.com/api/2d04094a0883bebf/forecast/geolookup/conditions/q/Japan/Tokyo.json?callback=?';
-        weatherModel.fetch({
+        this.weatherView.moduleId = this.id;
+        this.weatherModel.url = 'http://api.wunderground.com/api/2d04094a0883bebf/forecast/geolookup/conditions/q/Japan/Tokyo.json?callback=?';
+        return this.weatherModel.fetch({
           silent: true,
           success: function() {
             return $(_this.el).append(_this.weatherView.render().el);
           }
         });
-        return Bronson.Core.subscribe('WeatherModule', 'geoUpdate', function(data) {
-          weatherModel.url = "http://api.wunderground.com/api/2d04094a0883bebf/forecast/geolookup/conditions/q/" + data.latitude + "," + data.longitude + ".json?callback=?";
-          return weatherModel.fetch();
-        });
       };
 
-      WeatherModule.prototype.start = function() {};
+      WeatherModule.prototype.start = function() {
+        var _this = this;
+        Bronson.Api.subscribe(this.id, 'geoUpdate', function(data) {
+          _this.weatherModel.url = "http://api.wunderground.com/api/2d04094a0883bebf/forecast/geolookup/conditions/q/" + data.latitude + "," + data.longitude + ".json?callback=?";
+          return _this.weatherModel.fetch();
+        });
+        return WeatherModule.__super__.start.call(this);
+      };
 
-      WeatherModule.prototype.stop = function() {};
+      WeatherModule.prototype.stop = function() {
+        Bronson.Api.unsubscribeAll(this.id);
+        return WeatherModule.__super__.stop.call(this);
+      };
 
-      WeatherModule.prototype.unload = function() {};
+      WeatherModule.prototype.unload = function() {
+        return WeatherModule.__super__.unload.call(this);
+      };
 
       return WeatherModule;
 

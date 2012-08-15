@@ -8,25 +8,32 @@
 
       __extends(MapModule, _super);
 
-      function MapModule(parameters) {
-        if (parameters == null) {
-          parameters = {};
+      function MapModule(config) {
+        if (config == null) {
+          config = {};
         }
-        this.id = Math.random().toString(36).substring(7);
-        this.el = parameters.el;
+        this.el = config.el;
       }
 
       MapModule.prototype.load = function() {
         var mapView;
         mapView = new MapView();
+        mapView.moduleId = this.id;
         return $(this.el).append(mapView.render().el);
       };
 
-      MapModule.prototype.start = function() {};
+      MapModule.prototype.start = function() {
+        return MapModule.__super__.start.call(this);
+      };
 
-      MapModule.prototype.stop = function() {};
+      MapModule.prototype.stop = function() {
+        Bronson.Api.unsubscribeAll(this.id);
+        return MapModule.__super__.stop.call(this);
+      };
 
-      MapModule.prototype.unload = function() {};
+      MapModule.prototype.unload = function() {
+        return MapModule.__super__.unload.call(this);
+      };
 
       return MapModule;
 

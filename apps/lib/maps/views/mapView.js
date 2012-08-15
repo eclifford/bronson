@@ -12,44 +12,33 @@
         return MapView.__super__.constructor.apply(this, arguments);
       }
 
+      MapView.prototype.moduleId = null;
+
       MapView.prototype.tagName = 'li';
 
       MapView.prototype.className = 'module maps';
 
-      MapView.prototype.initialize = function() {
-        var _this = this;
-        this.id = Math.random().toString(36).substring(7);
-        return Bronson.Core.subscribe('MapModule', 'geoUpdate', function(data) {
-          var panLocation;
-          panLocation = new google.maps.LatLng(data.latitude, data.longitude);
-          return _this.map.panTo(panLocation);
-        });
-      };
+      MapView.prototype.started = true;
+
+      MapView.prototype.initialize = function() {};
 
       MapView.prototype.events = function() {
         return {
-          'click .close': 'dispose'
+          'click .close': 'dispose',
+          'click .icon-stop': 'stop',
+          'click .icon-play': 'start'
         };
       };
 
       MapView.prototype.render = function() {
         var mapOptions,
           _this = this;
-        mapOptions = {
-          zoom: 14,
-          center: new google.maps.LatLng(35.689488, 139.691706),
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        this.map = new google.maps.Map($(this.el).get(0), mapOptions);
-        google.maps.event.addListener(this.map, 'click', function(event) {
-          var coord;
-          coord = {
-            latitude: event.latLng.Xa,
-            longitude: event.latLng.Ya
-          };
-          return Bronson.Core.publish('geoUpdate', coord);
+        Bronson.Api.subscribe(this.moduleId, 'geoUpdate', function(data) {
+          var panLocation;
+          panLocation = new google.maps.LatLng(data.latitude, data.longitude);
+          return _this.map.panTo(panLocation);
         });
-        Bronson.Api.subscribe('MapsModule', 'addMarker', function(data) {
+        Bronson.Api.subscribe(this.moduleId, 'addMarker', function(data) {
           var latlng, marker;
           latlng = new google.maps.LatLng(data.latitude, data.longitude);
           marker = new google.maps.Marker({
@@ -59,13 +48,52 @@
           });
           return _this.map.panTo(latlng);
         });
-        $(this.el).prepend(_.template(MapTemplate, {
-          id: this.id
-        }));
+        mapOptions = {
+          zoom: 14,
+          center: new google.maps.LatLng(35.689488, 139.691706),
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          mapTypeControl: false
+        };
+        $(this.el).prepend(_.template(MapTemplate, null));
+        this.map = new google.maps.Map($('.map', this.el).get(0), mapOptions);
+        google.maps.event.addListener(this.map, 'click', function(event) {
+          var coord;
+          coord = {
+            latitude: event.latLng.Xa,
+            longitude: event.latLng.Ya
+          };
+          return Bronson.Core.publish('geoUpdate', coord);
+        });
+        if (this.started) {
+          $('.icon-play', this.el).removeClass('inactive');
+          $('.icon-stop', this.el).addClass('inactive');
+        } else {
+          $('.icon-stop', this.el).removeClass('inactive');
+          $('.icon-play', this.el).addClass('inactive');
+        }
         return this;
       };
 
-      MapView.prototype.dispose = function() {};
+      MapView.prototype.stop = function() {
+        Bronson.Api.stopModule(this.moduleId);
+        $('.icon-stop', this.el).removeClass('inactive');
+        $('.icon-play', this.el).addClass('inactive');
+        return this.started = false;
+      };
+
+      MapView.prototype.start = function() {
+        Bronson.Api.startModule(this.moduleId);
+        $('.icon-play', this.el).removeClass('inactive');
+        $('.icon-stop', this.el).addClass('inactive');
+        return this.started = true;
+      };
+
+      MapView.prototype.dispose = function() {
+        Bronson.Api.unloadModule(this.moduleId);
+        this.collection.unbind('change');
+        this.collection.dispose();
+        return $(this.el).remove();
+      };
 
       return MapView;
 

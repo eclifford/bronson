@@ -6,17 +6,20 @@ define [
   'apps/lib/maps/views/mapView'
 ], (_, Backbone, Bronson, MapView) ->
   class MapModule extends Bronson.Module
-    constructor: (parameters={}) ->
-      @id = Math.random().toString(36).substring(7)
-      @el = parameters.el
-      #super
+    constructor: (config={}) ->
+      @el = config .el
 
     load: ->
       mapView = new MapView()
+      mapView.moduleId = @id
       $(@el).append mapView.render().el
 
     start: ->
+      super()
 
     stop: ->
+      Bronson.Api.unsubscribeAll @id
+      super()
 
     unload: ->
+      super()

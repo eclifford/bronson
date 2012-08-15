@@ -9,33 +9,32 @@ define [
   'apps/lib/weather/views/weatherView'
 ], ($, _, Backbone, Bronson, WeatherModel, WeatherView) ->
   class WeatherModule extends Bronson.Module
-    constructor: (parameters={}) ->
-      @el = parameters.el
-      super
+    constructor: (config={}) ->
+      @el = config.el
 
     load: ->
-      weatherModel = new WeatherModel()
+      @weatherModel = new WeatherModel()
 
       @weatherView = new WeatherView 
-        model: weatherModel
+        model: @weatherModel
+      @weatherView.moduleId = @id
 
-      weatherModel.url = 'http://api.wunderground.com/api/2d04094a0883bebf/forecast/geolookup/conditions/q/Japan/Tokyo.json?callback=?' 
+      @weatherModel.url = 'http://api.wunderground.com/api/2d04094a0883bebf/forecast/geolookup/conditions/q/Japan/Tokyo.json?callback=?' 
 
-      weatherModel.fetch
+      @weatherModel.fetch
         silent: true
         success: =>
           $(@el).append @weatherView.render().el
 
-      Bronson.Core.subscribe 'WeatherModule', 'geoUpdate', (data) ->
-        weatherModel.url = "http://api.wunderground.com/api/2d04094a0883bebf/forecast/geolookup/conditions/q/#{data.latitude},#{data.longitude}.json?callback=?"
-        weatherModel.fetch()
-
-      #Bronson.Core.subscribe 'WeatherModule', 'dispose', =>
-        #@dispose()
-
     start: ->
+      Bronson.Api.subscribe @id, 'geoUpdate', (data) =>
+        @weatherModel.url = "http://api.wunderground.com/api/2d04094a0883bebf/forecast/geolookup/conditions/q/#{data.latitude},#{data.longitude}.json?callback=?"
+        @weatherModel.fetch()
+      super()
 
     stop: ->
+      Bronson.Api.unsubscribeAll @id
+      super()
 
     unload: ->
-      #super
+      super()

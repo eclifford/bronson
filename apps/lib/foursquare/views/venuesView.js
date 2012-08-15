@@ -18,9 +18,13 @@
 
       VenuesView.prototype.className = 'module foursquare';
 
+      VenuesView.prototype.started = true;
+
       VenuesView.prototype.events = function() {
         return {
-          'click .icon-stop': 'stop'
+          'click .close': 'dispose',
+          'click .icon-stop': 'stop',
+          'click .icon-play': 'start'
         };
       };
 
@@ -34,6 +38,13 @@
         _.each(this.collection.models, (function(item) {
           return this.renderItem(item);
         }), this);
+        if (this.started) {
+          $('.icon-play', this.el).removeClass('inactive');
+          $('.icon-stop', this.el).addClass('inactive');
+        } else {
+          $('.icon-stop', this.el).removeClass('inactive');
+          $('.icon-play', this.el).addClass('inactive');
+        }
         return this;
       };
 
@@ -46,8 +57,17 @@
       };
 
       VenuesView.prototype.stop = function() {
-        console.log('stop clicked');
-        return Bronson.Core.stopAllModules();
+        Bronson.Api.stopModule(this.moduleId);
+        $('.icon-stop', this.el).removeClass('inactive');
+        $('.icon-play', this.el).addClass('inactive');
+        return this.started = false;
+      };
+
+      VenuesView.prototype.start = function() {
+        Bronson.Api.startModule(this.moduleId);
+        $('.icon-play', this.el).removeClass('inactive');
+        $('.icon-stop', this.el).addClass('inactive');
+        return this.started = true;
       };
 
       VenuesView.prototype.dispose = function() {

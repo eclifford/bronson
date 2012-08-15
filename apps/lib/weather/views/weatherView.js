@@ -12,32 +12,58 @@
         return WeatherView.__super__.constructor.apply(this, arguments);
       }
 
+      WeatherView.prototype.moduleId = null;
+
       WeatherView.prototype.tagName = 'li';
 
       WeatherView.prototype.className = 'module weather';
 
+      WeatherView.prototype.started = true;
+
       WeatherView.prototype.events = function() {
         return {
-          'click .close': 'dispose'
+          'click .close': 'dispose',
+          'click .icon-stop': 'stop',
+          'click .icon-play': 'start'
         };
       };
 
       WeatherView.prototype.initialize = function() {
-        this.id = Math.random().toString(36).substring(7);
         _.bindAll(this, 'render');
         return this.model.bind('change', this.render);
       };
 
       WeatherView.prototype.render = function() {
         $(this.el).html(_.template(WeatherTemplate, this.model.toJSON()));
+        if (this.started) {
+          $('.icon-play', this.el).removeClass('inactive');
+          $('.icon-stop', this.el).addClass('inactive');
+        } else {
+          $('.icon-stop', this.el).removeClass('inactive');
+          $('.icon-play', this.el).addClass('inactive');
+        }
         return this;
       };
 
+      WeatherView.prototype.stop = function() {
+        Bronson.Api.stopModule(this.moduleId);
+        $('.icon-stop', this.el).removeClass('inactive');
+        $('.icon-play', this.el).addClass('inactive');
+        return this.started = false;
+      };
+
+      WeatherView.prototype.start = function() {
+        Bronson.Api.startModule(this.moduleId);
+        $('.icon-play', this.el).removeClass('inactive');
+        $('.icon-stop', this.el).addClass('inactive');
+        return this.started = true;
+      };
+
       WeatherView.prototype.dispose = function() {
-        console.log('dispose');
         if (this.disposed) {
           return;
         }
+        Bronson.Api.unloadModule(this.moduleId);
         this.disposed = true;
         this.model.unbind('change');
         this.model.dispose();

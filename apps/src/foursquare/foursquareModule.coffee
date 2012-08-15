@@ -14,8 +14,8 @@ define [
       @venuesCollection = new VenuesCollection()
 
       @venuesView = new VenuesView
-        moduleId: @id 
         collection: @venuesCollection 
+      @venuesView.moduleId = @id
 
       @venuesCollection.fetch
         data:
@@ -29,7 +29,7 @@ define [
           $(@el).append @venuesView.render().el
 
     start: ->
-      Bronson.Api.subscribe 'foursquaremodule', 'geoUpdate', (data) =>
+      Bronson.Api.subscribe @id, 'geoUpdate', (data) =>
         @venuesCollection.fetch
           data:
             ll: "#{data.latitude},#{data.longitude}"
@@ -41,8 +41,7 @@ define [
       super()
 
     stop: ->
-      console.log 'stopping module'
-      Bronson.Api.unsubscribe 'foursquaremodule', 'geoUpdate'
+      Bronson.Api.unsubscribeAll @id
       super()
 
     unload: ->

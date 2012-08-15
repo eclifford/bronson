@@ -10,10 +10,12 @@ define [
     moduleId: null
     tagName: 'li'
     className: 'module foursquare'
+    started: true
 
     events: ->
-      # 'click': 'dispose'
+      'click .close': 'dispose'
       'click .icon-stop': 'stop'
+      'click .icon-play': 'start'
       
     initialize: ->
       _.bindAll @, 'render'
@@ -25,6 +27,14 @@ define [
       _.each @collection.models, ((item) ->
         @renderItem item
       ), @
+
+      if @started
+        $('.icon-play', @el).removeClass('inactive')
+        $('.icon-stop', @el).addClass('inactive') 
+      else
+        $('.icon-stop', @el).removeClass('inactive')
+        $('.icon-play', @el).addClass('inactive')        
+
       @
 
     renderItem: (item) ->
@@ -33,8 +43,16 @@ define [
       $(@el).append venueItemView.render().el
 
     stop: ->
-      console.log 'stop clicked'
-      Bronson.Core.stopAllModules()
+      Bronson.Api.stopModule @moduleId
+      $('.icon-stop', @el).removeClass('inactive')
+      $('.icon-play', @el).addClass('inactive')
+      @started = false
+
+    start: ->
+      Bronson.Api.startModule @moduleId
+      $('.icon-play', @el).removeClass('inactive')
+      $('.icon-stop', @el).addClass('inactive')
+      @started = true
 
     dispose: ->
       Bronson.Api.unloadModule @moduleId

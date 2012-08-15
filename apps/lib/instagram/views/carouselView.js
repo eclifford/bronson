@@ -12,20 +12,25 @@
         return CarouselView.__super__.constructor.apply(this, arguments);
       }
 
+      CarouselView.prototype.moduleId = null;
+
       CarouselView.prototype.tagName = 'li';
 
       CarouselView.prototype.className = 'module instagram';
 
-      CarouselView.prototype.initialize = function() {
-        this.id = Math.random().toString(36).substring(7);
-        _.bindAll(this, 'render', 'dispose');
-        return this.collection.bind('reset', this.render);
-      };
+      CarouselView.prototype.started = true;
 
       CarouselView.prototype.events = function() {
         return {
-          'click .icon-remove-sign': 'dispose'
+          'click .close': 'dispose',
+          'click .icon-stop': 'stop',
+          'click .icon-play': 'start'
         };
+      };
+
+      CarouselView.prototype.initialize = function() {
+        _.bindAll(this, 'render', 'dispose');
+        return this.collection.bind('reset', this.render);
       };
 
       CarouselView.prototype.render = function() {
@@ -36,7 +41,28 @@
           return this.renderItem(item);
         }), this);
         $('div.carousel-inner div:first-child', this.el).addClass('active');
+        if (this.started) {
+          $('.icon-play', this.el).removeClass('inactive');
+          $('.icon-stop', this.el).addClass('inactive');
+        } else {
+          $('.icon-stop', this.el).removeClass('inactive');
+          $('.icon-play', this.el).addClass('inactive');
+        }
         return this;
+      };
+
+      CarouselView.prototype.stop = function() {
+        Bronson.Api.stopModule(this.moduleId);
+        $('.icon-stop', this.el).removeClass('inactive');
+        $('.icon-play', this.el).addClass('inactive');
+        return this.started = false;
+      };
+
+      CarouselView.prototype.start = function() {
+        Bronson.Api.startModule(this.moduleId);
+        $('.icon-play', this.el).removeClass('inactive');
+        $('.icon-stop', this.el).addClass('inactive');
+        return this.started = true;
       };
 
       CarouselView.prototype.renderItem = function(item) {

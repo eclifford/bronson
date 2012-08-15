@@ -19,9 +19,9 @@
         var _this = this;
         this.venuesCollection = new VenuesCollection();
         this.venuesView = new VenuesView({
-          moduleId: this.id,
           collection: this.venuesCollection
         });
+        this.venuesView.moduleId = this.id;
         return this.venuesCollection.fetch({
           data: {
             ll: '35.689488, 139.691706',
@@ -39,7 +39,7 @@
 
       FoursquareModule.prototype.start = function() {
         var _this = this;
-        Bronson.Api.subscribe('foursquaremodule', 'geoUpdate', function(data) {
+        Bronson.Api.subscribe(this.id, 'geoUpdate', function(data) {
           return _this.venuesCollection.fetch({
             data: {
               ll: "" + data.latitude + "," + data.longitude,
@@ -54,8 +54,7 @@
       };
 
       FoursquareModule.prototype.stop = function() {
-        console.log('stopping module');
-        Bronson.Api.unsubscribe('foursquaremodule', 'geoUpdate');
+        Bronson.Api.unsubscribeAll(this.id);
         return FoursquareModule.__super__.stop.call(this);
       };
 

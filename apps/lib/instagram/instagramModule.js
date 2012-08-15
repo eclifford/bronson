@@ -13,7 +13,6 @@
           config = {};
         }
         this.el = config.el;
-        InstagramModule.__super__.constructor.apply(this, arguments);
       }
 
       InstagramModule.prototype.load = function() {
@@ -22,6 +21,7 @@
         this.carouselView = new CarouselView({
           collection: this.imagesCollection
         });
+        this.carouselView.moduleId = this.id;
         return this.imagesCollection.fetch({
           data: {
             client_id: "b3481714257943a4974e4e7ba99eb357",
@@ -37,7 +37,7 @@
 
       InstagramModule.prototype.start = function() {
         var _this = this;
-        Bronson.Api.subscribe('instagrammodule', 'geoUpdate', function(data) {
+        Bronson.Api.subscribe(this.id, 'geoUpdate', function(data) {
           return _this.imagesCollection.fetch({
             data: {
               client_id: "b3481714257943a4974e4e7ba99eb357",
@@ -51,11 +51,12 @@
       };
 
       InstagramModule.prototype.stop = function() {
-        Bronson.Api.unsubscribe('instagrammodule', 'geoUpdate');
+        Bronson.Api.unsubscribeAll(this.id);
         return InstagramModule.__super__.stop.call(this);
       };
 
       InstagramModule.prototype.unload = function() {
+        Bronson.Api.unloadModule(this.id);
         return InstagramModule.__super__.unload.call(this);
       };
 

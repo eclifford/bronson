@@ -7,14 +7,17 @@ define [
   'text!apps/src/twitter/templates/tweetsTemplate.html'
 ], ($, _, Backbone, Bronson, TweetItemView, TweetsTemplate) ->
   class TweetsView extends Backbone.View
+    moduleId: null
     tagName: 'li'
     className: 'module twitter'
-      
+    started: true
+
     events: ->
-      'click .icon-remove-sign': 'dispose'
+      'click .close': 'dispose'
+      'click .icon-stop': 'stop'
+      'click .icon-play': 'start'
 
     initialize: ->
-      @id = Math.random().toString(36).substring(7)
       _.bindAll @, 'render'
       @collection.bind 'reset', @render
 
@@ -25,7 +28,26 @@ define [
         @renderItem item
       ), @
 
+      if @started
+        $('.icon-play', @el).removeClass('inactive')
+        $('.icon-stop', @el).addClass('inactive') 
+      else
+        $('.icon-stop', @el).removeClass('inactive')
+        $('.icon-play', @el).addClass('inactive')        
+
       @
+
+    stop: ->
+      Bronson.Api.stopModule @moduleId
+      $('.icon-stop', @el).removeClass('inactive')
+      $('.icon-play', @el).addClass('inactive')
+      @started = false
+
+    start: ->
+      Bronson.Api.startModule @moduleId
+      $('.icon-play', @el).removeClass('inactive')
+      $('.icon-stop', @el).addClass('inactive')
+      @started = true
 
     renderItem: (item) ->
       tweetItemView = new TweetItemView 

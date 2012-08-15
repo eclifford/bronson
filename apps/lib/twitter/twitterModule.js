@@ -16,13 +16,14 @@
       }
 
       TwitterModule.prototype.load = function() {
-        var tweetView, tweetsCollection,
+        var tweetView,
           _this = this;
-        tweetsCollection = new TweetsCollection();
+        this.tweetsCollection = new TweetsCollection();
         tweetView = new TweetsView({
-          collection: tweetsCollection
+          collection: this.tweetsCollection
         });
-        tweetsCollection.fetch({
+        tweetView.moduleId = this.id;
+        return this.tweetsCollection.fetch({
           data: {
             geocode: "35.689488,139.691706,1mi",
             rpp: 4
@@ -32,20 +33,28 @@
             return $(_this.el).append(tweetView.render().el);
           }
         });
-        return Bronson.Core.subscribe('TwitterModule', 'geoUpdate', function(data) {
-          return tweetsCollection.fetch({
+      };
+
+      TwitterModule.prototype.start = function() {
+        var _this = this;
+        Bronson.Core.subscribe(this.id, 'geoUpdate', function(data) {
+          return _this.tweetsCollection.fetch({
             data: {
               geocode: "" + data.latitude + "," + data.longitude + ",1mi"
             }
           });
         });
+        return TwitterModule.__super__.start.call(this);
       };
 
-      TwitterModule.prototype.start = function() {};
+      TwitterModule.prototype.stop = function() {
+        Bronson.Api.unsubscribeAll(this.id);
+        return TwitterModule.__super__.stop.call(this);
+      };
 
-      TwitterModule.prototype.stop = function() {};
-
-      TwitterModule.prototype.unload = function() {};
+      TwitterModule.prototype.unload = function() {
+        return TwitterModule.__super__.unload.call(this);
+      };
 
       return TwitterModule;
 

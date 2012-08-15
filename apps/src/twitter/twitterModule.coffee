@@ -9,15 +9,15 @@ define [
   class TwitterModule extends Bronson.Module
     constructor: (parameters={}) ->
       @el = parameters.el
-      #super
 
     load: ->
-      tweetsCollection = new TweetsCollection()
+      @tweetsCollection = new TweetsCollection()
 
       tweetView = new TweetsView 
-        collection: tweetsCollection
+        collection: @tweetsCollection
+      tweetView.moduleId = @id
 
-      tweetsCollection.fetch
+      @tweetsCollection.fetch
         data:
           geocode: "35.689488,139.691706,1mi"
           rpp: 4
@@ -25,13 +25,16 @@ define [
         success: =>
           $(@el).append tweetView.render().el
 
-      Bronson.Core.subscribe 'TwitterModule', 'geoUpdate', (data) ->
-        tweetsCollection.fetch
-          data: 
-            geocode: "#{data.latitude},#{data.longitude},1mi"
 
     start: ->
-
+      Bronson.Core.subscribe @id, 'geoUpdate', (data) =>
+        @tweetsCollection.fetch
+          data: 
+            geocode: "#{data.latitude},#{data.longitude},1mi"
+      super()
     stop: ->
+      Bronson.Api.unsubscribeAll @id
+      super()
       
     unload: ->
+      super()

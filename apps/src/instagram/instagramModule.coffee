@@ -8,13 +8,13 @@ define [
   class InstagramModule extends Bronson.Module
     constructor: (config={}) ->
       @el = config.el
-      super
 
     load: ->
       @imagesCollection = new ImagesCollection()
 
       @carouselView = new CarouselView
         collection: @imagesCollection
+      @carouselView.moduleId = @id
 
       @imagesCollection.fetch
         data: 
@@ -26,7 +26,7 @@ define [
           $(@el).append @carouselView.render().el
         
     start: ->
-      Bronson.Api.subscribe 'instagrammodule', 'geoUpdate', (data) =>
+      Bronson.Api.subscribe @id, 'geoUpdate', (data) =>
         @imagesCollection.fetch
           data:
             client_id: "b3481714257943a4974e4e7ba99eb357"
@@ -37,8 +37,9 @@ define [
       super()
 
     stop: ->
-      Bronson.Api.unsubscribe 'instagrammodule', 'geoUpdate'
+      Bronson.Api.unsubscribeAll @id
       super()
 
     unload: ->
+      Bronson.Api.unloadModule @id
       super()
