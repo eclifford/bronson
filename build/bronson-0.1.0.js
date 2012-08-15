@@ -70,6 +70,21 @@ var __slice = [].slice,
     getModulesInfo: function() {
       return Bronson.Core.modules;
     },
+    getModuleById: function(id) {
+      var instance, module, _i, _len, _modules, _ref;
+      _modules = Bronson.Core.modules;
+      for (module in _modules) {
+        if (_modules.hasOwnProperty(module)) {
+          _ref = _modules[module];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            instance = _ref[_i];
+            if (instance.id === id) {
+              return instance;
+            }
+          }
+        }
+      }
+    },
     getEventsInfo: function() {
       return Bronson.Core.events;
     }
@@ -148,15 +163,14 @@ var __slice = [].slice,
       }
     },
     unsubscribeAll: function(subscriber) {
-      var event, y, _i, _len, _ref, _results;
+      var event, len, _results;
       _results = [];
       for (event in this.events) {
         if (this.events.hasOwnProperty(event)) {
-          _ref = this.events[event];
-          for (y = _i = 0, _len = _ref.length; _i < _len; y = ++_i) {
-            subscriber = _ref[y];
-            if (subscriber === subscriber) {
-              this.events[event].splice(y, 1);
+          len = this.events[event].length;
+          while (len--) {
+            if (this.events[event][len].subscriber === subscriber) {
+              this.events[event].splice(len, 1);
             }
           }
           if (this.events[event].length === 0) {
@@ -184,25 +198,44 @@ var __slice = [].slice,
           _module = new LoadedModule(config);
           _module.id = Module.id;
           _this.modules[module] = (!_this.modules[module] ? [] : _this.modules[module]);
-          _this.modules[module].push({
-            id: _module.id,
-            timeStamp: new Date(),
-            started: _module.started,
-            disposed: _module.disposed,
-            load: _module.load,
-            start: _module.start,
-            stop: _module.stop,
-            unload: _module.unload
-          });
+          _this.modules[module].push(_module);
           _module.load();
           if (autostart) {
             _module.start();
           }
-          return callback(_this.modules[module][_this.modules[module].length - 1]);
+          return callback(_module);
         } catch (e) {
           throw new Error("Bronson.Core#loadModule: " + e);
         }
       });
+    },
+    unloadModule: function(id) {
+      var instance, module, y, _i, _len, _ref;
+      if (!(id != null) || typeof id !== "string") {
+        throw new Error("Bronson.Core#unloadModule: id must be valid");
+      }
+      try {
+        for (module in this.modules) {
+          if (this.modules.hasOwnProperty(module)) {
+            _ref = this.modules[module];
+            for (y = _i = 0, _len = _ref.length; _i < _len; y = ++_i) {
+              instance = _ref[y];
+              if (instance.id === id) {
+                instance.unload();
+                this.unsubscribeAll(id);
+                this.modules[module].splice(y, 1);
+                return;
+              }
+            }
+          }
+        }
+        if (this.modules[module].length === 0) {
+          require.undef(module);
+          return delete this.modules[module];
+        }
+      } catch (e) {
+        throw new Error("Bronson.Core#unloadModule: " + e);
+      }
     },
     unloadAllModules: function() {
       var instance, module, _results;
@@ -225,80 +258,35 @@ var __slice = [].slice,
       }
       return _results;
     },
-    unloadModule: function(id) {
+    startModule: function(id) {
       var instance, module, y, _i, _len, _ref;
-      if (!(id != null) || typeof id !== "string") {
-        throw new Error("Bronson.Core#stopModule: id must be valid");
-      }
-      try {
-        for (module in this.modules) {
-          if (this.modules.hasOwnProperty(module)) {
-            _ref = this.modules[module];
-            for (y = _i = 0, _len = _ref.length; _i < _len; y = ++_i) {
-              instance = _ref[y];
-              if (instance.id === id) {
-                instance.unload();
-                delete this.modules[module][y];
-              }
+      for (module in this.modules) {
+        if (this.modules.hasOwnProperty(module)) {
+          _ref = this.modules[module];
+          for (y = _i = 0, _len = _ref.length; _i < _len; y = ++_i) {
+            instance = _ref[y];
+            if (instance.id === id) {
+              instance.start();
+              return;
             }
           }
         }
-        if (this.modules[module].length === 0) {
-          return require.undef(module);
-        }
-      } catch (e) {
-        throw new Error("Bronson.Core#stopModule: " + e);
       }
-    },
-    startModule: function(id) {
-      var instance, module, y, _results;
-      _results = [];
-      for (module in this.modules) {
-        if (this.modules.hasOwnProperty(module)) {
-          _results.push((function() {
-            var _i, _len, _ref, _results1;
-            _ref = this.modules[module];
-            _results1 = [];
-            for (y = _i = 0, _len = _ref.length; _i < _len; y = ++_i) {
-              instance = _ref[y];
-              if (instance.id === id) {
-                _results1.push(instance.start());
-              } else {
-                _results1.push(void 0);
-              }
-            }
-            return _results1;
-          }).call(this));
-        } else {
-          _results.push(void 0);
-        }
-      }
-      return _results;
     },
     stopModule: function(id) {
-      var instance, module, _results;
-      _results = [];
+      var instance, module, _i, _len, _ref;
       for (module in this.modules) {
         if (this.modules.hasOwnProperty(module)) {
-          _results.push((function() {
-            var _i, _len, _ref, _results1;
-            _ref = this.modules[module];
-            _results1 = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              instance = _ref[_i];
-              if (instance.id === id) {
-                _results1.push(instance.stop());
-              } else {
-                _results1.push(void 0);
-              }
+          _ref = this.modules[module];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            instance = _ref[_i];
+            if (instance.id === id) {
+              instance.stop();
+              return;
             }
-            return _results1;
-          }).call(this));
-        } else {
-          _results.push(void 0);
+          }
         }
       }
-      return _results;
     },
     stopAllModules: function() {
       var instance, module, _results;
@@ -311,7 +299,7 @@ var __slice = [].slice,
             _results1 = [];
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               instance = _ref[_i];
-              _results1.push(this.stopModule(instance.id));
+              _results1.push(instance.stop());
             }
             return _results1;
           }).call(this));

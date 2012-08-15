@@ -45,3 +45,11 @@ define [
             "TestEvent": false
         Bronson.Api.setPermissions @rules
         assert.equals Bronson.Permissions.rules, @rules
+
+
+    describe "getModuleById()", ->
+      it "should succefully retrieve a module by id", (done) ->
+        Bronson.Api.loadModule 'test/fixtures/TestModule', (module) ->
+          _module = Bronson.Api.getModuleById module.id
+          assert.equals(module, _module)
+          done()

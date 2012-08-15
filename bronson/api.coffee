@@ -130,6 +130,19 @@ Api = Bronson.Api =
   getModulesInfo: ->
     return Bronson.Core.modules
 
+  # Get module by id
+  #
+  # @example
+  #   Bronson.Api.getModuleById '@r18'
+  #
+  getModuleById: (id) ->
+    _modules = Bronson.Core.modules
+    for module of _modules
+      if _modules.hasOwnProperty(module) 
+        for instance in _modules[module]
+          if instance.id == id
+            return instance
+
   # Get the events info
   #
   # @example

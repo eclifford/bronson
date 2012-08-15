@@ -1,4 +1,4 @@
-# Bronson -v 0.1.0 - 2012-08-14
+# Bronson -v 0.1.0 - 2012-08-15
 # http://github.com/eclifford/bronson
 # Copyright (c) 2012 Eric Clifford; Licensed MIT
 ((root, factory) ->
@@ -158,6 +158,19 @@
     getModulesInfo: ->
       return Bronson.Core.modules
   
+    # Get module by id
+    #
+    # @example
+    #   Bronson.Api.getModuleById '@r18'
+    #
+    getModuleById: (id) ->
+      _modules = Bronson.Core.modules
+      for module of _modules
+        if _modules.hasOwnProperty(module) 
+          for instance in _modules[module]
+            if instance.id == id
+              return instance
+  
     # Get the events info
     #
     # @example
@@ -287,13 +300,13 @@
     unsubscribeAll: (subscriber) ->
       for event of @events
         if @events.hasOwnProperty(event) 
-          # Iterate through events and remove subscribers
-          for subscriber, y in @events[event]
-            if subscriber == subscriber
-              @events[event].splice y, 1
-          # If event is empty delete it
+          len = @events[event].length
+          # Iterate backwards through array since we are removing items
+          while(len--) 
+            if @events[event][len].subscriber == subscriber
+              @events[event].splice len, 1
           if @events[event].length == 0
-            delete @events[event]  
+            delete @events[event]
      
     # Load a module
     #
@@ -330,15 +343,7 @@
           @modules[module] = (if (not @modules[module]) then [] else @modules[module])
   
           # Store the loaded module
-          @modules[module].push
-            id: _module.id 
-            timeStamp: new Date()
-            started: _module.started
-            disposed: _module.disposed
-            load: _module.load
-            start: _module.start
-            stop: _module.stop
-            unload: _module.unload
+          @modules[module].push _module
   
           # Load the module
           _module.load()
@@ -347,11 +352,38 @@
           _module.start() if autostart
   
           # Return a reference to the module we added
-          callback(@modules[module][@modules[module].length - 1])
+          callback(_module)
         catch e 
           throw new Error "Bronson.Core#loadModule: #{e}"
   
-    # Stop all modues
+    # Unload module
+    #
+    # @example
+    #   Bronson.Core.stopModule 'TestModule'
+    #
+    unloadModule: (id) ->
+      # Validate input parameters
+      if not id? || typeof id isnt "string"
+        throw new Error "Bronson.Core#unloadModule: id must be valid"
+  
+      try 
+        for module of @modules
+          if @modules.hasOwnProperty(module) 
+            for instance, y in @modules[module]
+              if instance.id == id
+                instance.unload()
+                @unsubscribeAll id
+                @modules[module].splice y, 1
+                return
+  
+        if @modules[module].length == 0
+          require.undef module
+          delete @modules[module]
+  
+      catch e
+        throw new Error "Bronson.Core#unloadModule: #{e}"
+  
+    # Unload all modues
     #
     # @example
     #   Bronson.Core.stopAllModules()
@@ -361,30 +393,6 @@
         if @modules.hasOwnProperty(module) 
           for instance in @modules[module]
             @unloadModule instance.id
-  
-    # Stop module
-    #
-    # @example
-    #   Bronson.Core.stopModule 'TestModule'
-    #
-    unloadModule: (id) ->
-      # Validate input parameters
-      if not id? || typeof id isnt "string"
-        throw new Error "Bronson.Core#stopModule: id must be valid"
-  
-      try 
-        for module of @modules
-          if @modules.hasOwnProperty(module) 
-            for instance, y in @modules[module]
-              if instance.id == id
-                instance.unload()
-                delete @modules[module][y] 
-  
-        if @modules[module].length == 0
-          require.undef module
-  
-      catch e
-        throw new Error "Bronson.Core#stopModule: #{e}"
   
     # startModule
     # A module by default may not be started and may need done so manually
@@ -400,6 +408,7 @@
           for instance, y in @modules[module]
             if instance.id == id
               instance.start()
+              return
   
     # stopModule
     # A module may be stopped manually
@@ -412,6 +421,7 @@
           for instance in @modules[module]
             if instance.id == id
               instance.stop()
+              return
   
     # stopAllModules
     # Stop all instanced modules
@@ -420,7 +430,7 @@
       for module of @modules
         if @modules.hasOwnProperty(module) 
           for instance in @modules[module]
-            @stopModule instance.id
+            instance.stop()
   
   
   
