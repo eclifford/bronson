@@ -2,3 +2,17 @@ auto: true
 markdown: rdiscount
 pygments: true
 permalink: /blog/:title
+
+navigation:
+-
+  title: "Home"
+  url: "/index.html"
+-
+  title: "Getting Started"
+  url: "/gettingstarted.html"
+-
+  title: "Demo"
+  url: "/demo.html"
+-
+  title: "Reference"
+  url: "/reference.html"
