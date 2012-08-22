@@ -1,5 +1,5 @@
 body {
-  padding: 40px;
+  margin: 40px 20px;
 }
 
 @import url(https://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,700);
@@ -31,6 +31,11 @@ h2.fontface {
   opacity: .5;
 }
 
+.navbar-inner {
+  position: relative;
+  z-index: 2;
+}
+
 .btn-primary {
   background-color: #dd1144;
   *background-color: #dd1144;
@@ -48,7 +53,7 @@ h2.fontface {
 }
 
 .btn-primary:hover {
-  background-color: #D14; 
+  background-color: #D14;
 }
 
 .module {
@@ -88,4 +93,17 @@ h2.fontface {
 .searchResult .extra {
   float: right;
   width: 115px;
+}
+
+section.bronson-layer {
+  margin-bottom: 80px;
+}
+
+section.bronson-layer > section {
+  margin-top: 30px;
+  border-top: solid #ccc 1px;
+}
+
+section.bronson-layer li {
+  line-height: 25px;
 }
