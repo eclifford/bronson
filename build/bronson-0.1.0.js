@@ -10,7 +10,7 @@ var __slice = [].slice,
 })(this, function() {
   var Api, Bronson, Core, Permissions, Util;
   Bronson = window.Bronson = {
-    version: "0.1.0"
+    version: "0.1.1"
   };
   require.onError = function(err) {
     var failedId;
@@ -365,5 +365,8 @@ var __slice = [].slice,
       return object;
     }
   };
+  Bronson['publish'] = Bronson.Api.publish;
+  Bronson['subscribe'] = Bronson.Api.subscribe;
+  Bronson['unsubscribe'] = Bronson.Api.unsubscribe;
   return Bronson;
 });

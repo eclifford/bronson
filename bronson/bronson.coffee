@@ -8,7 +8,7 @@
 ) this, () ->
 
   Bronson = window.Bronson =
-    version: "0.1.0"
+    version: "0.1.1"
 
   # Utility function watching for RequireJS errors
   # @ param err [String] the error 
@@ -28,6 +28,11 @@
   #= core
   #= module
   #= util
+
+  # A few aliases
+  Bronson['publish'] = Bronson.Api.publish
+  Bronson['subscribe'] = Bronson.Api.subscribe
+  Bronson['unsubscribe'] = Bronson.Api.unsubscribe
 
   # Just return a value to define the module export.
   # This example returns an object, but the module

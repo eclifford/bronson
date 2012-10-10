@@ -1,4 +1,4 @@
-# Bronson -v 0.1.0 - 2012-08-15
+# Bronson -v 0.1.0 - 2012-10-10
 # http://github.com/eclifford/bronson
 # Copyright (c) 2012 Eric Clifford; Licensed MIT
 ((root, factory) ->
@@ -11,7 +11,7 @@
 ) this, () ->
 
   Bronson = window.Bronson =
-    version: "0.1.0"
+    version: "0.1.1"
 
   # Utility function watching for RequireJS errors
   # @ param err [String] the error 
@@ -498,6 +498,11 @@
       object
   
   
+
+  # A few aliases
+  Bronson['publish'] = Bronson.Api.publish
+  Bronson['subscribe'] = Bronson.Api.subscribe
+  Bronson['unsubscribe'] = Bronson.Api.unsubscribe
 
   # Just return a value to define the module export.
   # This example returns an object, but the module

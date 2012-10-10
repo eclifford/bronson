@@ -20,8 +20,8 @@ define [
 
     describe "subscribe()", ->
       it "should successfully subscribe an event", ->
-        Bronson.Api.subscribe 'TestModule', 'TestEvent', @spy
-        Bronson.Api.publish 'TestEvent'
+        Bronson.subscribe 'TestModule', 'TestEvent', @spy
+        Bronson.publish 'TestEvent'
         Bronson.Api.unsubscribe 'TestModule', 'TestEvent', ->
 
         assert.calledOnce @spy
