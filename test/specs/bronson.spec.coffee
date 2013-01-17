@@ -81,10 +81,10 @@ define [
         it "should succesfully stop a module without erroring", (done) ->
           expect(=> 
             Bronson.load 'test/fixtures/TestModule', {}, (module) ->
-              Bronson.start module.id 
+              #Bronson.start module.id 
               expect(module.started).to.equal(true)
               done()
-            , false
+            , true
           ).to.not.throw()
 
     describe "Bronson.Permissions", ->

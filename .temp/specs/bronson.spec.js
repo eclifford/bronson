@@ -102,10 +102,9 @@
             var _this = this;
             return expect(function() {
               return Bronson.load('test/fixtures/TestModule', {}, function(module) {
-                Bronson.start(module.id);
                 expect(module.started).to.equal(true);
                 return done();
-              }, false);
+              }, true);
             }).to.not["throw"]();
           });
         });

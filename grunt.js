@@ -3,6 +3,7 @@ module.exports = function( grunt ) {
   // Towelie Tasks
   grunt.registerTask('run', 'clean:temp coffee connect:staging watch');
   grunt.registerTask('test', 'clean:temp coffee testem');
+  grunt.registerTask('build', 'concat');
 
   //
   // Grunt configuration:

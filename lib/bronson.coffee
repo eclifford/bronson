@@ -184,7 +184,7 @@
           throw new Error 
         else
           failedId = err.requireModules && err.requireModules[0]
-          require.undef(faliedId)
+          require.undef(failedId)
           throw err 
 
     # Unload module
