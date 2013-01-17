@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Testem</title>
+    <link rel="stylesheet" href="/testem/mocha.css">
+    <script type='text/javascript' src="/testem/mocha.js"></script>
+    <script type='text/javascript' src="/testem.js"></script>
+    <script type="text/javascript" src="lib/require-jquery.js"></script>
+    <script type='text/javascript'>
+      mocha.setup('bdd');
+      mocha.ignoreLeaks(); // We ignore leaks due to sinon timers
+    </script>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script>
+      require.config({baseUrl: '/'});
+      var specs = [
+        {{#serve_files}}
+        "/{{.}}",
+        {{/serve_files}}
+      ];
+      require([
+        '/test/lib/chai.js',
+        '/test/lib/sinon.js',
+        '/test/lib/chai-jquery.js',
+        '/test/lib/sinon-chai.js'
+      ], function(chai, sinon, chaiJquery, chaiSinon) {
+        window.expect = chai.expect;
+        chai.use(chaiJquery);
+        chai.use(chaiSinon);
+        require(specs, function() {
+            mocha.run();
+        });
+      });
+    </script>
+  </body>
+</html>

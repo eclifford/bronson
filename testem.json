@@ -1,0 +1,18 @@
+{
+  "routes": {
+    "/lib": ".temp/lib",
+    "/specs": ".temp/specs"
+  },
+  "launch_in_ci": [
+    "phantomjs"
+  ],
+  "launch_in_dev": [
+    "phantomjs"
+  ],
+  "src_files": [
+    ".temp/**/*.js"
+  ],
+  "tap": null,
+  "json": null,
+  "test_page": "test/index.html"
+}
