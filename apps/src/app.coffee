@@ -1,32 +1,43 @@
 require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
 
-  Bronson.Api.loadModule 'apps/lib/instagram/instagramModule', (->
-  ),
+  # Bronson.load 'apps/lib/instagram/instagramModule'
+  #   el: '#modules'
+  # , (->)
+  # , true
+
+  # Bronson.load 'apps/lib/twitter/twitterModule'
+  #   el: '#modules'
+  # , (module) ->
+  # , true
+
+  Bronson.load 'apps/lib/foursquare/foursquareModule'
     el: '#modules'
+  , (module) ->
+    console.log 'foursquare loaded'
   , true
 
-  Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', (->
-  ),
-    el: '#modules'
-  , true
-
-
-  # Bronson.Api.loadModule 'apps/lib/weather/weatherModule', (->
+  # Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', (->
   # ),
   #   el: '#modules'
   # , true
 
 
-  Bronson.Api.loadModule 'apps/lib/maps/mapsModule', (->
-  ),
-    el: '#modules'
-  , true
+  # # Bronson.Api.loadModule 'apps/lib/weather/weatherModule', (->
+  # # ),
+  # #   el: '#modules'
+  # # , true
 
 
-  Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule', (->
-  ),
-    el: '#modules'
-  , true
+  # Bronson.Api.loadModule 'apps/lib/maps/mapsModule', (->
+  # ),
+  #   el: '#modules'
+  # , true
+
+
+  # Bronson. 'apps/lib/foursquare/foursquareModule', (->
+  # ),
+  #   el: '#modules'
+  # , true
 
 
 
@@ -63,7 +74,7 @@ require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
   $('#btnGetCurrentPosition').click ->
     if navigator && navigator.geolocation
       navigator.geolocation.getCurrentPosition (geo) ->
-        Bronson.Api.publish 'geoUpdate', geo.coords 
+        Bronson.publish 'app:geoupdate', geo.coords 
       , (error) ->
         console.log 'failure'
     else
@@ -74,18 +85,18 @@ require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
       latitude: '35.689488'
       longitude: '139.691706'
 
-    Bronson.Api.publish 'geoUpdate', coords 
+    Bronson.publish 'app:geoupdate', coords 
 
   $('#btnSetPositionToLondon').click ->
     coords =
       latitude: '51.500152'
       longitude: '-0.126236'
 
-    Bronson.Api.publish 'geoUpdate', coords 
+    Bronson.publish 'app:geoupdate', coords 
 
   $('#btnSetPositionToParis').click ->
     coords =
       latitude: '48.858844300000001'
       longitude: ' 2.2943506'
 
-    Bronson.Api.publish 'geoUpdate', coords 
+    Bronson.publish 'app:geoupdate', coords 

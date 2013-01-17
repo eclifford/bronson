@@ -37,7 +37,7 @@
 
       InstagramModule.prototype.start = function() {
         var _this = this;
-        Bronson.Api.subscribe(this.id, 'geoUpdate', function(data) {
+        Bronson.subscribe('instagram:app:geoupdate', function(data) {
           return _this.imagesCollection.fetch({
             data: {
               client_id: "b3481714257943a4974e4e7ba99eb357",
@@ -51,7 +51,7 @@
       };
 
       InstagramModule.prototype.stop = function() {
-        Bronson.Api.unsubscribeAll(this.id);
+        Bronson.unsubscribe('instagram');
         return InstagramModule.__super__.stop.call(this);
       };
 

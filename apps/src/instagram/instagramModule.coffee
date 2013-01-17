@@ -26,7 +26,7 @@ define [
           $(@el).append @carouselView.render().el
         
     start: ->
-      Bronson.Api.subscribe @id, 'geoUpdate', (data) =>
+      Bronson.subscribe 'instagram:app:geoupdate', (data) =>
         @imagesCollection.fetch
           data:
             client_id: "b3481714257943a4974e4e7ba99eb357"
@@ -37,7 +37,7 @@ define [
       super()
 
     stop: ->
-      Bronson.Api.unsubscribeAll @id
+      Bronson.unsubscribe('instagram')
       super()
 
     unload: ->

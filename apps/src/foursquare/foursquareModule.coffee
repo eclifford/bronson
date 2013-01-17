@@ -11,6 +11,7 @@ define [
       @el = config.el
 
     load: ->
+      console.log 'load'
       @venuesCollection = new VenuesCollection()
 
       @venuesView = new VenuesView
@@ -29,7 +30,8 @@ define [
           $(@el).append @venuesView.render().el
 
     start: ->
-      Bronson.Api.subscribe @id, 'geoUpdate', (data) =>
+      console.log 'start'
+      Bronson.subscribe 'foursqaure:app:geoupdate', (data) =>
         @venuesCollection.fetch
           data:
             ll: "#{data.latitude},#{data.longitude}"
@@ -41,7 +43,7 @@ define [
       super()
 
     stop: ->
-      Bronson.Api.unsubscribeAll @id
+      Bronson.unsubscribe 'foursqaure'
       super()
 
     unload: ->

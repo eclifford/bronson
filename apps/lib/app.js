@@ -1,17 +1,10 @@
 (function() {
 
   require(['underscore', 'backbone', 'bronson'], function(_, Backbone, Bronson) {
-    Bronson.Api.loadModule('apps/lib/instagram/instagramModule', (function() {}), {
+    Bronson.load('apps/lib/foursquare/foursquareModule', {
       el: '#modules'
-    }, true);
-    Bronson.Api.loadModule('apps/lib/twitter/twitterModule', (function() {}), {
-      el: '#modules'
-    }, true);
-    Bronson.Api.loadModule('apps/lib/maps/mapsModule', (function() {}), {
-      el: '#modules'
-    }, true);
-    Bronson.Api.loadModule('apps/lib/foursquare/foursquareModule', (function() {}), {
-      el: '#modules'
+    }, function(module) {
+      return console.log('foursquare loaded');
     }, true);
     $('#btnAddFourSquare').click(function() {
       return Bronson.Api.loadModule('apps/lib/foursquare/foursquareModule', (function() {}), {
@@ -41,7 +34,7 @@
     $('#btnGetCurrentPosition').click(function() {
       if (navigator && navigator.geolocation) {
         return navigator.geolocation.getCurrentPosition(function(geo) {
-          return Bronson.Api.publish('geoUpdate', geo.coords);
+          return Bronson.publish('app:geoupdate', geo.coords);
         }, function(error) {
           return console.log('failure');
         });
@@ -55,7 +48,7 @@
         latitude: '35.689488',
         longitude: '139.691706'
       };
-      return Bronson.Api.publish('geoUpdate', coords);
+      return Bronson.publish('app:geoupdate', coords);
     });
     $('#btnSetPositionToLondon').click(function() {
       var coords;
@@ -63,7 +56,7 @@
         latitude: '51.500152',
         longitude: '-0.126236'
       };
-      return Bronson.Api.publish('geoUpdate', coords);
+      return Bronson.publish('app:geoupdate', coords);
     });
     return $('#btnSetPositionToParis').click(function() {
       var coords;
@@ -71,7 +64,7 @@
         latitude: '48.858844300000001',
         longitude: ' 2.2943506'
       };
-      return Bronson.Api.publish('geoUpdate', coords);
+      return Bronson.publish('app:geoupdate', coords);
     });
   });
 

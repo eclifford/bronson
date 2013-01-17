@@ -27,13 +27,13 @@ define [
 
 
     start: ->
-      Bronson.Core.subscribe @id, 'geoUpdate', (data) =>
+      Bronson.subscribe 'twitter:app:geoupdate', (data) =>
         @tweetsCollection.fetch
           data: 
             geocode: "#{data.latitude},#{data.longitude},1mi"
       super()
     stop: ->
-      Bronson.Api.unsubscribeAll @id
+      Bronson.unsubscribe 'twitter'
       super()
       
     unload: ->

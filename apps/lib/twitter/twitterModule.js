@@ -37,7 +37,7 @@
 
       TwitterModule.prototype.start = function() {
         var _this = this;
-        Bronson.Core.subscribe(this.id, 'geoUpdate', function(data) {
+        Bronson.subscribe('twitter:app:geoupdate', function(data) {
           return _this.tweetsCollection.fetch({
             data: {
               geocode: "" + data.latitude + "," + data.longitude + ",1mi"
@@ -48,7 +48,7 @@
       };
 
       TwitterModule.prototype.stop = function() {
-        Bronson.Api.unsubscribeAll(this.id);
+        Bronson.unsubscribe('twitter');
         return TwitterModule.__super__.stop.call(this);
       };
 
