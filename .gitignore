@@ -1,7 +1,5 @@
 node_modules/
 .temp
-test
-.gitignore
 
 # OS generated files #
 ######################
