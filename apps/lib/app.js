@@ -1,35 +1,37 @@
 (function() {
 
   require(['underscore', 'backbone', 'bronson'], function(_, Backbone, Bronson) {
+    Bronson.load('apps/lib/instagram/instagramModule', {
+      el: '#modules'
+    }, (function() {}), true);
+    Bronson.load('apps/lib/twitter/twitterModule', {
+      el: '#modules'
+    }, (function() {}), true);
     Bronson.load('apps/lib/foursquare/foursquareModule', {
       el: '#modules'
-    }, function(module) {
-      return console.log('foursquare loaded');
-    }, true);
-    $('#btnAddFourSquare').click(function() {
-      return Bronson.Api.loadModule('apps/lib/foursquare/foursquareModule', (function() {}), {
-        el: '#modules'
-      }, true);
-    });
+    }, (function() {}), true);
+    Bronson.load('apps/lib/maps/mapsModule', {
+      el: '#modules'
+    }, (function() {}), true);
     $('#btnAddInstagram').click(function() {
-      return Bronson.Api.loadModule('apps/lib/instagram/instagramModule', (function() {}), {
+      return Bronson.load('apps/lib/instagram/instagramModule', {
         el: '#modules'
-      }, true);
+      }, (function() {}), true);
     });
     $('#btnAddTwitter').click(function() {
-      return Bronson.Api.loadModule('apps/lib/twitter/twitterModule', (function() {}), {
+      return Bronson.load('apps/lib/twitter/twitterModule', {
         el: '#modules'
-      }, true);
+      }, (function() {}), true);
     });
-    $('#btnAddWeather').click(function() {
-      return Bronson.Api.loadModule('apps/lib/weather/weatherModule', (function() {}), {
+    $('#btnAddFourSquare').click(function() {
+      return Bronson.load('apps/lib/foursquare/foursquareModule', {
         el: '#modules'
-      }, true);
+      }, (function() {}), true);
     });
     $('#btnAddMaps').click(function() {
-      return Bronson.Api.loadModule('apps/lib/maps/mapsModule', (function() {}), {
+      return Bronson.load('apps/lib/maps/mapsModule', {
         el: '#modules'
-      }, true);
+      }, (function() {}), true);
     });
     $('#btnGetCurrentPosition').click(function() {
       if (navigator && navigator.geolocation) {
@@ -41,6 +43,14 @@
       } else {
         return console.log('geolocation not supported');
       }
+    });
+    $('#btnSetPositionToSF').click(function() {
+      var coords;
+      coords = {
+        latitude: '37.788086',
+        longitude: '-122.401111'
+      };
+      return Bronson.publish('app:geoupdate', coords);
     });
     $('#btnSetPositionToTokyo').click(function() {
       var coords;

@@ -1,4 +1,4 @@
-//   BronsonJS - v1.0.0 - 2013-01-15
+//   BronsonJS - v1.0.0 - 2013-01-17
 //   http://github.com/eclifford/bronson/
 //   Copyright (c) 2013 Eric Clifford; Licensed MIT
 
@@ -19,14 +19,12 @@
       events: {},
       modules: {},
       publish: function(event) {
-        var args, channel, event_array, subscriber, subscribers, topic, _i, _len, _results;
-        if (!(event != null) || typeof event !== "string") {
-          throw new Error("Bronson#publish: must supply a valid event");
+        var args, channel, event_array, event_regex, subscriber, subscribers, topic, _i, _len, _results;
+        event_regex = /^[a-z]+((:[a-z]+){1})$/;
+        if (!event_regex.test(event)) {
+          throw new Error("Bronson.publish: event must be in format subscriber or subscriber:channel:topic");
         }
         event_array = event.toLowerCase().split(':');
-        if (typeof event_array !== "array" && event_array.length !== 2) {
-          throw new Error("Bronson#publish: event must be supplied in the form of subscriber:channel:topic");
-        }
         channel = event_array[0];
         topic = event_array[1];
         if (!this.events[channel][topic]) {
@@ -42,19 +40,22 @@
         return _results;
       },
       subscribe: function(event, callback, context) {
-        var channel, event_array, subscriber, topic;
-        if (!(event != null) || typeof event !== "string") {
-          throw new Error("Bronson#subscribe: must supply a valid event");
+        var channel, event_array, event_regex, subscriber, topic;
+        event_regex = /^[a-z]+((:[a-z]+){2})$/;
+        if (!event_regex.test(event)) {
+          throw new Error("Bronson.subscribe: event must be in format subscriber or subscriber:channel:topic");
+        }
+        if ((callback != null) && typeof callback !== "function") {
+          throw new Error("Bronson.subscribe: callback must be a function");
         }
         event_array = event.toLowerCase().split(':');
-        if (typeof event_array !== "array" && event_array.length !== 3) {
-          throw new Error("Bronson#subscribe: event must be supplied in the form of subscriber:channel:topic");
-        }
         subscriber = event_array[0];
         channel = event_array[1];
         topic = event_array[2];
-        if ((callback != null) && typeof callback !== "function") {
-          throw new Error("Bronson.Core#subscribe: callback must be a function");
+        if (Bronson.Permissions.enabled) {
+          if (!Bronson.Permissions.rules[subscriber][channel]) {
+            throw new Error("Bronson#.subscribe: attempting to subscribe to unpermitted channel");
+          }
         }
         if (!this.events[channel]) {
           this.events[channel] = {};
@@ -67,57 +68,64 @@
         });
       },
       unsubscribe: function(event) {
-        var channel, event_array, i, item, subscriber, topic, _i, _len, _ref, _results;
-        if (!(event != null) || typeof event !== "string") {
-          throw new Error("Bronson#unsubscribe: must supply a valid event");
+        var channel, event_array, event_regex, i, item, subscriber, topic, _channel, _i, _len, _ref, _results, _topic;
+        event_regex = /^[a-z]+((:[a-z]+){2})?$/;
+        if (!event_regex.test(event)) {
+          throw new Error("Bronson.unsubscribe: event must be in format subscriber or subscriber:channel:topic");
         }
         event_array = event.toLowerCase().split(':');
-        if (typeof event_array !== "array" && event_array.length !== 3) {
-          throw new Error("Bronson#unsubscribe: event must be supplied in the form of subscriber:channel:topic");
-        }
         subscriber = event_array[0];
         channel = event_array[1];
         topic = event_array[2];
-        _ref = this.events[channel][topic];
-        _results = [];
-        for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-          item = _ref[i];
-          if (item.subscriber === subscriber) {
-            _results.push(this.events[channel][topic].splice(i, 1));
-          } else {
-            _results.push(void 0);
-          }
-        }
-        return _results;
-      },
-      unsubscribeAll: function(subscriber) {
-        var event, len, _results;
-        _results = [];
-        for (event in this.events) {
-          if (this.events.hasOwnProperty(event)) {
-            len = this.events[event].length;
-            while (len--) {
-              if (this.events[event][len].subscriber === subscriber) {
-                this.events[event].splice(len, 1);
+        if (event_array.length === 1) {
+          _results = [];
+          for (_channel in this.events) {
+            _results.push((function() {
+              var _results1;
+              _results1 = [];
+              for (_topic in this.events[_channel]) {
+                _results1.push((function() {
+                  var _i, _len, _ref, _results2;
+                  _ref = this.events[_channel][_topic];
+                  _results2 = [];
+                  for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+                    item = _ref[i];
+                    if (item.subscriber === subscriber) {
+                      _results2.push(this.events[_channel][_topic].splice(i, 1));
+                    } else {
+                      _results2.push(void 0);
+                    }
+                  }
+                  return _results2;
+                }).call(this));
               }
+              return _results1;
+            }).call(this));
+          }
+          return _results;
+        } else {
+          _ref = this.events[channel][topic];
+          for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+            item = _ref[i];
+            if (item.subscriber === subscriber) {
+              this.events[channel][topic].splice(i, 1);
+              return;
             }
-            if (this.events[event].length === 0) {
-              _results.push(delete this.events[event]);
-            } else {
-              _results.push(void 0);
-            }
-          } else {
-            _results.push(void 0);
           }
         }
-        return _results;
       },
-      load: function(module, config, callback) {
+      load: function(module, config, callback, autostart) {
         var _this = this;
+        if (autostart == null) {
+          autostart = true;
+        }
         if (!(module != null) || typeof module !== 'string') {
           throw new Error("Bronson.Core#loadModule: must supply a valid module");
         }
-        if ((typeof autostart !== "undefined" && autostart !== null) && typeof autostart !== 'boolean') {
+        if ((callback != null) && typeof callback !== 'function') {
+          throw new Error("Bronson.load: callback must be in the form of a function");
+        }
+        if ((autostart != null) && typeof autostart !== 'boolean') {
           throw new Error("Bronson.Core#loadModule: autostart must be a valid boolean");
         }
         return require(['module', module], function(Module, LoadedModule) {
@@ -128,14 +136,27 @@
             _this.modules[module] = (!_this.modules[module] ? [] : _this.modules[module]);
             _this.modules[module].push(_module);
             _module.load();
+            window.module = _module;
+            if (autostart) {
+              _module.start();
+            }
             return callback(_module);
           } catch (e) {
             throw new Error("Bronson.Core#loadModule: " + e);
           }
+        }, function(err) {
+          var failedId;
+          if (err.requireType === 'timeout') {
+            throw new Error;
+          } else {
+            failedId = err.requireModules && err.requireModules[0];
+            require.undef(failedId);
+            throw err;
+          }
         });
       },
       unload: function(id) {
-        var instance, module, y, _i, _len, _ref;
+        var contextMap, instance, key, module, y, _i, _j, _len, _len1, _ref, _results;
         if (!(id != null) || typeof id !== "string") {
           throw new Error("Bronson.Core#unloadModule: id must be valid");
         }
@@ -156,8 +177,19 @@
           }
           if (this.modules[module].length === 0) {
             require.undef(module);
-            return delete this.modules[module];
+            delete this.modules[module];
           }
+          contextMap = require.s.contexts._.defined;
+          _results = [];
+          for (_j = 0, _len1 = contextMap.length; _j < _len1; _j++) {
+            key = contextMap[_j];
+            if (contextMap.hasOwnProperty(key) && key.indexOf(channel) !== -1) {
+              _results.push(require.undef(key));
+            } else {
+              _results.push(void 0);
+            }
+          }
+          return _results;
         } catch (e) {
           throw new Error("Bronson.Core#unloadModule: " + e);
         }

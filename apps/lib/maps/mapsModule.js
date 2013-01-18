@@ -27,7 +27,7 @@
       };
 
       MapModule.prototype.stop = function() {
-        Bronson.Api.unsubscribeAll(this.id);
+        Bronson.unsubscribe('maps');
         return MapModule.__super__.stop.call(this);
       };
 

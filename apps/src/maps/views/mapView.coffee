@@ -20,11 +20,11 @@ define [
       'click .icon-play': 'start'
 
     render: -> 
-      Bronson.Api.subscribe @moduleId, 'geoUpdate', (data) =>
+      Bronson.subscribe 'maps:app:geoupdate', (data) =>
         panLocation = new google.maps.LatLng(data.latitude, data.longitude)
         @map.panTo(panLocation)
 
-      Bronson.Api.subscribe @moduleId, 'addMarker', (data) =>
+      Bronson.subscribe 'maps:app:addmarker', (data) =>
         latlng = new google.maps.LatLng(data.latitude, data.longitude)
         marker = new google.maps.Marker
           animation: google.maps.Animation.DROP,
@@ -33,19 +33,19 @@ define [
         @map.panTo latlng
 
       mapOptions =
-        zoom: 14
-        center: new google.maps.LatLng(35.689488, 139.691706)
+        zoom: 13
+        center: new google.maps.LatLng(37.788086, -122.401111)
         mapTypeId: google.maps.MapTypeId.ROADMAP  
         mapTypeControl: false
 
       $(@el).prepend(_.template(MapTemplate, null))
       @map = new google.maps.Map $('.map', @el).get(0), mapOptions
 
-      google.maps.event.addListener(@map, 'click', (event) => 
+      google.maps.event.addListener(@map, 'click', (event) =>
         coord =
-          latitude: event.latLng.Xa
-          longitude: event.latLng.Ya
-        Bronson.Core.publish 'geoUpdate', coord
+          latitude: event.latLng.Ya
+          longitude: event.latLng.Za
+        Bronson.publish 'app:geoupdate', coord
       )
 
       if @started
@@ -58,19 +58,19 @@ define [
       @
 
     stop: ->
-      Bronson.Api.stopModule @moduleId
+      Bronson.stop @moduleId
       $('.icon-stop', @el).removeClass('inactive')
       $('.icon-play', @el).addClass('inactive')
       @started = false
 
     start: ->
-      Bronson.Api.startModule @moduleId
+      Bronson.start @moduleId
       $('.icon-play', @el).removeClass('inactive')
       $('.icon-stop', @el).addClass('inactive')
       @started = true
 
     dispose: ->
-      Bronson.Api.unloadModule @moduleId
+      Bronson.unload @moduleId
       $(@el).remove()
 
 

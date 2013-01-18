@@ -33,12 +33,12 @@
       MapView.prototype.render = function() {
         var mapOptions,
           _this = this;
-        Bronson.Api.subscribe(this.moduleId, 'geoUpdate', function(data) {
+        Bronson.subscribe('maps:app:geoupdate', function(data) {
           var panLocation;
           panLocation = new google.maps.LatLng(data.latitude, data.longitude);
           return _this.map.panTo(panLocation);
         });
-        Bronson.Api.subscribe(this.moduleId, 'addMarker', function(data) {
+        Bronson.subscribe('maps:app:addmarker', function(data) {
           var latlng, marker;
           latlng = new google.maps.LatLng(data.latitude, data.longitude);
           marker = new google.maps.Marker({
@@ -49,8 +49,8 @@
           return _this.map.panTo(latlng);
         });
         mapOptions = {
-          zoom: 14,
-          center: new google.maps.LatLng(35.689488, 139.691706),
+          zoom: 13,
+          center: new google.maps.LatLng(37.788086, -122.401111),
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           mapTypeControl: false
         };
@@ -59,10 +59,10 @@
         google.maps.event.addListener(this.map, 'click', function(event) {
           var coord;
           coord = {
-            latitude: event.latLng.Xa,
-            longitude: event.latLng.Ya
+            latitude: event.latLng.Ya,
+            longitude: event.latLng.Za
           };
-          return Bronson.Core.publish('geoUpdate', coord);
+          return Bronson.publish('app:geoupdate', coord);
         });
         if (this.started) {
           $('.icon-play', this.el).removeClass('inactive');
@@ -75,21 +75,21 @@
       };
 
       MapView.prototype.stop = function() {
-        Bronson.Api.stopModule(this.moduleId);
+        Bronson.stop(this.moduleId);
         $('.icon-stop', this.el).removeClass('inactive');
         $('.icon-play', this.el).addClass('inactive');
         return this.started = false;
       };
 
       MapView.prototype.start = function() {
-        Bronson.Api.startModule(this.moduleId);
+        Bronson.start(this.moduleId);
         $('.icon-play', this.el).removeClass('inactive');
         $('.icon-stop', this.el).addClass('inactive');
         return this.started = true;
       };
 
       MapView.prototype.dispose = function() {
-        Bronson.Api.unloadModule(this.moduleId);
+        Bronson.unload(this.moduleId);
         return $(this.el).remove();
       };
 

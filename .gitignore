@@ -3,3 +3,4 @@ node_modules
 Gemfile.lock
 npm-debug.log
 _site/
+.temp

@@ -25,7 +25,7 @@
           latitude: this.model.get('location').lat,
           longitude: this.model.get('location').lng
         };
-        return Bronson.Api.publish('addMarker', coords);
+        return Bronson.publish('app:addmarker', coords);
       };
 
       VenueItemView.prototype.render = function() {

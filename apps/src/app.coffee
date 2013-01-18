@@ -1,74 +1,47 @@
 require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
 
-  # Bronson.load 'apps/lib/instagram/instagramModule'
-  #   el: '#modules'
-  # , (->)
-  # , true
+  Bronson.load 'apps/lib/instagram/instagramModule'
+    el: '#modules'
+  , (->)
+  , true
 
-  # Bronson.load 'apps/lib/twitter/twitterModule'
-  #   el: '#modules'
-  # , (module) ->
-  # , true
+  Bronson.load 'apps/lib/twitter/twitterModule'
+    el: '#modules'
+  , (->)
+  , true
 
   Bronson.load 'apps/lib/foursquare/foursquareModule'
     el: '#modules'
-  , (module) ->
-    console.log 'foursquare loaded'
+  , (->)
   , true
 
-  # Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', (->
-  # ),
-  #   el: '#modules'
-  # , true
-
-
-  # # Bronson.Api.loadModule 'apps/lib/weather/weatherModule', (->
-  # # ),
-  # #   el: '#modules'
-  # # , true
-
-
-  # Bronson.Api.loadModule 'apps/lib/maps/mapsModule', (->
-  # ),
-  #   el: '#modules'
-  # , true
-
-
-  # Bronson. 'apps/lib/foursquare/foursquareModule', (->
-  # ),
-  #   el: '#modules'
-  # , true
-
-
-
-  $('#btnAddFourSquare').click ->
-    Bronson.Api.loadModule 'apps/lib/foursquare/foursquareModule', (->
-    ),
-      el: '#modules'
-    , true
+  Bronson.load 'apps/lib/maps/mapsModule'
+    el: '#modules'
+  , (->)
+  , true
 
   $('#btnAddInstagram').click ->
-    Bronson.Api.loadModule 'apps/lib/instagram/instagramModule', (->
-    ),
+    Bronson.load 'apps/lib/instagram/instagramModule'
       el: '#modules'
+    , (->)
     , true
 
   $('#btnAddTwitter').click ->
-    Bronson.Api.loadModule 'apps/lib/twitter/twitterModule', (->
-    ),
+    Bronson.load 'apps/lib/twitter/twitterModule'
       el: '#modules'
+    , (->)
     , true
 
-  $('#btnAddWeather').click ->
-    Bronson.Api.loadModule 'apps/lib/weather/weatherModule', (->
-    ),
+  $('#btnAddFourSquare').click ->
+    Bronson.load 'apps/lib/foursquare/foursquareModule'
       el: '#modules'
+    , (->)
     , true
 
   $('#btnAddMaps').click ->
-    Bronson.Api.loadModule 'apps/lib/maps/mapsModule', (->
-    ),
+    Bronson.load 'apps/lib/maps/mapsModule'
       el: '#modules'
+    , (->)
     , true
 
   $('#btnGetCurrentPosition').click ->
@@ -79,6 +52,12 @@ require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
         console.log 'failure'
     else
       console.log 'geolocation not supported'
+
+  $('#btnSetPositionToSF').click ->
+    coords =
+      latitude: '37.788086'
+      longitude: '-122.401111'
+    Bronson.publish 'app:geoupdate', coords
 
   $('#btnSetPositionToTokyo').click ->
     coords =

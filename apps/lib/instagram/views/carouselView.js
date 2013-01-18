@@ -52,14 +52,14 @@
       };
 
       CarouselView.prototype.stop = function() {
-        Bronson.Api.stopModule(this.moduleId);
+        Bronson.stop(this.moduleId);
         $('.icon-stop', this.el).removeClass('inactive');
         $('.icon-play', this.el).addClass('inactive');
         return this.started = false;
       };
 
       CarouselView.prototype.start = function() {
-        Bronson.Api.startModule(this.moduleId);
+        Bronson.start(this.moduleId);
         $('.icon-play', this.el).removeClass('inactive');
         $('.icon-stop', this.el).addClass('inactive');
         return this.started = true;
@@ -74,7 +74,7 @@
       };
 
       CarouselView.prototype.dispose = function() {
-        Bronson.Api.unloadModule(this.moduleId);
+        Bronson.unload(this.moduleId);
         this.collection.unbind('change');
         this.collection.dispose();
         return $(this.el).remove();

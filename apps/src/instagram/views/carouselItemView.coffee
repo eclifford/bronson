@@ -19,7 +19,7 @@ define [
         latitude: @model.get('location').latitude
         longitude: @model.get('location').longitude
 
-      Bronson.Api.publish 'addMarker', coords
+      Bronson.publish 'app:addmarker', coords
 
     render: ->
       $(@el).html(_.template(CarouselItemTemplate, @model.toJSON()))

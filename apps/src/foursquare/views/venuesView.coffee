@@ -43,19 +43,19 @@ define [
       $(@el).append venueItemView.render().el
 
     stop: ->
-      Bronson.Api.stopModule @moduleId
+      Bronson.stop @moduleId
       $('.icon-stop', @el).removeClass('inactive')
       $('.icon-play', @el).addClass('inactive')
       @started = false
 
     start: ->
-      Bronson.Api.startModule @moduleId
+      Bronson.start @moduleId
       $('.icon-play', @el).removeClass('inactive')
       $('.icon-stop', @el).addClass('inactive')
       @started = true
 
     dispose: ->
-      Bronson.Api.unloadModule @moduleId
+      Bronson.unload @moduleId
       @collection.unbind 'change'
       @collection.dispose()
       $(@el).remove()

@@ -19,12 +19,11 @@ define [
 
       @tweetsCollection.fetch
         data:
-          geocode: "35.689488,139.691706,1mi"
+          geocode: "37.788086,-122.401111,5mi"
           rpp: 4
         silent: true
         success: =>
           $(@el).append tweetView.render().el
-
 
     start: ->
       Bronson.subscribe 'twitter:app:geoupdate', (data) =>

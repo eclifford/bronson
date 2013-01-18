@@ -18,7 +18,7 @@ define [
       super()
 
     stop: ->
-      Bronson.Api.unsubscribeAll @id
+      Bronson.unsubscribe 'maps'
       super()
 
     unload: ->

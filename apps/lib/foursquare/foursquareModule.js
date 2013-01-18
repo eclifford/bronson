@@ -17,7 +17,6 @@
 
       FoursquareModule.prototype.load = function() {
         var _this = this;
-        console.log('load');
         this.venuesCollection = new VenuesCollection();
         this.venuesView = new VenuesView({
           collection: this.venuesCollection
@@ -25,7 +24,7 @@
         this.venuesView.moduleId = this.id;
         return this.venuesCollection.fetch({
           data: {
-            ll: '35.689488, 139.691706',
+            ll: '37.788086, -122.401111',
             oauth_token: 'O4KTMAIQA3K40AYAU522GP0ILLUY2SVSIH54WSAAGNCOCM1Y',
             v: '20120805',
             limit: 5,
@@ -40,7 +39,6 @@
 
       FoursquareModule.prototype.start = function() {
         var _this = this;
-        console.log('start');
         Bronson.subscribe('foursqaure:app:geoupdate', function(data) {
           return _this.venuesCollection.fetch({
             data: {

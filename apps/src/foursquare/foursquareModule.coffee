@@ -11,7 +11,6 @@ define [
       @el = config.el
 
     load: ->
-      console.log 'load'
       @venuesCollection = new VenuesCollection()
 
       @venuesView = new VenuesView
@@ -20,7 +19,7 @@ define [
 
       @venuesCollection.fetch
         data:
-          ll: '35.689488, 139.691706'
+          ll: '37.788086, -122.401111'
           oauth_token: 'O4KTMAIQA3K40AYAU522GP0ILLUY2SVSIH54WSAAGNCOCM1Y'
           v: '20120805'
           limit: 5
@@ -30,7 +29,6 @@ define [
           $(@el).append @venuesView.render().el
 
     start: ->
-      console.log 'start'
       Bronson.subscribe 'foursqaure:app:geoupdate', (data) =>
         @venuesCollection.fetch
           data:
