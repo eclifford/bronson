@@ -11,32 +11,18 @@ title: Reference
     </div>
 
     <div class="span9">
-
-      <!-- API Library
+      <!-- CORE Library
         ================================================== -->
-      <section class="bronson-layer" id="api">
-        <h2>Api</h2>
-        <p><code>Bronson.Api</code> acts as the <strong>Fascade</strong> in <strong>Bronson</strong> and is the public programming interface for communicating with Bronson. The Api abstracts the <code>Bronson.Core</code> & <code>Bronson.Permission</code> layer's presenting a closed to modification interface.</p>
+      <section class="bronson-layer" id="core">
+      <h2>Core</h2>
+      <p><code>Bronson.Core</code> acts as the <strong>Mediator</strong> in <strong>Bronson</strong>. The Core is responsible for the management of modules as well as the communication layer.</p>
 
-
-        <!-- API Overview
+        <!-- CORE - load
         ================================================== -->
-        <section id="api-overview">
-          <h3>Overview</h3>
-          <ul>
-            <li>Provide interface to pass module loading to core</li>
-            <li>Coordinate with Permissions layer to validate events</li>
-            <li>Provide interface to pass publish/subscribe events to core</li>
-          </ul>
-        </section>
-
-
-        <!-- API - loadModule
-        ================================================== -->
-        <section id="api-loadModule">
-          <h3>loadModule()</h3>
+        <section id="core-load">
+          <h3>load()</h3>
           <p>Loads a module via RequireJS and calls your modules load method.</p>
-          <strong>Bronson.Api.loadModule(module, {config}, callback, autostart)</strong>
+          <strong>Bronson.load(module, {config}, callback, autostart)</strong>
           <ul>
             <li><code>module:String</code> – path or RequireJS alias to module</li>
             <li><code>config:Object</code> – configuration object to pass to module constructor</li>
@@ -47,7 +33,7 @@ title: Reference
 {% highlight coffeescript %}
 # Simple example
 require ['bronson'], (Bronson) ->
-  Bronson.Api.loadModule 'example/path/sampleModule', ->
+  Bronson.load 'example/path/sampleModule', ->
     # Module has been created
 {% endhighlight %}
 
@@ -60,89 +46,90 @@ require ['bronson'], (Bronson) ->
     el: 'div#modules'
     url: 'http://example.com/api/data.json'
 
-  Bronson.Api.loadModule 'example/path/sampleModule', (->
-    # module loaded
-  ),
+  Bronson.load 'example/path/sampleModule'
     configurationObject       # The configuration object to pass to the module
+  , (->)                      # Callback
   , false                     # Whether or not to autostart the module
 {% endhighlight %}
       </section>
 
 
-      <!-- API - unloadModule()
+      <!-- CORE - unload()
         ================================================== -->
-      <section id="api-unloadModule">
-        <h3>unloadModule()</h3>
+      <section id="api-unload">
+        <h3>unload()</h3>
         <p>
         Unloads a module by calling the <code>unload()</code> method of the module whose instance <code>id:String</code> you provide. This is typically used to clean up memory.</p>
-        <strong>Bronson.Api.unloadModule(id)</strong>
+        <strong>Bronson.unload(id)</strong>
         <ul>
           <li><code>id:String</code> – the id of the module instance</li>
         </ul>
 {% highlight coffeescript %}
 require ['bronson'], (Bronson) ->
-  Bronson.Api.unloadModule module.id
+  Bronson.unload module.id
 {% endhighlight %}
       </section>
 
 
-      <!-- API - unloadAllModules()
+      <!-- CORE - unloadAll()
         ================================================== -->
-      <section id="api-unloadAllModules">
-        <h3>unloadAllModules()</h3>
+      <section id="api-unloadAll">
+        <h3>unloadAll()</h3>
         <p>Calls unload method of every instanced module.</p>
-        <strong>Bronson.Api.unloadAllModules()</strong>
+        <strong>Bronson.unloadAll()</strong>
 {% highlight coffeescript %}
 require ['bronson'], (Bronson) ->
-  Bronson.Api.unloadAllModules
+  Bronson.unloadAll()
 {% endhighlight %}
       </section>
 
 
-      <!-- API - startModule()
+      <!-- CORE - start()
         ================================================== -->
-      <section id="api-startModule">
-        <h3>startModule()</h3>
-        <p>pending</p>
+      <section id="core-start">
+        <h3>start()</h3>
+        <p>Calls start method of instanced moduled<p>
+        <strong>Bronson.start(id)</strong>
+{% highlight coffeescript %}
+require ['bronson'], (Bronson) ->
+  Bronson.start module.id
+{% endhighlight %}
       </section>
 
-
-      <!-- API - stopModule()
+      <!-- CORE - stop()
         ================================================== -->
-      <section id="api-stopModule">
-        <h3>stopModule()</h3>
+      <section id="core-stop">
+        <h3>stop()</h3>
         <p>Stops a module by calling the <code>stop()</code> method of the module whose instance <code>id:String</code> you provide. Typically used when you want to remove an item from the DOM but keep it in memory.</p>
-        <strong>Bronson.Api.stopModule(id)</strong>
+        <strong>Bronson.stop(id)</strong>
         <ul>
           <li><code>id:String</code> – the id of the module instance</li>
         </ul>
 {% highlight coffeescript %}
 require ['bronson'], (Bronson) ->
-  Bronson.Api.stopModule module.id
+  Bronson.stop module.id
 {% endhighlight %}
       </section>
 
-
-      <!-- API stopAllModules()
+      <!-- CORE - stopAll()
         ================================================== -->
-      <section id="api-stopAllModules">
-        <h3>stopAllModules()</h3>
+      <section id="core-stopAll">
+        <h3>stopAll()</h3>
         <p>Unloads the artifacts loaded for all created modules calling <code>stopModule()</code> on each in turn.</p>
-        <strong>Bronson.Api.stopAllModules()</strong>
+        <strong>Bronson.stopAll()</strong>
 {% highlight coffeescript %}
 require ['bronson'], (Bronson) ->
-  Bronson.Api.stopAllModules ->
+  Bronson.stopAll ->
     # All modules have been stopped
 {% endhighlight %}
       </section>
 
-
-      <!-- API - publish()
+      <!-- CORE - publish()
         ================================================== -->
-      <section id="api-publish">
+      <section id="core-publish">
         <h3>publish()</h3>
         <p>Publishes an event to all subscribers.</p>
-        <strong>Bronson.Api.publish(event, data)</strong>
+        <strong>Bronson.publish(event, data)</strong>
         <ul>
           <li><code>event:String</code> – the event to trigger</li>
           <li><code>data:Object</code> – the data to sent
@@ -162,14 +149,13 @@ require ['bronson'], (Bronson) ->
       </section>
 
 
-      <!-- API - subscribe()
+      <!-- CORE - subscribe()
         ================================================== -->
-      <section id="api-subscribe">
+      <section id="core-subscribe">
         <h3>subscribe()</h3>
         <p>Subscribe a module to an event and if <code>Bronson.Permission</code> is enabled, then validate the event.</p>
-        <strong>Bronson.Api.subscribe(subscriber, event, callback)</strong>
+        <strong>Bronson.subscribe(event, callback, context)</strong>
         <ul>
-          <li><code>subscriber:String</code> – the name of the subscriber</li>
           <li><code>event:String</code> – the name of the event</li>
           <li><code>callback:Function</code> – the method to invoke when the event is triggered</li>
         </ul>
@@ -205,77 +191,6 @@ require ['bronson'], (Bronson) ->
   Bronson.Api.unsubscribe 'subscriber', 'TestEvent'
 {% endhighlight %}
       </section>
-
-
-      <!-- API - unsubscribeAll()
-        ================================================== -->
-      <section id="api-unsubscribeAll">
-        <h3>unsubscribeAll()</h3>
-        <p>Unsubscribes all events from a module.</p>
-        <strong>Bronson.Api.unsubscribeAll(subscriber)</strong>
-        <ul>
-          <li><code>subscriber:String</code> – the subscriber name to unsubscribe from</li>
-        </ul>
-{% highlight coffeescript %}
-require ['bronson'], (Bronson) ->
-  Bronson.Api.unsubscribeAll 'subscriber'
-{% endhighlight %}
-      </section>
-
-
-      <!-- API - getModulesInfo()
-        ================================================== -->
-      <section id="api-getModulesInfo">
-        <h3>getModulesInfo()</h3>
-        <p>Pending</p>
-      </section>
-
-
-      <!-- API - getModuleById()
-        ================================================== -->
-      <section id="api-getModuleById">
-        <h3>getModulesById()</h3>
-        <p>Pending</p>
-      </section>
-
-
-      <!-- API - getEvents()
-        ================================================== -->
-      <section id="api-getEventsInfo">
-        <h3>getEventsInfo()</h3>
-        <p>Pending</p>
-      </section>
-
-
-      <!-- API - setPermissions()
-        ================================================== -->
-      <section id="api-setPermissions">
-        <h3>setPermissions()</h3>
-        <p>Pending</p>
-      </section>
-    </section>
-
-
-
-    <!-- CORE Library
-      ================================================== -->
-    <section class="bronson-layer" id="core">
-      <h2>Core</h2>
-      <p><code>Bronson.Core</code> acts as the <strong>Mediator</strong> in <strong>Bronson</strong>. The Core is responsible for the management of modules as well as the communication layer.</p>
-
-
-      <!-- CORE - Overview
-      ================================================== -->
-      <section id="core-overview">
-        <h3>Overview</h3>
-        <ul>
-          <li>Loading, Unloading, Starting, Stopping of Modules</li>
-          <li>Publishing & Subscribing of events</li>
-        </ul>
-      </section>
-    </section>
-
-
 
     <!-- PERMISSIONS Library
     ================================================== -->

@@ -91,7 +91,8 @@
                   for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
                     item = _ref[i];
                     if (item.subscriber === subscriber) {
-                      _results2.push(this.events[_channel][_topic].splice(i, 1));
+                      this.events[_channel][_topic].splice(i, 1);
+                      break;
                     } else {
                       _results2.push(void 0);
                     }
