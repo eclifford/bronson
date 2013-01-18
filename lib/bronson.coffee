@@ -110,9 +110,6 @@
       # split event based on subscriber:channel:event
       event_array = event.toLowerCase().split(':')
 
-      # if typeof event_array isnt "array" and (event_array.length isnt 3 or event_array.length isnt 1)
-      #   throw new Error "Bronson#unsubscribe: event must be supplied in the form of subscriber:channel:topic"
-
       # store array in subsciber:channel:event
       subscriber = event_array[0]
       channel = event_array[1]
@@ -148,13 +145,13 @@
     load: (module, config, callback, autostart=true) -> 
       # Verify the input paramaters
       if not module? || typeof module isnt 'string'
-        throw new Error "Bronson.Core#loadModule: must supply a valid module"
+        throw new Error "Bronson.load: must supply a valid module"
 
       if callback? and typeof callback isnt 'function'
         throw new Error "Bronson.load: callback must be in the form of a function"
 
       if autostart? and typeof autostart isnt 'boolean'
-        throw new Error "Bronson.Core#loadModule: autostart must be a valid boolean"
+        throw new Error "Bronson.load: autostart must be a valid boolean"
 
       # Load the module through RequireJS
       require ['module', module], (Module, LoadedModule) =>
@@ -179,7 +176,7 @@
           # Return a reference to the module we added
           callback(_module)
         catch e 
-          throw new Error "Bronson.Core#loadModule: #{e}"
+          throw new Error "Bronson.load: #{e}"
       , (err) ->
         if err.requireType == 'timeout'
           throw new Error 
@@ -196,7 +193,7 @@
     unload: (id) ->
       # Validate input parameters
       if not id? || typeof id isnt "string"
-        throw new Error "Bronson.Core#unloadModule: id must be valid"
+        throw new Error "Bronson.unload: id must be valid"
 
       try 
         for module of @modules
@@ -218,7 +215,7 @@
             require.undef(key)
 
       catch e
-        throw new Error "Bronson.Core#unloadModule: #{e}"
+        throw new Error "Bronson.unload: #{e}"
 
     # Unload all modues
     #
@@ -304,9 +301,9 @@
     validate: (subscriber, channel) ->
       # Validate inputs
       if not subscriber? || typeof subscriber isnt 'string'
-        throw new Error 'Bronson.Permissions#validate: must provide a valid subscriber'
+        throw new Error 'Bronson.Permissions.validate: must provide a valid subscriber'
       if not channel? || typeof channel isnt 'string'
-        throw new Error 'Bronson.Permissions#validate: must provide a valid channel' 
+        throw new Error 'Bronson.Permissions.validate: must provide a valid channel' 
        
       if @enabled 
         test = @rules[subscriber]?[channel]
@@ -326,7 +323,7 @@
     # Initialize
     #
     load: ->
-      throw new Error "Bronson.Module#initialize: must override initialize"
+      throw new Error "Bronson.Module.load: must override load"
 
     # Start
     #
@@ -338,10 +335,7 @@
     stop: ->
       @started = false
 
-    # Cleanup this controller
-    # 
-    # @example
-    #   @unload()
+    # Unload
     #
     unload: ->
       return if @disposed
