@@ -121,13 +121,13 @@
           autostart = true;
         }
         if (!(module != null) || typeof module !== 'string') {
-          throw new Error("Bronson.Core#loadModule: must supply a valid module");
+          throw new Error("Bronson.load: must supply a valid module");
         }
         if ((callback != null) && typeof callback !== 'function') {
           throw new Error("Bronson.load: callback must be in the form of a function");
         }
         if ((autostart != null) && typeof autostart !== 'boolean') {
-          throw new Error("Bronson.Core#loadModule: autostart must be a valid boolean");
+          throw new Error("Bronson.load: autostart must be a valid boolean");
         }
         return require(['module', module], function(Module, LoadedModule) {
           var _module;
@@ -143,7 +143,7 @@
             }
             return callback(_module);
           } catch (e) {
-            throw new Error("Bronson.Core#loadModule: " + e);
+            throw new Error("Bronson.load: " + e);
           }
         }, function(err) {
           var failedId;
@@ -159,7 +159,7 @@
       unload: function(id) {
         var contextMap, instance, key, module, y, _i, _j, _len, _len1, _ref, _results;
         if (!(id != null) || typeof id !== "string") {
-          throw new Error("Bronson.Core#unloadModule: id must be valid");
+          throw new Error("Bronson.unload: id must be valid");
         }
         try {
           for (module in this.modules) {
@@ -191,7 +191,7 @@
           }
           return _results;
         } catch (e) {
-          throw new Error("Bronson.Core#unloadModule: " + e);
+          throw new Error("Bronson.unload: " + e);
         }
       },
       unloadAll: function() {
@@ -300,10 +300,10 @@
       validate: function(subscriber, channel) {
         var test, _ref;
         if (!(subscriber != null) || typeof subscriber !== 'string') {
-          throw new Error('Bronson.Permissions#validate: must provide a valid subscriber');
+          throw new Error('Bronson.Permissions.validate: must provide a valid subscriber');
         }
         if (!(channel != null) || typeof channel !== 'string') {
-          throw new Error('Bronson.Permissions#validate: must provide a valid channel');
+          throw new Error('Bronson.Permissions.validate: must provide a valid channel');
         }
         if (this.enabled) {
           test = (_ref = this.rules[subscriber]) != null ? _ref[channel] : void 0;
@@ -328,7 +328,7 @@
       function Module() {}
 
       Module.prototype.load = function() {
-        throw new Error("Bronson.Module#initialize: must override initialize");
+        throw new Error("Bronson.Module.load: must override load");
       };
 
       Module.prototype.start = function() {

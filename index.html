@@ -9,7 +9,7 @@ title: Home
         BronsonJS
     </h2>
     <p>
-        Module application framework for building large scalable web applications.
+        Module application and pub/sub framework for RequireJS
     </p>
     <p class="download-info">
         <a href="https://github.com/eclifford/bronson/" class="btn btn-primary btn-large"
@@ -26,20 +26,36 @@ title: Home
     Introduction
 </h3>
 <p>
-    Bronson is an opinionated module application framework used for building large scalable web applications. Bronson sits on top of RequireJS and JQuery offering
-    libraries for the loading, unloading, messaging and bootstrapping of modules. The general philosophy of Bronson is to build small modular components that can communicate between each other and when combined, forms your larger web application.
+    Bronson is an opinionated module application framework used for the building of large scalable web applications. Bronson is a thin API wrapper on top of RequireJS providing a simple interface for the loading, unloading, starting and stopping of modules. These modules can bootstrap whatever application framework you desire to build that module in be it custom, Backbone, AngularJS, etc. 
 </p>
-<h3>
-    Acknowledgments
-</h3>
-<ul>
-    <li>
-        <a href='http://www.youtube.com/watch?v=vXjVFPosQHw'>Nicholas Zakas: Scalable JavaScript Application Architecture</a>
-    </li>
-    <li>
-        <a href='http://addyosmani.com/largescalejavascript'>Addy Osmani: Patterns For Large-Scale JavaScript Application Architecture</a>
-    </li>
-</ul>
+<p>
+    In addition to the module bootstrapping layer. Bronson provides a fast, managed, framework agnostic publish/subscribe framework for inter module and application wide messaging. By adhering to Bronson's event namespacing your messages will be easily maintainable and more importantly easily understandable(readable) to your team. 
+</p>
+    <h2>Bronson's Publish/Subscribe</h2>
+<p>
+    Simple contrived example
+</p>
+{% highlight coffeescript %}
+    # Module Foo
+    #
+
+    # we subscribe by providing the subscriber, channel and finally topic
+    Bronson.subscribe 'foo:app:greeting', (data) ->
+        console.log data.message
+
+    ...
+
+    # Module Bar    
+    #
+
+    # we publish by providing a channel name followed by topic
+    Bronson.publish 'app:greeting'
+        message: 'hello!'
+
+    # we can then easily remove any subscription by doing the following
+    Bronson.unsubscribe 'foo'
+{% endhighlight %}
+</p>
 <h3>
     Features
 </h3>
@@ -66,9 +82,17 @@ title: Home
 </h3>
 <ul>
     <li>
-        <a href='http://jquery.com/'>jQuery</a>
+        <a href='http://requirejs.org'>RequireJS</a>
+    </li>
+</ul>
+<h3>
+    Acknowledgments
+</h3>
+<ul>
+    <li>
+        <a href='http://www.youtube.com/watch?v=vXjVFPosQHw'>Nicholas Zakas: Scalable JavaScript Application Architecture</a>
     </li>
     <li>
-        <a href='http://requirejs.org'>RequireJS</a>
+        <a href='http://addyosmani.com/largescalejavascript'>Addy Osmani: Patterns For Large-Scale JavaScript Application Architecture</a>
     </li>
 </ul>
