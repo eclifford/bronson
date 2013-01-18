@@ -125,6 +125,7 @@
             for item, i in @events[_channel][_topic]
               if item.subscriber == subscriber  
                 @events[_channel][_topic].splice i, 1            
+                break
       else
         # remove the subscribed event
         for item, i in @events[channel][topic]
@@ -203,7 +204,6 @@
             for instance, y in @modules[module]
               if instance.id == id
                 instance.unload()
-                @unsubscribeAll id
                 @modules[module].splice y, 1
                 return
 

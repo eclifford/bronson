@@ -40,12 +40,21 @@ define [
 
       it "should successfully unsubscribe all events", ->
         spy = sinon.spy()
-        Bronson.subscribe "search:grid:one", spy
-        Bronson.subscribe "search:grid:two", spy
-        Bronson.subscribe "search:grid:three", spy
-        Bronson.unsubscribe "search"
-        Bronson.publish "grid:one"
-        expect(spy.calledOnce).to.equal(false)
+        spy2 = sinon.spy()
+        spy3 = sinon.spy()
+        expect(=>
+          Bronson.subscribe "search:grid:one", spy
+          Bronson.subscribe "search:grid:two", spy2
+          Bronson.subscribe "search:grid:three", spy3
+          Bronson.unsubscribe "search"
+          Bronson.publish "grid:one"
+          Bronson.publish "grid:two"
+          Bronson.publish "grid:three"
+          expect(spy.calledOnce).to.equal(false)
+          expect(spy2.calledOnce).to.equal(false)
+          expect(spy3.calledOnce).to.equal(false)
+        ).to.not.throw()
+
     describe "Bronson.Module", ->    
       describe "load()", ->
         it "should successfully load a module", (done) ->

@@ -3,7 +3,7 @@ module.exports = function( grunt ) {
   // Towelie Tasks
   grunt.registerTask('run', 'clean:temp coffee connect:staging watch');
   grunt.registerTask('test', 'clean:temp coffee testem');
-  grunt.registerTask('build', 'concat');
+  grunt.registerTask('build', 'concat min');
 
   //
   // Grunt configuration:
@@ -20,10 +20,16 @@ module.exports = function( grunt ) {
         'Eric Clifford; Licensed MIT'
     },
     concat: {
-      development: {
+      dist: {
         src: ['<banner:meta.banner>', '.temp/lib/bronson.js'],
         dest: 'build/bronson-<%= meta.version %>.js'
       }  
+    },
+    min: {
+      dist: {
+        src: ['<banner:meta.banner>', '.temp/lib/bronson.js'],
+        dest: 'build/bronson-<%= meta.version %>.min.js'
+      }
     },
     //
     // towelie configuration
