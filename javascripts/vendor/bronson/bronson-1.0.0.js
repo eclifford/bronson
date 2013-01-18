@@ -168,7 +168,6 @@
                 instance = _ref[y];
                 if (instance.id === id) {
                   instance.unload();
-                  this.unsubscribeAll(id);
                   this.modules[module].splice(y, 1);
                   return;
                 }
