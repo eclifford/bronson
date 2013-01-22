@@ -8,6 +8,7 @@
 ) this, () ->
   Bronson = window.Bronson = 
     version: "1.0.0"
+    debug: false
 
     events: {}
     modules: {}
@@ -21,32 +22,36 @@
     #
     publish: (event) ->
        # subscriber or subscriber:channel:event
-      event_regex = /^[a-z]+((:[a-z]+){1})$/
+      _event_regex = /^[a-z]+((:[a-z]+){1})$/
+      _event = event.toLowerCase()
 
       # validate params
-      if !event_regex.test(event)
-        throw new Error "Bronson.publish: event must be in format subscriber or subscriber:channel:topic"
+      if !_event_regex.test(_event)
+        throw new Error "Bronson.publish: event #{_event} must be in format subscriber or channel:topic"
 
       # split event based on channel:event
-      event_array = event.toLowerCase().split(':')
+      _event_array = _event.split(':')
 
       # store array in channel:event
-      channel = event_array[0]
-      topic = event_array[1]
+      _channel = _event_array[0]
+      _topic = _event_array[1]
 
       # Verify that the event exists
-      if !@events[channel][topic]
+      if !@events[_channel][_topic]
         return true
 
       # Get all subscribers to this event
-      subscribers = @events[channel][topic].slice()
+      _subscribers = @events[_channel][_topic].slice()
 
       # Get the arguments
-      args = [].slice.call(arguments, 1)
+      _args = [].slice.call(arguments, 1)
 
       # Call the callback method on all subscribers
-      for subscriber in subscribers
-        subscriber.callback.apply this, args
+      for subscriber in _subscribers
+        subscriber.callback.apply this, _args
+
+      if @debug 
+        console.log "Bronson.publish: #{_event}"
 
     # Subscribe a module to an event
     #
@@ -60,77 +65,82 @@
     #
     subscribe: (event, callback, context) -> 
       # subscriber or subscriber:channel:event
-      event_regex = /^[a-z]+((:[a-z]+){2})$/
+      _event_regex = /^[a-z]+((:[a-z]+){2})$/
+      _event = event.toLowerCase()
 
       # validate params
-      if !event_regex.test(event)
-        throw new Error "Bronson.subscribe: event must be in format subscriber or subscriber:channel:topic"
+      if !_event_regex.test(_event)
+        throw new Error "Bronson.subscribe: event #{_event} must be in format subscriber or subscriber:channel:topic"
       if callback? and typeof callback isnt "function"
         throw new Error "Bronson.subscribe: callback must be a function"   
 
       # split event based on subscriber:channel:event
-      event_array = event.toLowerCase().split(':')
+      _event_array = _event.split(':')
 
       # store array in subsciber:channel:event
-      subscriber = event_array[0]
-      channel = event_array[1]
-      topic = event_array[2]
+      _subscriber = _event_array[0]
+      _channel = _event_array[1]
+      _topic = _event_array[2]
 
       # verify if this subscription is permitted
       if Bronson.Permissions.enabled
-        if !Bronson.Permissions.rules[subscriber][channel]
-          throw new Error "Bronson#.subscribe: attempting to subscribe to unpermitted channel"
+        if !Bronson.Permissions.rules[_subscriber][_channel]
+          throw new Error "Bronson#.subscribe: attempting to subscribe to channel #{_channel} which is not permmitted by current permissions"
 
       # if change doesn't exist create it
-      if not @events[channel]
-        @events[channel] = {}
+      if not @events[_channel]
+        @events[_channel] = {}
 
       # Create the event if it doesn't exist otherwise select it
-      @events[channel][topic] = (if (not @events[channel][topic]) then [] else @events[channel][topic])
+      @events[_channel][_topic] = (if (not @events[_channel][_topic]) then [] else @events[_channel][_topic])
 
       # Push the event
-      @events[channel][topic].push 
-        subscriber: subscriber
+      @events[_channel][_topic].push 
+        subscriber: _subscriber
         context: context || this
         callback: callback
+
+      if @debug 
+        console.log "Bronson.subscribe: #{_event}"
 
     # Unsubscribe a subscriber from a event
     # @param event [String] the event string
     # 
     # @example
-    #   Bronson.Core.unsubscribe 'searchview:grid:change'
+    #   Bronson.unsubscribe 'searchview:grid:change'
     #
     unsubscribe: (event) ->    
       # subscriber or subscriber:channel:event
-      event_regex = /^[a-z]+((:[a-z]+){2})?$/
+      _event_regex = /^[a-z]+((:[a-z]+){2})?$/
+      _event = event.toLowerCase()
 
-      if !event_regex.test(event)
-        throw new Error "Bronson.unsubscribe: event must be in format subscriber or subscriber:channel:topic"
+      if !_event_regex.test(_event)
+        throw new Error "Bronson.unsubscribe: event #{_event} must be in format subscriber or subscriber:channel:topic"
 
       # split event based on subscriber:channel:event
-      event_array = event.toLowerCase().split(':')
+      _event_array = _event.split(':')
 
       # if typeof event_array isnt "array" and (event_array.length isnt 3 or event_array.length isnt 1)
       #   throw new Error "Bronson#unsubscribe: event must be supplied in the form of subscriber:channel:topic"
 
       # store array in subsciber:channel:event
-      subscriber = event_array[0]
-      channel = event_array[1]
-      topic = event_array[2] 
+      _subscriber = _event_array[0]
+      _channel = _event_array[1]
+      _topic = _event_array[2] 
 
       # if only subscriber passed we remove all events 
-      if event_array.length == 1
+      if _event_array.length == 1
         for _channel of @events
           for _topic of @events[_channel]
             for item, i in @events[_channel][_topic]
-              if item.subscriber == subscriber  
+              if item.subscriber == _subscriber  
                 @events[_channel][_topic].splice i, 1            
                 break
       else
         # remove the subscribed event
-        for item, i in @events[channel][topic]
-          if item.subscriber == subscriber
-            @events[channel][topic].splice i, 1 
+        for item, i in @events[_channel][_topic]
+          if item.subscriber == _subscriber
+            @events[_channel][_topic].splice i, 1 
             return
      
     # Load a module
@@ -148,13 +158,13 @@
     load: (module, config, callback, autostart=true) -> 
       # Verify the input paramaters
       if not module? || typeof module isnt 'string'
-        throw new Error "Bronson.Core#loadModule: must supply a valid module"
+        throw new Error "Bronson.load: must supply a valid module"
 
       if callback? and typeof callback isnt 'function'
         throw new Error "Bronson.load: callback must be in the form of a function"
 
       if autostart? and typeof autostart isnt 'boolean'
-        throw new Error "Bronson.Core#loadModule: autostart must be a valid boolean"
+        throw new Error "Bronson.load: autostart must be a valid boolean"
 
       # Load the module through RequireJS
       require ['module', module], (Module, LoadedModule) =>
@@ -179,7 +189,7 @@
           # Return a reference to the module we added
           callback(_module)
         catch e 
-          throw new Error "Bronson.Core#loadModule: #{e}"
+          throw new Error "Bronson.load: #{e}"
       , (err) ->
         if err.requireType == 'timeout'
           throw new Error 
@@ -191,12 +201,12 @@
     # Unload module
     #
     # @example
-    #   Bronson.Core.stopModule 'TestModule'
+    #   Bronson.unload 'TestModule'
     #
     unload: (id) ->
       # Validate input parameters
       if not id? || typeof id isnt "string"
-        throw new Error "Bronson.Core#unloadModule: id must be valid"
+        throw new Error "Bronson.unload: id must be valid"
 
       try 
         for module of @modules
@@ -218,12 +228,12 @@
             require.undef(key)
 
       catch e
-        throw new Error "Bronson.Core#unloadModule: #{e}"
+        throw new Error "Bronson.unload: #{e}"
 
     # Unload all modues
     #
     # @example
-    #   Bronson.Core.stopAllModules()
+    #   Bronson.unloadAll()
     #
     unloadAll: () ->
       for module of @modules
@@ -237,7 +247,7 @@
     # @param @id [string] The RequireJS id of the loaded module instance
     #
     # @example
-    #   Bronson.Core.startModule 'TestModule'
+    #   Bronson.start 'TestModule'
     #
     start: (id) ->
       for module of @modules
@@ -304,9 +314,9 @@
     validate: (subscriber, channel) ->
       # Validate inputs
       if not subscriber? || typeof subscriber isnt 'string'
-        throw new Error 'Bronson.Permissions#validate: must provide a valid subscriber'
+        throw new Error 'Bronson.Permissions.validate: must provide a valid subscriber'
       if not channel? || typeof channel isnt 'string'
-        throw new Error 'Bronson.Permissions#validate: must provide a valid channel' 
+        throw new Error 'Bronson.Permissions.validate: must provide a valid channel' 
        
       if @enabled 
         test = @rules[subscriber]?[channel]
@@ -326,7 +336,7 @@
     # Initialize
     #
     load: ->
-      throw new Error "Bronson.Module#initialize: must override initialize"
+      throw new Error "Bronson.Module.initialize: must override initialize"
 
     # Start
     #

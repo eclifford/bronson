@@ -1,4 +1,4 @@
-//   BronsonJS - v1.0.0 - 2013-01-17
+//   BronsonJS - v1.0.0 - 2013-01-22
 //   http://github.com/eclifford/bronson/
 //   Copyright (c) 2013 Eric Clifford; Licensed MIT
 
@@ -16,68 +16,76 @@
     var Bronson, Permissions, Util;
     Bronson = window.Bronson = {
       version: "1.0.0",
+      debug: false,
       events: {},
       modules: {},
       publish: function(event) {
-        var args, channel, event_array, event_regex, subscriber, subscribers, topic, _i, _len, _results;
-        event_regex = /^[a-z]+((:[a-z]+){1})$/;
-        if (!event_regex.test(event)) {
-          throw new Error("Bronson.publish: event must be in format subscriber or subscriber:channel:topic");
+        var subscriber, _args, _channel, _event, _event_array, _event_regex, _i, _len, _subscribers, _topic;
+        _event_regex = /^[a-z]+((:[a-z]+){1})$/;
+        _event = event.toLowerCase();
+        if (!_event_regex.test(_event)) {
+          throw new Error("Bronson.publish: event " + _event + " must be in format subscriber or channel:topic");
         }
-        event_array = event.toLowerCase().split(':');
-        channel = event_array[0];
-        topic = event_array[1];
-        if (!this.events[channel][topic]) {
+        _event_array = _event.split(':');
+        _channel = _event_array[0];
+        _topic = _event_array[1];
+        if (!this.events[_channel][_topic]) {
           return true;
         }
-        subscribers = this.events[channel][topic].slice();
-        args = [].slice.call(arguments, 1);
-        _results = [];
-        for (_i = 0, _len = subscribers.length; _i < _len; _i++) {
-          subscriber = subscribers[_i];
-          _results.push(subscriber.callback.apply(this, args));
+        _subscribers = this.events[_channel][_topic].slice();
+        _args = [].slice.call(arguments, 1);
+        for (_i = 0, _len = _subscribers.length; _i < _len; _i++) {
+          subscriber = _subscribers[_i];
+          subscriber.callback.apply(this, _args);
         }
-        return _results;
+        if (this.debug) {
+          return console.log("Bronson.publish: " + _event);
+        }
       },
       subscribe: function(event, callback, context) {
-        var channel, event_array, event_regex, subscriber, topic;
-        event_regex = /^[a-z]+((:[a-z]+){2})$/;
-        if (!event_regex.test(event)) {
-          throw new Error("Bronson.subscribe: event must be in format subscriber or subscriber:channel:topic");
+        var _channel, _event, _event_array, _event_regex, _subscriber, _topic;
+        _event_regex = /^[a-z]+((:[a-z]+){2})$/;
+        _event = event.toLowerCase();
+        if (!_event_regex.test(_event)) {
+          throw new Error("Bronson.subscribe: event " + _event + " must be in format subscriber or subscriber:channel:topic");
         }
         if ((callback != null) && typeof callback !== "function") {
           throw new Error("Bronson.subscribe: callback must be a function");
         }
-        event_array = event.toLowerCase().split(':');
-        subscriber = event_array[0];
-        channel = event_array[1];
-        topic = event_array[2];
+        _event_array = _event.split(':');
+        _subscriber = _event_array[0];
+        _channel = _event_array[1];
+        _topic = _event_array[2];
         if (Bronson.Permissions.enabled) {
-          if (!Bronson.Permissions.rules[subscriber][channel]) {
-            throw new Error("Bronson#.subscribe: attempting to subscribe to unpermitted channel");
+          if (!Bronson.Permissions.rules[_subscriber][_channel]) {
+            throw new Error("Bronson#.subscribe: attempting to subscribe to channel " + _channel + " which is not permmitted by current permissions");
           }
         }
-        if (!this.events[channel]) {
-          this.events[channel] = {};
+        if (!this.events[_channel]) {
+          this.events[_channel] = {};
         }
-        this.events[channel][topic] = (!this.events[channel][topic] ? [] : this.events[channel][topic]);
-        return this.events[channel][topic].push({
-          subscriber: subscriber,
+        this.events[_channel][_topic] = (!this.events[_channel][_topic] ? [] : this.events[_channel][_topic]);
+        this.events[_channel][_topic].push({
+          subscriber: _subscriber,
           context: context || this,
           callback: callback
         });
+        if (this.debug) {
+          return console.log("Bronson.subscribe: " + _event);
+        }
       },
       unsubscribe: function(event) {
-        var channel, event_array, event_regex, i, item, subscriber, topic, _channel, _i, _len, _ref, _results, _topic;
-        event_regex = /^[a-z]+((:[a-z]+){2})?$/;
-        if (!event_regex.test(event)) {
-          throw new Error("Bronson.unsubscribe: event must be in format subscriber or subscriber:channel:topic");
+        var i, item, _channel, _event, _event_array, _event_regex, _i, _len, _ref, _results, _subscriber, _topic;
+        _event_regex = /^[a-z]+((:[a-z]+){2})?$/;
+        _event = event.toLowerCase();
+        if (!_event_regex.test(_event)) {
+          throw new Error("Bronson.unsubscribe: event " + _event + " must be in format subscriber or subscriber:channel:topic");
         }
-        event_array = event.toLowerCase().split(':');
-        subscriber = event_array[0];
-        channel = event_array[1];
-        topic = event_array[2];
-        if (event_array.length === 1) {
+        _event_array = _event.split(':');
+        _subscriber = _event_array[0];
+        _channel = _event_array[1];
+        _topic = _event_array[2];
+        if (_event_array.length === 1) {
           _results = [];
           for (_channel in this.events) {
             _results.push((function() {
@@ -90,7 +98,7 @@
                   _results2 = [];
                   for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
                     item = _ref[i];
-                    if (item.subscriber === subscriber) {
+                    if (item.subscriber === _subscriber) {
                       this.events[_channel][_topic].splice(i, 1);
                       break;
                     } else {
@@ -105,11 +113,11 @@
           }
           return _results;
         } else {
-          _ref = this.events[channel][topic];
+          _ref = this.events[_channel][_topic];
           for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
             item = _ref[i];
-            if (item.subscriber === subscriber) {
-              this.events[channel][topic].splice(i, 1);
+            if (item.subscriber === _subscriber) {
+              this.events[_channel][_topic].splice(i, 1);
               return;
             }
           }
@@ -121,13 +129,13 @@
           autostart = true;
         }
         if (!(module != null) || typeof module !== 'string') {
-          throw new Error("Bronson.Core#loadModule: must supply a valid module");
+          throw new Error("Bronson.load: must supply a valid module");
         }
         if ((callback != null) && typeof callback !== 'function') {
           throw new Error("Bronson.load: callback must be in the form of a function");
         }
         if ((autostart != null) && typeof autostart !== 'boolean') {
-          throw new Error("Bronson.Core#loadModule: autostart must be a valid boolean");
+          throw new Error("Bronson.load: autostart must be a valid boolean");
         }
         return require(['module', module], function(Module, LoadedModule) {
           var _module;
@@ -143,7 +151,7 @@
             }
             return callback(_module);
           } catch (e) {
-            throw new Error("Bronson.Core#loadModule: " + e);
+            throw new Error("Bronson.load: " + e);
           }
         }, function(err) {
           var failedId;
@@ -159,7 +167,7 @@
       unload: function(id) {
         var contextMap, instance, key, module, y, _i, _j, _len, _len1, _ref, _results;
         if (!(id != null) || typeof id !== "string") {
-          throw new Error("Bronson.Core#unloadModule: id must be valid");
+          throw new Error("Bronson.unload: id must be valid");
         }
         try {
           for (module in this.modules) {
@@ -191,7 +199,7 @@
           }
           return _results;
         } catch (e) {
-          throw new Error("Bronson.Core#unloadModule: " + e);
+          throw new Error("Bronson.unload: " + e);
         }
       },
       unloadAll: function() {
@@ -300,10 +308,10 @@
       validate: function(subscriber, channel) {
         var test, _ref;
         if (!(subscriber != null) || typeof subscriber !== 'string') {
-          throw new Error('Bronson.Permissions#validate: must provide a valid subscriber');
+          throw new Error('Bronson.Permissions.validate: must provide a valid subscriber');
         }
         if (!(channel != null) || typeof channel !== 'string') {
-          throw new Error('Bronson.Permissions#validate: must provide a valid channel');
+          throw new Error('Bronson.Permissions.validate: must provide a valid channel');
         }
         if (this.enabled) {
           test = (_ref = this.rules[subscriber]) != null ? _ref[channel] : void 0;
@@ -328,7 +336,7 @@
       function Module() {}
 
       Module.prototype.load = function() {
-        throw new Error("Bronson.Module#initialize: must override initialize");
+        throw new Error("Bronson.Module.initialize: must override initialize");
       };
 
       Module.prototype.start = function() {
