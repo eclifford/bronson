@@ -336,7 +336,7 @@
       function Module() {}
 
       Module.prototype.load = function() {
-        throw new Error("Bronson.Module.initialize: must override initialize");
+        throw new Error("Bronson.Module.load: must override load");
       };
 
       Module.prototype.start = function() {

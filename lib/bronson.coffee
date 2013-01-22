@@ -120,9 +120,6 @@
       # split event based on subscriber:channel:event
       _event_array = _event.split(':')
 
-      # if typeof event_array isnt "array" and (event_array.length isnt 3 or event_array.length isnt 1)
-      #   throw new Error "Bronson#unsubscribe: event must be supplied in the form of subscriber:channel:topic"
-
       # store array in subsciber:channel:event
       _subscriber = _event_array[0]
       _channel = _event_array[1]
@@ -336,7 +333,7 @@
     # Initialize
     #
     load: ->
-      throw new Error "Bronson.Module.initialize: must override initialize"
+      throw new Error "Bronson.Module.load: must override load"
 
     # Start
     #
@@ -348,10 +345,7 @@
     stop: ->
       @started = false
 
-    # Cleanup this controller
-    # 
-    # @example
-    #   @unload()
+    # Unload
     #
     unload: ->
       return if @disposed
