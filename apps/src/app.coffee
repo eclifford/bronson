@@ -1,9 +1,9 @@
 require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
 
-  Bronson.load 'apps/lib/instagram/instagramModule'
-    el: '#modules'
-  , (->)
-  , true
+  # Bronson.load 'apps/lib/instagram/instagramModule'
+  #   el: '#modules'
+  # , (->)
+  # , true
 
   Bronson.load 'apps/lib/twitter/twitterModule'
     el: '#modules'

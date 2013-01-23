@@ -22,18 +22,140 @@ title: Home
         </div>
     </p>
 </header>
-<h3>
+<h2>
     Introduction
-</h3>
+</h2>
 <p>
-    Bronson is an opinionated module application framework used for the building of large scalable web applications. Bronson is a thin API wrapper on top of RequireJS providing a simple interface for the loading, unloading, starting and stopping of modules. These modules can bootstrap whatever application framework you desire to build that module in be it custom, Backbone, AngularJS, etc. 
+    Bronson is an opinionated module application framework used for the building of large scalable web applications. Bronson is a thin API wrapper on top of RequireJS providing a simplfied interface for the loading, unloading, starting and stopping of modules. Use Bronson to boostrap the entry point of your application regardless of the framework your using (Backbone, AngularJS) etc.
 </p>
 <p>
     In addition to the module bootstrapping layer. Bronson provides a fast, managed, framework agnostic publish/subscribe framework for inter module and application wide messaging. By adhering to Bronson's event namespacing your messages will be easily maintainable and more importantly easily understandable(readable) to your team. 
 </p>
-    <h2>Bronson's Publish/Subscribe</h2>
+
+<h2>
+    Features
+</h2>
+<ul>
+    <li>
+        Managed loading, unloading, starting and stopping of modules through RequireJS.
+    </li>
+    <li>
+        Fast, managed, framework agnostic publish/subscribe system built for module to module as well as application wide communication.
+    </li>
+</ul>
+<h2>Installation</h2>
 <p>
-    Simple contrived example
+  First make sure you have RequireJS installed and at the top or bottom(preferred) of your page. If you need help make sure you read through the <a href='http://requirejs.org'>RequireJS</a> documentation.
+</p>
+{% highlight coffeescript %}
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>BronsonJS</title>
+      <script data-main='javascripts/app' src='javascripts/vendor/requirejs/require.js'></script>
+      <script>
+         require.config({
+            baseUrl: "/javascripts",
+            paths: {
+                "bronson"   : "vendor/bronson-1.0.0"
+            },
+            waitSeconds: 15
+          });
+      </script>
+    </head>
+{% endhighlight %}
+<p>
+  Now that RequireJS is loaded and Bronson is aliased(optional). We use RequireJS to load Bronson.
+<p>
+{% highlight coffeescript %}
+  # In javascripts/app.coffee or similar
+
+  require ['bronson'], (Bronson) ->
+    # Bronson is loaded
+
+{% endhighlight %}
+
+<h2>Bronson's Module Definition</h2>
+<p>
+    Bronson provides a base module class to inherit your classes from. Then simply call <code>Bronson.load()</code> to load a load that module through RequireJS.
+</p>
+
+<h3>Aliasing your Module</h3>
+<p>
+  First let's add an alias to our RequireJS.config for our module named <code>foo</code>.
+</p>
+
+{% highlight coffeescript %}
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>BronsonJS</title>
+      <script data-main='javascripts/app' src='javascripts/vendor/requirejs/require.js'></script>
+      <script>
+         require.config({
+            baseUrl: "/javascripts",
+            paths: {
+                "bronson"   : "vendor/bronson-1.0.0",
+                "foo"       : "javascripts/foo/main"
+            },
+            waitSeconds: 15
+          });
+      </script>
+    </head>
+{% endhighlight %}
+
+<h3>Creating your Module</h3>
+
+{% highlight coffeescript %}
+  # file in javascripts/foo/main.coffee
+
+  class FooModule extends Bronson.Module
+    constructor: (data) ->
+      @debug = data.debug
+
+    load: ->
+      if @debug
+        console.log 'loading'    
+
+    start: ->
+      if @debug
+        console.log 'starting'
+      @events()
+
+    stop: ->
+      if @debug
+        console.log 'stopping'
+
+    events: ->
+      Bronson.subscribe 'foo:app:message', (data) ->
+        alert data.message
+
+{% endhighlight %}
+
+<h3>Load Module</h3>
+<p>
+  We can now use Bronson to load this module from anywhere Bronson is declared.
+</p>
+
+{% highlight coffeescript %}
+  # Load your module
+  Bronson.load 'foo'  # Load the module via alias or path
+    debug: true             # Pass any object to constructor
+  , ->                      # (optional) callback      
+  , true                    # call start automatically? (default:true)
+{% endhighlight %}
+
+<h2>Bronson's Publish/Subscribe</h2>
+<h3>
+    Understanding Bronson's pub/sub namespacing pattern
+</h3>
+<h4>Subscribing</h4>
+<p>
+    When subscribing we utilize the following pattern <code>subscriber:channel:topic</code> which allows us to keep Bronson's eventing system as optimized as possible and allows for the easy cleanup of unsubscribed modules.
+</p>
+<h4>Publishing</h4>
+<p>
+    When publishing we utilize the pattern <code>channel:topic</code> to target the topic in the channel we wish to publish to.
 </p>
 {% highlight coffeescript %}
     # Module Foo
@@ -56,38 +178,17 @@ title: Home
     Bronson.unsubscribe 'foo'
 {% endhighlight %}
 </p>
-<h3>
-    Features
-</h3>
-<ul>
-    <li>
-        Module loading & unloading through
-        <code>
-            Bronson.Core
-        </code>
-    </li>
-    <li>
-        Managed publish & subscribing of events through
-        <code>
-            Bronson.Core
-        </code>
-        &
-        <code>
-            Bronson.Permissions
-        </code>
-    </li>
-</ul>
-<h3>
+<h2>
     Dependencies
-</h3>
+</h2>
 <ul>
     <li>
         <a href='http://requirejs.org'>RequireJS</a>
     </li>
 </ul>
-<h3>
+<h2>
     Acknowledgments
-</h3>
+</h2>
 <ul>
     <li>
         <a href='http://www.youtube.com/watch?v=vXjVFPosQHw'>Nicholas Zakas: Scalable JavaScript Application Architecture</a>

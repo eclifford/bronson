@@ -1,9 +1,6 @@
 (function() {
 
   require(['underscore', 'backbone', 'bronson'], function(_, Backbone, Bronson) {
-    Bronson.load('apps/lib/instagram/instagramModule', {
-      el: '#modules'
-    }, (function() {}), true);
     Bronson.load('apps/lib/twitter/twitterModule', {
       el: '#modules'
     }, (function() {}), true);
