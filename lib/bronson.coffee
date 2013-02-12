@@ -7,7 +7,7 @@
     root.Bronson = factory()
 ) this, () ->
   Bronson = window.Bronson = 
-    version: "1.0.0"
+    version: "1.0.1"
     debug: false
 
     events: {}
@@ -37,7 +37,7 @@
       _topic = _event_array[1]
 
       # Verify that the event exists
-      if !@events[_channel][_topic]
+      if !@events[_channel]?[_topic]
         return true
 
       # Get all subscribers to this event

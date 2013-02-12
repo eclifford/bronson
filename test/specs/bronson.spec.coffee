@@ -25,6 +25,13 @@ define [
           Bronson.subscribe 'searchview:grid:testing:testing', spy
         ).to.throw(Error);
 
+    describe "publish()", ->
+      it "should not throw when publishing to a nonexisten event", ->
+        spy = sinon.spy()
+        expect(=>
+          Bronson.publish 'searchview:doesntexist'
+        ).to.not.throw(Error)
+
     describe "unsubscribe()", ->
       it "should successfully unsubscribe one event", ->
         spy = sinon.spy()
