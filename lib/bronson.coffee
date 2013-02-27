@@ -7,8 +7,7 @@
     root.Bronson = factory()
 ) this, () ->
   Bronson = window.Bronson = 
-    version: "1.0.1"
-    debug: false
+    version: "1.0.2"
 
     events: {}
     modules: {}
@@ -49,9 +48,6 @@
       # Call the callback method on all subscribers
       for subscriber in _subscribers
         subscriber.callback.apply this, _args
-
-      if @debug 
-        console.log "Bronson.publish: #{_event}"
 
     # Subscribe a module to an event
     #
@@ -99,9 +95,6 @@
         subscriber: _subscriber
         context: context || this
         callback: callback
-
-      if @debug 
-        console.log "Bronson.subscribe: #{_event}"
 
     # Unsubscribe a subscriber from a event
     # @param event [String] the event string

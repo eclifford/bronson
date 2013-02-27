@@ -12,7 +12,7 @@ module.exports = function( grunt ) {
   //
   grunt.initConfig({
     meta: {
-      version: '1.0.1',
+      version: '1.0.2',
       banner: '//   BronsonJS - v<%= meta.version %> - ' +
         '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
         '//   http://github.com/eclifford/bronson/\n' +
