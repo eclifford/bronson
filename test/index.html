@@ -17,7 +17,7 @@
       require.config({baseUrl: '/'});
       var specs = [
         {{#serve_files}}
-        "/{{.}}",
+         "/{{src}}",
         {{/serve_files}}
       ];
       require([
