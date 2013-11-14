@@ -1,5 +1,5 @@
 {
-  "name": "bronson.js",
+  "name": "bronsonjs",
   "version": "2.0.0",
   "homepage": "https://github.com/eclifford/bronson",
   "authors": [
@@ -7,10 +7,7 @@
   ],
   "license": "MIT",
   "ignore": [
-    "**/.*",
     "node_modules",
-    "bower_components",
-    "test",
-    "tests"
+    "bower_components"
   ]
 }

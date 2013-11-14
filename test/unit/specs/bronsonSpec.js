@@ -7,7 +7,7 @@ define(['bronson'], function(Bronson) {
         Bronson.publish('grid:change');
         Bronson.unsubscribe('searchview');
         expect(spy).to.have.been.called;
-      }); 
+      });
 
       it("should successfully recieve data passed to it", function() {
         var spy = sinon.spy();
@@ -19,7 +19,7 @@ define(['bronson'], function(Bronson) {
 
       it("should throw if passed invalid parameters", function() {
         expect(function() {
-         Bronson.subscribe('searchview:grid'); 
+         Bronson.subscribe('searchview:grid');
         }).to.throw(Error);
         expect(function() {
           Bronson.subscribe("searchview:grid:testing:testing");
@@ -69,7 +69,7 @@ define(['bronson'], function(Bronson) {
         it("should successfully load a module", function(done) {
           expect(function() {
             Bronson.load([
-              {'test/fixtures/module': { success: function() {done()}}}
+              {'test/fixtures/module': { success: function() {done();}}}
             ]);
           }).to.not.throw();
         });

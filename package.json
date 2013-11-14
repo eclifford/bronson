@@ -1,5 +1,5 @@
 {
-  "name": "bronson.js",
+  "name": "bronsonjs",
   "version": "2.0.0",
   "description": "no dice",
   "main": "bronson.js",
@@ -13,8 +13,8 @@
     "type": "git",
     "url": "git://github.com/eclifford/bronson.git"
   },
-  "author": "",
-  "license": "BSD-2-Clause",
+  "author": "Eric Clifford <ericgclifford@gmail.com>",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/eclifford/bronson/issues"
   },
@@ -35,6 +35,10 @@
     "grunt-karma": "~0.6.2",
     "mocha": "~1.14.0",
     "karma-mocha": "~0.1.0",
-    "karma-chai": "0.0.2"
+    "karma-chai": "0.0.2",
+    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-contrib-jshint": "~0.7.1",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-release": "~0.6.0"
   }
 }

@@ -11,14 +11,21 @@
     factory(root, exports);
   } else if (typeof define === 'function' && define.amd) {
     define(['exports'], function(exports) {
-      // TODO figure out why I have to return and can't rely on exports
-      return root.Bronson = factory(root, exports);
+      root.Bronson = factory(root, exports);
     });
   } else {
     root.Bronson = factory(root, {});
   }
 }(this, function(root, Bronson) {
-  Bronson = {
+
+  var extend = function(a, b) {
+    for(var key in b)
+      if(b.hasOwnProperty(key))
+          a[key] = b[key];
+    return a;
+  };
+
+  extend(Bronson, {
     version: '2.0.0',
 
     defaults: {
@@ -38,7 +45,7 @@
     //   channel:topic
     //
     // @example
-    //   Bronson.publish 'grid:change'
+    //   Bronson.publish('grid:change');
     //
     publish: function(event) {
       var _event_regex = /^[a-z]+((:[a-z]+){1})$/;
@@ -67,9 +74,9 @@
       // Get the arguments
       _args = [].slice.call(arguments, 1);
 
-      for (subscriber in _subscribers) {
+      for (var subscriber in _subscribers) {
         _subscribers[subscriber].callback.apply(this, _args);
-      }    
+      }
     },
     // Subscribe a module to an event
     //
@@ -78,8 +85,7 @@
     // @param context [Object] what 'this' is
     //
     // @example
-    //   Bronson.subscribe 'searchview:grid:change', ->
-    //     console.log 'woot'
+    //   Bronson.subscribe('searchview:grid:change', function() {}, this);
     //
     subscribe: function(event, callback, context) {
       var _event_regex = /^[a-z]+((:[a-z]+){2})$/;
@@ -123,13 +129,21 @@
         callback: callback
       });
     },
+    // Unsubscribe events
+    //
+    // @param event [String] the event or subscriber to unsubscribe
+    //
+    // @example
+    //   Bronson.unsubscribe('searchview');
+    //
     unsubscribe: function(event) {
       var _event_regex = /^[a-z]+((:[a-z]+){2})?$/;
       var _event = event.toLowerCase();
       var _event_array = [];
+      var _subscriber, _channel, _topic, i, topicObj;
 
       if (!_event_regex.test(_event)) {
-        throw new Error("Bronson.unsubscribe: event must be in format subscriber or subscriber:channel:topic")
+        throw new Error("Bronson.unsubscribe: event must be in format subscriber or subscriber:channel:topic");
       }
 
       // split the event subscriber:channel:event
@@ -142,24 +156,24 @@
 
       // if only subscriber passed we remove all events
       if (_event_array.length === 1) {
-        for (var _channel in this.events) {
-          for (var _topic in this.events[_channel]) {
-            for (var i = 0; i < this.events[_channel][_topic].length; i++) {
+        for (_channel in this.events) {
+          for (_topic in this.events[_channel]) {
+            for (i = 0; i < this.events[_channel][_topic].length; i++) {
               if (this.events[_channel][_topic][i].subscriber === _subscriber) {
                 this.events[_channel][_topic].splice(i, 1);
                 break;
               }
-            };
+            }
           }
         }
       } else {
-        for (var i = 0; i < this.events[_channel][_topic].length; i++) {
-          var topic = this.events[_channel][_topic][i];
-          if (topic.subscriber === _subscriber) {
+        for (i = 0; i < this.events[_channel][_topic].length; i++) {
+          topicObj = this.events[_channel][_topic][i];
+          if (topicObj.subscriber === _subscriber) {
             this.events[_channel][_topic].splice(i, 1);
             return;
           }
-        };
+        }
       }
     },
     // Load a module
@@ -188,7 +202,7 @@
           // Load by object or string
           if (typeof modules[i] == 'object') {
             _moduleName = Object.getOwnPropertyNames(modules[i])[0];
-            _settings = Utils.extend(this.defaults, modules[i][_moduleName]);
+            _settings = extend(this.defaults, modules[i][_moduleName]);
           } else if (typeof modules[i] == 'string') {
             _moduleName = modules[i];
             _settings = this.defaults;
@@ -209,8 +223,8 @@
             // Store them module instance
             Bronson.modules[_moduleName].push(_module);
 
-            if (_settings.autoload) _module.load()
-            if (_settings.autostart) _module.start()
+            if (_settings.autoload) _module.load();
+            if (_settings.autostart) _module.start();
             if (_settings.success) _settings.success();
           });
         } catch (error) {
@@ -218,7 +232,7 @@
             _settings.error(error);
           }
         }
-      };
+      }
     },
     // Unload module
     //
@@ -231,7 +245,7 @@
       }
 
       var module = this.find(id);
-      var index = this.modules[module.type].indexOf(module)
+      var index = this.modules[module.type].indexOf(module);
 
       this.modules[module.type].splice(index, 1);
 
@@ -277,9 +291,9 @@
     startAll: function() {
       var _modules = this.all();
       for (var i = 0; i < _modules.length; i++) {
-        if (!_modules[i].started) 
+        if (!_modules[i].started)
           _modules[i].start();
-      };
+      }
     },
     // Stop a module by id 
     //
@@ -299,9 +313,9 @@
     stopAll: function() {
       var _modules = this.all();
       for (var i = 0; i < _modules.length; i++) {
-        if (_modules[i].started) 
+        if (_modules[i].started)
           _modules[i].stop();
-      };
+      }
     },
     // Find a module by instance id
     //
@@ -310,11 +324,11 @@
     //
     find: function(id) {
       var _modules = this.modules;
-      for (module in _modules) {
+      for (var module in _modules) {
         if (_modules.hasOwnProperty(module)) {
-          for (i in _modules[module]) {
-            if (_modules[module][i].id === id)   
-              return _modules[module][i]
+          for (var i in _modules[module]) {
+            if (_modules[module][i].id === id)
+              return _modules[module][i];
           }
         }
       }
@@ -327,16 +341,16 @@
     findAll: function() {
       var returnModules = [];
       var _modules = this.modules;
-      for (module in _modules) {
+      for (var module in _modules) {
         if (_modules.hasOwnProperty(module)) {
-          for (i in _modules[module]) {
+          for (var i in _modules[module]) {
             returnModules.push(_modules[module][i]);
           }
         }
-      }   
+      }
       return returnModules;
     }
-  }
+  });
 
   Bronson.Module = (function() {
     Module.prototype.id = "";
@@ -352,11 +366,13 @@
     };
 
     Module.prototype.start = function() {
-      return this.started = true;
+      this.started = true;
+      return this.started;
     };
 
     Module.prototype.stop = function() {
-      return this.started = false;
+      this.started = false;
+      return this.started;
     };
 
     Module.prototype.unload = function() {
@@ -385,46 +401,41 @@
           return true;
       }
     }
-  }
+  };
 
-  Utils = Bronson.Utils = {
-    extend: function(a, b) {
-      for(var key in b)
-        if(b.hasOwnProperty(key))
-            a[key] = b[key];
-      return a;
-    },
-    inherit: function(props) {
-      var hasProp = {}.hasOwnProperty;
-      var parent = this;
-      var child;
+  var inherit = function(props) {
+    var hasProp = {}.hasOwnProperty;
+    var parent = this;
+    var child;
 
-      // Setup the constructor function for the new object
-      if (props && hasProp.call(props, 'constructor')) {
-        child = props.constructor;
-      } else {
-        child = function(){ return parent.apply(this, arguments); };
-      }
-      
-      // Set the new objects prototype chain to inherit from parent
-      function ctor() { this.constructor = child; } 
-      ctor.prototype = parent.prototype; 
-      child.prototype = new ctor; 
-
-      // Add prototype properties to the subclass if supplied
-      if (props) {
-        // TODO figure out why this has to be Utils and not this.extend
-        Utils.extend(child.prototype, props);
-      }
-
-      // Convience property for accessing the parent's prototype
-      child.__super__ = parent.prototype; 
-
-      return child; 
+    // Setup the constructor function for the new object
+    if (props && hasProp.call(props, 'constructor')) {
+      child = props.constructor;
+    } else {
+      child = function(){ return parent.apply(this, arguments); };
     }
-  }
 
-  Bronson.Module.extend = Utils.inherit;
+    // Set the new objects prototype chain to inherit from parent
+    function ctor() { this.constructor = child; }
+    ctor.prototype = parent.prototype;
+    child.prototype = new ctor();
+
+    // Add prototype properties to the subclass if supplied
+    if (props) {
+      extend(child.prototype, props);
+    }
+
+    // Convience property for accessing the parent's prototype
+    child.__super__ = parent.prototype;
+
+    return child;
+  };
+
+  // Aliases
+  Bronson.on      = Bronson.subscribe;
+  Bronson.trigger = Bronson.publish;
+
+  Bronson.Module.extend = inherit;
 
   return Bronson;
 }));

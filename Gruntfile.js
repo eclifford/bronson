@@ -3,7 +3,27 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-
+    uglify: {
+      options: {
+        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+          '<%= pkg.author %> - <%= grunt.template.today("yyyy-mm-dd") %> */'
+      },
+      dist: {
+        files: {
+          'bronson.min.js': ['bronson.js']
+        }
+      }
+    },
+    jshint: {
+      options: {
+        loopfunc: true
+      },
+      all: ['Gruntfile.js', 'bronson.js']
+    },
+    watch: {
+       files: ['Gruntfile.js', 'bronson.js'],
+       tasks: ['jshint', 'karma:unit:run']
+    },
     karma: {
       options: {
         basePath: '',
@@ -22,12 +42,12 @@ module.exports = function(grunt) {
         autoWatch: true
       },
       unit: {
-        // background: true,
-        // configFile: 'karma.conf.js',
+        background: true,
         browsers: ['Chrome']
       }
     }
   });
 
-  grunt.registerTask('default', ['karma']);
+  grunt.registerTask('default', ['karma:unit:start', 'watch']);
+  grunt.registerTask('build', ['jshint', 'uglify']);
 };
