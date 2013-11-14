@@ -1,6 +1,7 @@
 {
   "name": "bronsonjs",
   "version": "2.0.4",
+  "description": "AMD module framework for building large scale javascript applications",
   "homepage": "https://github.com/eclifford/bronson",
   "authors": [
     "eclifford <ericgclifford@gmail.com>"
@@ -9,5 +10,11 @@
   "ignore": [
     "node_modules",
     "bower_components"
-  ]
+  ],
+  "keywords": [
+    "AMD",
+    "requirejs",
+    "module"
+  ],
+  "main": "bronson.js"
 }

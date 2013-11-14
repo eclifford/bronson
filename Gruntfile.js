@@ -2,11 +2,11 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
+    pkg: grunt.file.readJSON('bower.json'),
     uglify: {
       options: {
         banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
-          '<%= pkg.author %> - <%= grunt.template.today("yyyy-mm-dd") %> */'
+          '<%= pkg.authors[0] %> - <%= grunt.template.today("yyyy-mm-dd") %> */'
       },
       dist: {
         files: {
@@ -16,12 +16,13 @@ module.exports = function(grunt) {
     },
     jshint: {
       options: {
-        loopfunc: true
+        loopfunc: true,
+        '-W058': true
       },
       all: ['Gruntfile.js', 'bronson.js']
     },
     watch: {
-       files: ['Gruntfile.js', 'bronson.js'],
+       files: ['Gruntfile.js', 'bronson.js', 'test/**/*.js'],
        tasks: ['jshint', 'karma:unit:run']
     },
     karma: {
@@ -43,22 +44,42 @@ module.exports = function(grunt) {
       },
       unit: {
         background: true,
-        browsers: ['Chrome']
+        browsers: ['PhantomJS']
       }
     },
+    bump: {
+      options: {
+        files: ['package.json', 'bower.json'],
+        commit: false,
+        createTag: false,
+        push: false
+      }
+    },  
     release: {
       options: {
         file: 'bower.json',
         npm: false,
+        bump: false,
         github: {
           repo: 'eclifford/bronson',
           usernameVar: 'GITHUB_USERNAME',
           passwordVar: 'GITHUB_PASSWORD'
         }
       }
+    },
+    replace: {
+      dist: {
+        src: ['bronson.js'],
+        overwrite: true,
+        replacements: [{
+          from: /version:.'[0-9]+.[0-9]+.[0-9]+'/g,
+          to: "version: '<%= pkg.version %>'"
+        }]
+      }
     }
   });
 
   grunt.registerTask('default', ['karma:unit:start', 'watch']);
   grunt.registerTask('build', ['jshint', 'uglify']);
+  grunt.registerTask('deploy', ['bump', 'replace', 'build', 'release']);
 };

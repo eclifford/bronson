@@ -1,10 +1,16 @@
 define(['bronson'], function(Bronson) {
   var ModuleA = Bronson.Module.extend({
-    load: function() {
+    onLoad: function() {
+
     },
-    start: function() {
+    onStart: function() {
+
     },
-    stop: function() {
+    onStop: function() {
+      
+    },
+    onUnload: function() {
+
     }
   });
   return ModuleA;

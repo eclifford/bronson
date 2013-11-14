@@ -76,20 +76,62 @@ define(['bronson'], function(Bronson) {
       });
 
       describe("stop()", function() {
-        it("should successfully stop a module without erroring", function() {
+        it("should successfully stop a module without erroring", function(done) {
           expect(function() {
-            Bronson.load([
-              {'test/fixtures/module': { success: function() {
+            Bronson.load([ 
+              {'test/fixtures/module': { autostart: true, success: function(module) {
+                Bronson.stop(module.id);
+                expect(module.started).to.equal(false);
                 done();
               }}}
             ]);
           }).to.not.throw();
         });
       });
+
+      describe("start()", function() {
+        it("should successfully start a module", function() {
+          expect(function() {
+            Bronson.load([ 
+              {'test/fixtures/module': { autostart: false, success: function(module) {
+                Bronson.start(module.id);
+                expect(module.started).to.equal(true);
+                done();
+              }}}
+            ]);
+          }).to.not.throw();  
+        });  
+      });
     });
 
     describe("Bronson.Permissions", function() {
+      var rules;
+      before(function() {
+        rules = {
+          "search": {
+            "grid": true 
+          }
+        };
+      });
 
+      describe("set()", function() {
+        it("should successfully set permissions", function() {
+          Bronson.Permissions.set(rules);
+          expect(Bronson.Permissions.rules).to.deep.equal(rules);
+        });
+      });
+
+      describe("validate()", function() {
+        it("should successfully validate permissions", function() {
+          Bronson.settings.permissions = true;
+          Bronson.Permissions.set(rules);
+          expect(function() {
+            Bronson.subscribe('search:grid:one');
+            Bronson.unsubscribe('search:grid:one');
+          }).to.not.throw();
+          Bronson.settings.permissions = false;
+        });
+      });
     });
   });
 });

@@ -26,9 +26,9 @@
   };
 
   extend(Bronson, {
-    version: '2.0.2',
+    version: '2.0.4',
 
-    defaults: {
+    settings: {
       autoload: true,
       autostart: true,
       permissions: false,
@@ -109,9 +109,9 @@
       _topic = _event_array[2];
 
       // verify that this subscription is permitted
-      if (this.permissions) {
+      if (this.settings.permissions) {
         if (!Bronson.Permissions.validate(_subscriber, _channel))
-          return false;
+          throw new Error("Bronson.subscribe: permissions do not allow this subscriber to listen to that channel");
       }
 
       // verify channel exists if not create it
@@ -202,10 +202,10 @@
           // Load by object or string
           if (typeof modules[i] == 'object') {
             _moduleName = Object.getOwnPropertyNames(modules[i])[0];
-            _settings = extend(this.defaults, modules[i][_moduleName]);
+            _settings = extend(this.settings, modules[i][_moduleName]);
           } else if (typeof modules[i] == 'string') {
             _moduleName = modules[i];
-            _settings = this.defaults;
+            _settings = this.settings;
           } else {
             throw new Error("Bronson.load: Please supply a valid object or string to load");
           }
@@ -214,8 +214,6 @@
           require(['module', _moduleName], function(Module, LoadedModule) {
             var loadedModule = new LoadedModule();
             var _module = new LoadedModule(_settings.data);
-            _module.id = Module.id;
-            _module.type = _moduleName;
 
             // Create the hash for storing of module instances if not already created
             Bronson.modules[_moduleName] = (!Bronson.modules[_moduleName] ? [] : Bronson.modules[_moduleName]);
@@ -223,9 +221,12 @@
             // Store them module instance
             Bronson.modules[_moduleName].push(_module);
 
-            if (_settings.autoload) _module.load();
+            // Add the path to our Module
+            extend(Module, { path: _moduleName});
+
+            if (_settings.autoload) _module.load(Module);
             if (_settings.autostart) _module.start();
-            if (_settings.success) _settings.success();
+            if (_settings.success) _settings.success(_module);
           });
         } catch (error) {
           if (_settings.error) {
@@ -289,7 +290,7 @@
     //  Bronson.startAll();
     //
     startAll: function() {
-      var _modules = this.all();
+      var _modules = this.findAll();
       for (var i = 0; i < _modules.length; i++) {
         if (!_modules[i].started)
           _modules[i].start();
@@ -300,7 +301,7 @@
     // @example
     //  Bronson.stop('_@r6');
     //
-    stop: function() {
+    stop: function(id) {
       var _module = Bronson.find(id);
       if (_module.started)
         _module.stop();
@@ -311,7 +312,7 @@
     //  Bronson.stopAll();
     //
     stopAll: function() {
-      var _modules = this.all();
+      var _modules = this.findAll();
       for (var i = 0; i < _modules.length; i++) {
         if (_modules[i].started)
           _modules[i].stop();
@@ -361,18 +362,30 @@
 
     function Module() {}
 
-    Module.prototype.load = function() {
-      throw new Error("Bronson.Module.load: must override load");
+    Module.prototype.load = function(module) {
+      this.id = module.id;
+      this.path = module.path;
+      this.onLoad();
+    };
+
+    Module.prototype.onLoad = function() {
+
     };
 
     Module.prototype.start = function() {
       this.started = true;
-      return this.started;
+      this.onStart();
+    };
+
+    Module.prototype.onStart = function() {
     };
 
     Module.prototype.stop = function() {
       this.started = false;
-      return this.started;
+      this.onStop();
+    };
+
+    Module.prototype.onStop = function() {
     };
 
     Module.prototype.unload = function() {
@@ -380,8 +393,14 @@
         return;
       }
       this.disposed = true;
+      this.onUnload();
       return typeof Object.freeze === "function" ? Object.freeze(this) : void 0;
     };
+
+    Module.prototype.onUnload = function() {
+
+    };
+
     return Module;
   })();
 
@@ -393,12 +412,14 @@
     },
 
     validate: function(subscriber, channel) {
-      if (this.enabled) {
+      if (Bronson.settings.permissions) {
         if (this.rules[subscriber])
           if (this.rules[subscriber][channel])
             return true;
+          else
+            return false;
         else
-          return true;
+          return false;
       }
     }
   };
@@ -418,7 +439,7 @@
     // Set the new objects prototype chain to inherit from parent
     function ctor() { this.constructor = child; }
     ctor.prototype = parent.prototype;
-    child.prototype = new ctor();
+    child.prototype = new ctor;
 
     // Add prototype properties to the subclass if supplied
     if (props) {
