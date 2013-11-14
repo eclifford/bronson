@@ -1,6 +1,6 @@
 {
   "name": "bronsonjs",
-  "version": "2.0.5",
+  "version": "2.0.7",
   "description": "AMD module framework for building large scale javascript applications",
   "main": "bronson.js",
   "directories": {

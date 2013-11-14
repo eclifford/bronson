@@ -26,7 +26,7 @@
   };
 
   extend(Bronson, {
-    version: '2.0.5',
+    version: '2.0.7',
 
     settings: {
       autoload: true,
