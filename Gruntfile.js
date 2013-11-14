@@ -45,6 +45,17 @@ module.exports = function(grunt) {
         background: true,
         browsers: ['Chrome']
       }
+    },
+    release: {
+      options: {
+        file: 'bower.json',
+        npm: false,
+        github: {
+          repo: 'eclifford/bronson',
+          usernameVar: 'GITHUB_USERNAME',
+          passwordVar: 'GITHUB_PASSWORD'
+        }
+      }
     }
   });
 
