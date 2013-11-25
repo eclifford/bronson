@@ -202,7 +202,10 @@
           // Load by object or string
           if (typeof modules[i] == 'object') {
             _moduleName = Object.getOwnPropertyNames(modules[i])[0];
-            _settings = extend(this.settings, modules[i][_moduleName]);
+          
+            // extend default settings with passed in module settings returning cloned object
+            _settings = extend({}, extend(this.settings, modules[i][_moduleName]));
+
           } else if (typeof modules[i] == 'string') {
             _moduleName = modules[i];
             _settings = this.settings;
