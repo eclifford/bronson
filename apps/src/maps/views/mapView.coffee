@@ -3,8 +3,7 @@ define [
   'underscore',
   'backbone',
   'bronson',
-  'text!apps/src/maps/templates/mapTemplate.html',
-  'async!http://maps.googleapis.com/maps/api/js?key=AIzaSyDTB9ap7VN6CRrMWaAS2cKwctgjn-_l_oA&sensor=false'
+  'text!apps/src/maps/templates/mapTemplate.html'
 ], ($, _, Backbone, Bronson, MapTemplate) ->
   class MapView extends Backbone.View
     moduleId: null
@@ -20,9 +19,9 @@ define [
       'click .icon-play': 'start'
 
     render: -> 
-      Bronson.subscribe 'maps:app:geoupdate', (data) =>
-        panLocation = new google.maps.LatLng(data.latitude, data.longitude)
-        @map.panTo(panLocation)
+      # Bronson.subscribe 'maps:app:geoupdate', (data) =>
+      #   panLocation = new google.maps.LatLng(data.latitude, data.longitude)
+      #   @map.panTo(panLocation)
 
       Bronson.subscribe 'maps:app:addmarker', (data) =>
         latlng = new google.maps.LatLng(data.latitude, data.longitude)
@@ -32,22 +31,9 @@ define [
           map: @map
         @map.panTo latlng
 
-      mapOptions =
-        zoom: 13
-        center: new google.maps.LatLng(37.788086, -122.401111)
-        mapTypeId: google.maps.MapTypeId.ROADMAP  
-        mapTypeControl: false
-
       $(@el).prepend(_.template(MapTemplate, null))
-      @map = new google.maps.Map $('.map', @el).get(0), mapOptions
 
-      google.maps.event.addListener(@map, 'click', (event) =>
-        coord =
-          latitude: event.latLng.Ya
-          longitude: event.latLng.Za
-        Bronson.publish 'app:geoupdate', coord
-      )
-
+  
       if @started
         $('.icon-play', @el).removeClass('inactive')
         $('.icon-stop', @el).addClass('inactive') 
@@ -58,6 +44,7 @@ define [
       @
 
     stop: ->
+      console.log @moduleId
       Bronson.stop @moduleId
       $('.icon-stop', @el).removeClass('inactive')
       $('.icon-play', @el).addClass('inactive')

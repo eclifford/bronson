@@ -8,8 +8,5 @@ navigation:
   title: "Home"
   url: "/index.html"
 -
-  title: "Demo"
-  url: "/demo.html"
--
   title: "Reference"
   url: "/reference.html"

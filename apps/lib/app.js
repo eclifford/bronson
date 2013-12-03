@@ -1,22 +1,18 @@
 (function() {
 
   require(['underscore', 'backbone', 'bronson'], function(_, Backbone, Bronson) {
-    Bronson.load('apps/lib/twitter/twitterModule', {
-      el: '#modules'
-    }, (function() {}), true);
-    Bronson.load('apps/lib/foursquare/foursquareModule', {
-      el: '#modules'
-    }, (function() {}), true);
-    Bronson.load('apps/lib/maps/mapsModule', {
-      el: '#modules'
-    }, (function() {}), true);
+    Bronson.load([
+      {
+        'apps/lib/maps/mapsModule': {
+          autostart: true,
+          data: {
+            el: '#modules'
+          }
+        }
+      }
+    ]);
     $('#btnAddInstagram').click(function() {
       return Bronson.load('apps/lib/instagram/instagramModule', {
-        el: '#modules'
-      }, (function() {}), true);
-    });
-    $('#btnAddTwitter').click(function() {
-      return Bronson.load('apps/lib/twitter/twitterModule', {
         el: '#modules'
       }, (function() {}), true);
     });
@@ -26,9 +22,16 @@
       }, (function() {}), true);
     });
     $('#btnAddMaps').click(function() {
-      return Bronson.load('apps/lib/maps/mapsModule', {
-        el: '#modules'
-      }, (function() {}), true);
+      return Bronson.load([
+        {
+          'apps/lib/maps/mapsModule': {
+            autostart: true,
+            data: {
+              el: '#modules'
+            }
+          }
+        }
+      ]);
     });
     $('#btnGetCurrentPosition').click(function() {
       if (navigator && navigator.geolocation) {
