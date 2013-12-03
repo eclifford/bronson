@@ -3,7 +3,21 @@
   require(['underscore', 'backbone', 'bronson'], function(_, Backbone, Bronson) {
     Bronson.load([
       {
+        'apps/lib/instagram/instagramModule': {
+          autostart: true,
+          data: {
+            el: '#modules'
+          }
+        }
+      }, {
         'apps/lib/maps/mapsModule': {
+          autostart: true,
+          data: {
+            el: '#modules'
+          }
+        }
+      }, {
+        'apps/lib/foursquare/foursquareModule': {
           autostart: true,
           data: {
             el: '#modules'

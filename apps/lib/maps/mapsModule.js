@@ -17,10 +17,8 @@
 
       MapModule.prototype.onLoad = function() {
         var mapView;
-        console.log(this.el);
         mapView = new MapView();
         mapView.moduleId = this.id;
-        console.log(this.id);
         $(this.el).append(mapView.render().el);
         return this.map = new GMaps({
           el: $('.map', mapView.el).get(0),

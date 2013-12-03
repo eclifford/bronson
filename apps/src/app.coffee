@@ -16,11 +16,22 @@ require ['underscore', 'backbone', 'bronson'], (_, Backbone, Bronson) ->
   # , true
 
   Bronson.load [
-    'apps/lib/maps/mapsModule': 
+    'apps/lib/instagram/instagramModule':
       autostart: true
-      data:
+      data: 
+        el: '#modules'
+  ,
+    'apps/lib/maps/mapsModule':
+      autostart: true
+      data: 
+        el: '#modules'
+  ,
+    'apps/lib/foursquare/foursquareModule':
+      autostart: true
+      data: 
         el: '#modules'
   ]
+
 
 
   $('#btnAddInstagram').click ->

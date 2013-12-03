@@ -11,10 +11,8 @@ define [
       @el = config.el
 
     onLoad: ->
-      console.log @el
       mapView = new MapView()
       mapView.moduleId = @id
-      console.log @id
       $(@el).append mapView.render().el
 
       @map = new GMaps
