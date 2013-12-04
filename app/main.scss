@@ -1,0 +1,73 @@
+$icon-font-path: "/vendor/bower_components/sass-bootstrap/fonts/";
+
+/* base imports */
+@import 'vendor/bower_components/sass-bootstrap/lib/bootstrap';
+
+@font-face {
+  font-family: 'PincoyablackBlack';
+  src: url('assets/fonts/pincoyablack-webfont.eot');
+  src: url('assets/fonts/pincoyablack-webfont.eot?#iefix') format('embedded-opentype'),
+       url('assets/fonts/pincoyablack-webfont.woff') format('woff'),
+       url('assets/fonts/pincoyablack-webfont.ttf') format('truetype'),
+       url('assets/fonts/pincoyablack-webfont.svg#PincoyablackBlack') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* module imports */
+
+/* variables */
+$primary-color: #f8f8f8;
+$background-color: #FFFFFF;
+$primary-text-color: #515151;
+$link-color: #d13c3c;
+
+/* styles */
+h1, h2, h3, h4, h5 {
+
+}
+
+body {
+  color: $primary-text-color;
+  background-color: $background-color;
+  padding-bottom: 20px;
+  padding-top: 80px;
+}
+
+.navbar {
+  background-color: $primary-color;
+  color: $primary-text-color;
+  height: 70px;
+  min-height: 70px;
+
+  .navbar-brand {
+    color: $primary-text-color;
+    font-family: 'PincoyablackBlack';
+    font-size: 44px;
+    line-height: 45px;
+  }
+  li {
+    a {
+      line-height: 38px;
+    }
+  }
+}
+
+.glyphicon {
+  &.active {
+    color: $link-color;
+  }
+  &:hover {
+    color: $link-color;
+  }
+  cursor: pointer;
+}
+
+section {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.row {
+  margin: 0px;
+}

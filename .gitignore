@@ -1,13 +1,6 @@
-node_modules/
-.temp
-
-# OS generated files #
-######################
-.DS_Store
-ehthumbs.db
-Icon?
-Thumbs.db
+node_modules
+dist
+.tmp
 .sass-cache
-.data
-mnt
-_site
+bower_components
+.DS_Store
