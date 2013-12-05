@@ -15,6 +15,9 @@ $icon-font-path: "/vendor/bower_components/sass-bootstrap/fonts/";
 }
 
 /* module imports */
+@import 'modules/gmaps/main';
+@import 'modules/foursquare/main';
+@import 'modules/carousel/main';
 
 /* variables */
 $primary-color: #f8f8f8;
@@ -70,4 +73,11 @@ section {
 
 .row {
   margin: 0px;
+}
+
+.module {
+  width: 300px;
+  height: 300px;
+  float: left;
+  padding: 10px;
 }

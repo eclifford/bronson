@@ -202,7 +202,7 @@
           // Load by object or string
           if (typeof modules[i] == 'object') {
             _moduleName = Object.getOwnPropertyNames(modules[i])[0];
-          
+
             // extend default settings with passed in module settings returning cloned object
             _settings = extend({}, extend(this.settings, modules[i][_moduleName]));
 
@@ -227,7 +227,7 @@
             // Add the path to our Module
             extend(Module, { path: _moduleName});
 
-            if (_settings.autoload) _module.load(Module);
+            if (_settings.autoload) _module.load(Module, _settings.data);
             if (_settings.autostart) _module.start();
             if (_settings.success) _settings.success(_module);
           });
@@ -365,10 +365,10 @@
 
     function Module() {}
 
-    Module.prototype.load = function(module) {
+    Module.prototype.load = function(module, data) {
       this.id = module.id;
       this.path = module.path;
-      this.onLoad();
+      this.onLoad(data);
     };
 
     Module.prototype.onLoad = function() {

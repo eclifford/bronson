@@ -111,7 +111,7 @@
 <p>
   Now that RequireJS is loaded and Bronson is aliased(optional). We use RequireJS to load Bronson.
 <p>
-<pre><code class="language-javascript"  >
+<pre><code class="language-javascript">
   require(['bronson'], function(Bronson) {
     // Bronson is loaded
   });
@@ -127,65 +127,58 @@
   First let's add an alias to our RequireJS.config for our module named <code>foo</code>.
 </p>
 
-<!-- {% highlight coffeescript %}
-  <!DOCTYPE html>
-  <html>
-    <head>
-      <title>BronsonJS</title>
-      <script data-main='javascripts/app' src='javascripts/vendor/requirejs/require.js'></script>
-      <script>
+<pre><code class="language-markup">
+  &lt;!DOCTYPE html&gt;
+  &lt;html&gt;
+    &lt;head&gt;
+      &lt;title&gt;BronsonJS&lt;/title&gt;
+      &lt;script data-main=&#39;javascripts/app&#39; src=&#39;javascripts/vendor/requirejs/require.js&#39;&gt;&lt;/script&gt;
+      &lt;script&gt;
          require.config({
-            baseUrl: "/javascripts",
+            baseUrl: &quot;/javascripts&quot;,
             paths: {
-                "bronson"   : "vendor/bronson-1.0.0",
-                "foo"       : "javascripts/foo/main"
+                &quot;bronson&quot;   : &quot;vendor/bronson-1.0.0&quot;,
+                &quot;foo&quot;       : &quot;javascripts/foo/main&quot;
             },
             waitSeconds: 15
           });
-      </script>
-    </head>
-{% endhighlight %} -->
+      &lt;/script&gt;
+    &lt;/head&gt;
+</code></pre>
 
 <h3>Creating your Module</h3>
 
-<!-- {% highlight coffeescript %}
-  # file in javascripts/foo/main.coffee
+<pre><code class="language-javascript">
+  var Module = Bronson.Module.extend({
+    onLoad: function(data) {
+      
+    },
+    onStart: function() {
 
-  class FooModule extends Bronson.Module
-    constructor: (data) ->
-      @debug = data.debug
+    },
+    onStop: function() {
 
-    load: ->
-      if @debug
-        console.log 'loading'    
+    },
+    onUnload: function() {
 
-    start: ->
-      if @debug
-        console.log 'starting'
-      @events()
-
-    stop: ->
-      if @debug
-        console.log 'stopping'
-
-    events: ->
-      Bronson.subscribe 'foo:app:message', (data) ->
-        alert data.message
-
-{% endhighlight %}
- -->
+    }
+  });
+</code></pre>
 <h3>Load Module</h3>
 <p>
   We can now use Bronson to load this module from anywhere Bronson is declared.
 </p>
 
-<!-- {% highlight coffeescript %}
-  # Load your module
-  Bronson.load 'foo'  # Load the module via alias or path
-    debug: true             # Pass any object to constructor
-  , ->                      # (optional) callback      
-  , true                    # call start automatically? (default:true)
-{% endhighlight %} -->
+<pre><code class="language-javascript">
+  Bronson.load([
+    'foo': {
+      autostart: true,
+      data: {
+        el: '#module'
+      }
+    }
+  ]);
+</code></pre>
 
 <h2>Bronson's Publish/Subscribe</h2>
 <h3>
@@ -199,26 +192,26 @@
 <p>
     When publishing we utilize the pattern <code>channel:topic</code> to target the topic in the channel we wish to publish to.
 </p>
-<!-- {% highlight coffeescript %}
-    # Module Foo
-    #
+<pre><code class="language-javascript">
+  // Module Foo
+  //
 
-    # we subscribe by providing the subscriber, channel and finally topic
-    Bronson.subscribe 'foo:app:greeting', (data) ->
-        console.log data.message
+  // we subscribe by providing subscriber, channel and finally topic
+  Bronson.subscribe('foo:app:greeting', function(data) {
+    console.log(data.message);
+  });
 
-    ...
+  ...
 
-    # Module Bar    
-    #
+  // Module Bar
+  //
 
-    # we publish by providing a channel name followed by topic
-    Bronson.publish 'app:greeting'
-        message: 'hello!'
+  // we publish by providing a channel name followed by topic
+  Bronson.publish('app:greeting', { message: 'hello!' });
 
-    # we can then easily remove any subscription by doing the following
-    Bronson.unsubscribe 'foo'
-{% endhighlight %} -->
+  // we can then easily remove any subscription by doing the following
+  Bronson.unsubscribe('foo');
+</code></pre>
 </p>
 <h2>
     Dependencies
@@ -250,6 +243,5 @@
       </script>
 
       <script src="vendor/bower_components/prism/prism.js"></script>
-      <script data-main="main" src="/vendor/bower_components/requirejs/require.js"></script>
   </body>
 </html>

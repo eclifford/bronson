@@ -1,0 +1,31 @@
+<div class="searchResult">
+    <div class="icon">
+        <img src="https://ss1.4sqi.net/img/categories_v2/nightlife/bar_bg_32-c4b536b24047252db1ae8c0154458102.png"
+        class="thumb" />
+    </div>
+    <div class="info">
+        <div class="name">
+            <%= name %>
+        </div>
+        <div class="address">
+            <span class="adr">
+                <span class="street-address" itemprop="streetAddress">
+                    <%=location.address %>
+                </span>
+                <br />
+                <span class="locality" itemprop="addressLocality">
+                    <%=location.city %>
+                </span>
+                ,
+                <span class="region" itemprop="addressRegion">
+                    <%=location.state %>
+                </span>
+                <span class="postal-code" itemprop="postalCode">
+                    <%=location.postalCode %>
+                </span>
+                <br>
+            </span>
+        </div>
+    </div>
+    <div style='clear: both'></div>
+</div>
