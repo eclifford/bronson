@@ -16,376 +16,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/main.css">
     <link rel="stylesheet" href="vendor/bower_components/prism/themes/prism.css">
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
     <script src="/vendor/bower_components/modernizr/modernizr.js"></script>
 </head>
 
-<body>
-    <a href="https://github.com/eclifford/bronson">
+<body data-spy="scroll" data-target=".bs-sidebar">
+    <!-- Static navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <a href="https://github.com/eclifford/bronson">
         <img style="position: absolute; top: 0; right: 0; border: 0; z-index: 9999" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
     </a>
-    <div class="container">
-        <!-- Static navbar -->
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">BronsonJS</a>
-            </div>
-            <div class="navbar-collapse collapse">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">BronsonJS</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
                 <ul class="nav navbar-nav">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="index.html">Home</a>
-                        </li>
-                        <li><a href="documentation.html">Documentation</a>
-                        </li>
-                        <li><a href="demo.html">Demo</a>
-                        </li>
-                    </ul>
-            </div>
-            <!--/.nav-collapse -->
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li class="active"><a href="documentation.html">Documentation</a>
+                    </li>
+                    <li><a href="demo.html">Demo</a>
+                    </li>
+                </ul>
         </div>
-        <div class="row">
-            <div class="col-md-3">
-                <div class="bs-sidebar hidden-print affix" role="complementary">
-                    <ul class="nav bs-sidenav">
-
-                        <li class="active">
-                            <a href="#js-overview">Overview</a>
-                            <ul class="nav">
-                                <li class=""><a href="#js-individual-compiled">Individual or compiled</a>
-                                </li>
-                                <li class=""><a href="#js-data-attrs">Data attributes</a>
-                                </li>
-                                <li class=""><a href="#js-programmatic-api">Programmatic API</a>
-                                </li>
-                                <li class=""><a href="#js-noconflict">No conflict</a>
-                                </li>
-                                <li class=""><a href="#js-events">Events</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class=""><a href="#transitions">Transitions</a>
-                        </li>
-                        <li class="">
-                            <a href="#modals">Modal</a>
-                            <ul class="nav">
-                                <li class=""><a href="#modals-examples">Examples</a>
-                                </li>
-                                <li class=""><a href="#modals-usage">Usage</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="">
-                            <a href="#dropdowns">Dropdown</a>
-                            <ul class="nav">
-                                <li class=""><a href="#dropdowns-examples">Examples</a>
-                                </li>
-                                <li class=""><a href="#dropdowns-usage">Usage</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="">
-                            <a href="#scrollspy">Scrollspy</a>
-                            <ul class="nav">
-                                <li class=""><a href="#scrollspy-examples">Examples</a>
-                                </li>
-                                <li class=""><a href="#scrollspy-usage">Usage</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="">
-                            <a href="#tabs">Tab</a>
-                            <ul class="nav">
-                                <li class=""><a href="#tabs-examples">Examples</a>
-                                </li>
-                                <li class=""><a href="#tabs-usage">Usage</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="">
-                            <a href="#tooltips">Tooltip</a>
-                            <ul class="nav">
-                                <li class=""><a href="#tooltips-examples">Examples</a>
-                                </li>
-                                <li class=""><a href="#tooltips-usage">Usage</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="">
-                            <a href="#popovers">Popover</a>
-                            <ul class="nav">
-                                <li class=""><a href="#popovers-examples">Examples</a>
-                                </li>
-                                <li class=""><a href="#popovers-usage">Usage</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="">
-                            <a href="#alerts">Alert</a>
-                            <ul class="nav">
-                                <li class=""><a href="#alerts-examples">Examples</a>
-                                </li>
-                                <li class=""><a href="#alerts-usage">Usage</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="">
-                            <a href="#buttons">Button</a>
-                            <ul class="nav">
-                                <li class=""><a href="#buttons-examples">Examples</a>
-                                </li>
-                                <li class=""><a href="#buttons-usage">Usage</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="">
-                            <a href="#collapse">Collapse</a>
-                            <ul class="nav">
-                                <li class=""><a href="#collapse-examples">Examples</a>
-                                </li>
-                                <li class=""><a href="#collapse-usage">Usage</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="">
-                            <a href="#carousel">Carousel</a>
-                            <ul class="nav">
-                                <li class=""><a href="#carousel-examples">Examples</a>
-                                </li>
-                                <li class=""><a href="#carousel-usage">Usage</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="">
-                            <a href="#affix">Affix</a>
-                            <ul class="nav">
-                                <li><a href="#affix-examples">Examples</a>
-                                </li>
-                                <li><a href="#affix-usage">Usage</a>
-                                </li>
-                            </ul>
-                        </li>
-
-
-                    </ul>
-                </div>
-
-            </div>
-            <div class="col-md-9">
-                <section class="bronson-layer" id="core">
-                    <h2>Core</h2>
-                    <p>
-                        <code>Bronson.Core</code>acts as the
-                        <strong>Mediator</strong>in
-                        <strong>Bronson</strong>. The Core is responsible for the management of modules as well as the communication layer.</p>
-
-                    <section id="core-load">
-                        <h3>load()</h3>
-                        <p>Loads a module via RequireJS and calls your modules load method.</p>
-                        <strong>Bronson.load(module, {config}, callback, autostart)</strong>
-                        <ul>
-                            <li>
-                                <code>module:String</code>– path or RequireJS alias to module</li>
-                            <li>
-                                <code>config:Object</code>– configuration object to pass to module constructor</li>
-                            <li>
-                                <code>callback:Function</code>– function to call upon completion of module load</li>
-                            <li>
-                                <code>autostart:Boolean</code>– whether or not to call the modules start method automatically. Defaults to
-                                <code>true</code>.</li>
-                        </ul>
-
-                        {% highlight coffeescript %} # Simple example require ['bronson'], (Bronson) -> Bronson.load 'example/path/sampleModule', -> # Module has been created {% endhighlight %}
-
-                        <p>It is also possible to pass the configuration object during the construction of the module. This configuration object will be passed to the constructor of your module bootstrapper when you extend
-                            <code>Bronson.Module</code>.</p>
-
-                        {% highlight coffeescript %} require ['bronson'], (Bronson) -> # Sample data to be passed to module configurationObject = el: 'div#modules' url: 'http://example.com/api/data.json' Bronson.load 'example/path/sampleModule' configurationObject # The configuration object to pass to the module , (->) # Callback , false # Whether or not to autostart the module {% endhighlight %}
-                    </section>
-
-                    <section id="api-unload">
-                        <h3>unload()</h3>
-                        <p>
-                            Unloads a module by calling the
-                            <code>unload()</code>method of the module whose instance
-                            <code>id:String</code>you provide. This is typically used to clean up memory.</p>
-                        <strong>Bronson.unload(id)</strong>
-                        <ul>
-                            <li>
-                                <code>id:String</code>– the id of the module instance</li>
-                        </ul>
-                        {% highlight coffeescript %} require ['bronson'], (Bronson) -> Bronson.unload module.id {% endhighlight %}
-                    </section>
-
-                    <section id="api-unloadAll">
-                        <h3>unloadAll()</h3>
-                        <p>Calls unload method of every instanced module.</p>
-                        <strong>Bronson.unloadAll()</strong>
-                        {% highlight coffeescript %} require ['bronson'], (Bronson) -> Bronson.unloadAll() {% endhighlight %}
-                    </section>
-
-                    <section id="core-start">
-                        <h3>start()</h3>
-                        <p>Calls start method of instanced moduled
-                            <p>
-                                <strong>Bronson.start(id)</strong>
-                                {% highlight coffeescript %} require ['bronson'], (Bronson) -> Bronson.start module.id {% endhighlight %}
-                    </section>
-
-                    <section id="core-stop">
-                        <h3>stop()</h3>
-                        <p>Stops a module by calling the
-                            <code>stop()</code>method of the module whose instance
-                            <code>id:String</code>you provide. Typically used when you want to remove an item from the DOM but keep it in memory.</p>
-                        <strong>Bronson.stop(id)</strong>
-                        <ul>
-                            <li>
-                                <code>id:String</code>– the id of the module instance</li>
-                        </ul>
-                        {% highlight coffeescript %} require ['bronson'], (Bronson) -> Bronson.stop module.id {% endhighlight %}
-                    </section>
-
-                    <section id="core-stopAll">
-                        <h3>stopAll()</h3>
-                        <p>Unloads the artifacts loaded for all created modules calling
-                            <code>stopModule()</code>on each in turn.</p>
-                        <strong>Bronson.stopAll()</strong>
-                        {% highlight coffeescript %} require ['bronson'], (Bronson) -> Bronson.stopAll -> # All modules have been stopped {% endhighlight %}
-                    </section>
-
-                    <section id="core-publish">
-                        <h3>publish()</h3>
-                        <p>Publishes an event to all subscribers.</p>
-                        <strong>Bronson.publish(event, data)</strong>
-                        <ul>
-                            <li>
-                                <code>event:String</code>– the event to trigger</li>
-                            <li>
-                                <code>data:Object</code>– the data to sent
-                        </ul>
-
-                        {% highlight coffeescript %} require ['bronson'], (Bronson) -> Bronson.Api.publish 'TestEvent' {% endhighlight %}
-
-                        <p>It's also possible to pass data along with the event</p>
-
-                        {% highlight coffeescript %} require ['bronson'], (Bronson) -> Bronson.Api.publish 'TestEvent', { foo: 'bar' } {% endhighlight %}
-                    </section>
-
-                    <section id="core-subscribe">
-                        <h3>subscribe()</h3>
-                        <p>Subscribe a module to an event and if
-                            <code>Bronson.Permission</code>is enabled, then validate the event.</p>
-                        <strong>Bronson.subscribe(event, callback, context)</strong>
-                        <ul>
-                            <li>
-                                <code>event:String</code>– the name of the event</li>
-                            <li>
-                                <code>callback:Function</code>– the method to invoke when the event is triggered</li>
-                        </ul>
-
-                        {% highlight coffeescript %} require ['bronson'], (Bronson) -> Bronson.Api.subscribe 'TestSubscriber', 'TestEvent', -> # Module subscribed {% endhighlight %} {% highlight coffeescript %} require ['bronson'], (Bronson) -> Bronson.Api.subscribe 'TestSubscriber', 'TestEvent', (data) -> # Event triggered with data console.log data {% endhighlight %}
-                    </section>
-
-                    <section id="api-unsubscribe">
-                        <h3>unsubscribe()</h3>
-                        <p>Unsubscribes an event from a module.</p>
-                        <strong>Bronson.Api.unsubscribe(subscriber, event)</strong>
-                        <ul>
-                            <li>
-                                <code>subscriber:String</code>– the subscriber name to unsubscribe from</li>
-                            <li>
-                                <code>event:String</code>– the event to unsubscribe</li>
-                        </ul>
-
-                        {% highlight coffeescript %} require ['bronson'], (Bronson) -> Bronson.Api.unsubscribe 'subscriber', 'TestEvent' {% endhighlight %}
-                    </section>
-
-                    <section class="bronson-layer" id="permissions">
-                        <h2>Permissions</h2>
-
-                        <section id="permissions-overview">
-                            <h3>Overview</h3>
-                            <p>The permissions layer configures subscriber to event permissions. It can be a good place to map your events. By default permissions are turned off.</p>
-                        </section>
-
-                        <section id="permissions-set">
-                            <h3>set()</h3>
-                            <p>Set's the module to module communication permissions.</p>
-                            <strong>Bronson.Permissions.setPermissions({config})</strong>
-                            <ul>
-                                <li>
-                                    <code>config:Object</code>– the permissions</li>
-                            </ul>
-                            {% highlight coffeescript %} require ['bronson'], (Bronson) -> Bronson.Permissions.setPermissions 'module1': 'event1': true 'event2': false 'module2' 'event1': true 'event2': false {% endhighlight %}
-                        </section>
-
-                        <section id="permissions-validate">
-                            <h3>validate()</h3>
-                            <p>Validates whether or a not a module may subscribe to an event.</p>
-                            <strong>Bronson.Permissions.validate(subscriber, event)</strong>
-                            <ul>
-                                <li>
-                                    <code>subscriber:String</code>– the subscriber to validate</li>
-                                <li>
-                                    <code>event:String</code>– the event to validate</li>
-                                <li>
-                                    <code>return:Boolean</code>– whether or not the event passed validation</li>
-                            </ul>
-                            {% highlight coffeescript %} require ['bronson'], (Bronson) -> Bronson.Permissions.validate 'subscriber', 'event' {% endhighlight %}
-                        </section>
-                    </section>
-
-                    <section class="bronson-layer" id="module">
-                        <h2>Module</h2>
-
-                        <section id="module-overview">
-                            <h3>Overview</h3>
-                            <p>
-                                <code>Bronson.Module</code>is a base class from which all your mini application bootstraps should derive.</p>
-                        </section>
-
-                        <section id="module-load">
-                            <h3>load()</h3>
-                            <p>The module
-                                <code>load()</code>method is called automatically when a module is loaded.</p>
-                            <strong>Bronson.Module.load()</strong>
-                            {% highlight coffeescript %} require ['bronson'], (Bronson) -> class TestModule extends Bronson.Module constructor: (parameters={}) -> load: -> # put all initialization logic here {% endhighlight %}
-                        </section>
-
-                        <section id="module-start">
-                            <h3>start()</h3>
-                            <p>Module
-                                <code>start()</code>is called either during the load process or manually. It's a good place to wire up subscribers or build the DOM.</p>
-                            <strong>Bronson.Module.start()</strong>
-                            {% highlight coffeescript %} require ['bronson'], (Bronson) -> class TestModule extends Bronson.Module constructor: (parameters={}) -> load: -> # put all initialization logic here start: -> # put all subscription or dom creation logic here {% endhighlight %}
-                        </section>
-
-                        <section id="module-stop">
-                            <h3>stop()</h3>
-                            <p>Module
-                                <code>stop()</code>is a good place to put deactivate subscribers or other actions which may need to be temporarily paused.</p>
-                            <strong>Bronson.Module.start()</strong>
-                            {% highlight coffeescript %} require ['bronson'], (Bronson) -> class TestModule extends Bronson.Module constructor: (parameters={}) -> load: -> # put all initialization logic here start: -> # put all subscription or dom creation logic here stop: -> # temporarily stop the module {% endhighlight %}
-                        </section>
-
-                        <section id="module-unload">
-                            <h3>unload()</h3>
-                            <p>Module
-                                <code>unload()</code>is where you should clean up all memory in anticipation of the module being garbage collected.</p>
-                            <strong>Bronson.Module.unload()</strong>
-                            {% highlight coffeescript %} require ['bronson'], (Bronson) -> class TestModule extends Bronson.Module constructor: (parameters={}) -> load: -> # put all initialization logic here start: -> # put all subscription or dom creation logic here stop: -> # temporarily stop the module unload: -> # clean up prior to garbage collection {% endhighlight %}
-                        </section>
-                    </section>
-            </div>
+        <!--/.nav-collapse -->
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="bs-sidebar">
+          <ul class="nav bs-sidenav" data-spy="affix">
+            <li class="active">
+              <a href="#base-module">Base Module</a>
+              <ul class="nav">
+                <li class="">
+                  <a href="#core-load">load()</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#module-loading">Module Loading</a>
+              <ul class="nav">
+                <li class="">
+                  <a href="#core-load">load()</a>
+                </li>
+              </ul>
+            </li>
+              <li>
+              <a href="#pub-sub">Publish & Subscribe</a>
+              <ul class="nav">
+                <li class="">
+                  <a href="#core-load">load()</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </div>
-    </div>
-    </div>
-    </div>
+      </div>
+      <div class="col-md-9">
+        <h1 id='base-module'>Base Module</h2>
+        <p class="lead">
+          LEAD TEXT GOES HERE
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac enim in nibh condimentum tristique vel quis eros. Pellentesque at ipsum erat. Vivamus in tincidunt orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus ullamcorper risus sit amet mauris consequat, nec accumsan erat eleifend. Fusce tempus elementum massa ut aliquet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam sodales purus ut nibh interdum, et tristique metus posuere. Maecenas sagittis enim ac vehicula tincidunt. Quisque sagittis rhoncus mi, placerat sodales urna gravida vel. Maecenas sodales enim vel elementum pulvinar.
+        </p>
+        <h2 id='core-load2'>load()</h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac enim in nibh condimentum tristique vel quis eros. Pellentesque at ipsum erat. Vivamus in tincidunt orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus ullamcorper risus sit amet mauris consequat, nec accumsan erat eleifend. Fusce tempus elementum massa ut aliquet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam sodales purus ut nibh interdum, et tristique metus posuere. Maecenas sagittis enim ac vehicula tincidunt. Quisque sagittis rhoncus mi, placerat sodales urna gravida vel. Maecenas sodales enim vel elementum pulvinar.
+        </p>
+
+        <h1 id='module-loading'>Module Loading</h2>
+        <p class="lead">
+          LEAD TEXT GOES HERE
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac enim in nibh condimentum tristique vel quis eros. Pellentesque at ipsum erat. Vivamus in tincidunt orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus ullamcorper risus sit amet mauris consequat, nec accumsan erat eleifend. Fusce tempus elementum massa ut aliquet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam sodales purus ut nibh interdum, et tristique metus posuere. Maecenas sagittis enim ac vehicula tincidunt. Quisque sagittis rhoncus mi, placerat sodales urna gravida vel. Maecenas sodales enim vel elementum pulvinar.
+        </p>
+        <h2 id='core-load3'>load()</h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac enim in nibh condimentum tristique vel quis eros. Pellentesque at ipsum erat. Vivamus in tincidunt orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus ullamcorper risus sit amet mauris consequat, nec accumsan erat eleifend. Fusce tempus elementum massa ut aliquet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam sodales purus ut nibh interdum, et tristique metus posuere. Maecenas sagittis enim ac vehicula tincidunt. Quisque sagittis rhoncus mi, placerat sodales urna gravida vel. Maecenas sodales enim vel elementum pulvinar.
+        </p>
+
+        <h1 id='core3'>Publish & Subscribe</h2>
+        <p class="lead">
+          LEAD TEXT GOES HERE
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac enim in nibh condimentum tristique vel quis eros. Pellentesque at ipsum erat. Vivamus in tincidunt orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus ullamcorper risus sit amet mauris consequat, nec accumsan erat eleifend. Fusce tempus elementum massa ut aliquet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam sodales purus ut nibh interdum, et tristique metus posuere. Maecenas sagittis enim ac vehicula tincidunt. Quisque sagittis rhoncus mi, placerat sodales urna gravida vel. Maecenas sodales enim vel elementum pulvinar. 
+        </p>
+        <h2 id='core-load4'>load()</h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac enim in nibh condimentum tristique vel quis eros. Pellentesque at ipsum erat. Vivamus in tincidunt orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus ullamcorper risus sit amet mauris consequat, nec accumsan erat eleifend. Fusce tempus elementum massa ut aliquet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam sodales purus ut nibh interdum, et tristique metus posuere. Maecenas sagittis enim ac vehicula tincidunt. Quisque sagittis rhoncus mi, placerat sodales urna gravida vel. Maecenas sodales enim vel elementum pulvinar.
+        </p>
+
+        <h1 id='core5'>Permissions</h2>
+        <p class="lead">
+          LEAD TEXT GOES HERE
+        </p>
+        <p>
+          DESCRIPTION TEXT 
+        </p>
+        <h2 id='core-load2'>load()</h3>
+        <p>
+          SUB DESCRIPTION TEXT
+        </p>
+      </div>
     </div>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
@@ -404,9 +145,10 @@
     ga('create', 'UA-XXXXX-X');
     ga('send', 'pageview');
     </script>
-
     <script src="vendor/bower_components/prism/prism.js"></script>
+    <script src='vendor/bower_components/jquery/jquery.js'></script>
+    <script src='vendor/bower_components/sass-bootstrap/js/scrollspy.js'></script>
+    <script src='vendor/bower_components/sass-bootstrap/js/affix.js'></script>
 
-</body>
-
+  </body>
 </html>

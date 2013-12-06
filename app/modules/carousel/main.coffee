@@ -14,6 +14,8 @@ define [
       carouselView = new CarouselView
         collection: @photos
 
+      carouselView.moduleId = @id
+
       @photos.fetch
         data:
           client_id: "b3481714257943a4974e4e7ba99eb357"

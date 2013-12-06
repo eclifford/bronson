@@ -1,14 +1,28 @@
 {
-  "name": "testudo",
-  "version": "0.0.0",
+  "name": "bronsonjs",
+  "version": "2.0.8",
+  "description": "AMD module framework for building large scale javascript applications",
+  "homepage": "https://github.com/eclifford/bronson",
+  "authors": [
+    "eclifford <ericgclifford@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "bower_components"
+  ],
+  "keywords": [
+    "AMD",
+    "requirejs",
+    "module"
+  ],
+  "main": "bronson.js",
   "dependencies": {},
   "devDependencies": {
     "sass-bootstrap": "~3.0.0",
     "requirejs": "~2.1.9",
     "modernizr": "~2.6.2",
     "jquery": "~1.10.2",
-    "bronson": "~2.0.7",
-    "requirejs-text": "~2.0.10",
     "gmaps": "~0.4.8",
     "marionette": "~1.2.3",
     "backbone-amd": "~1.1.0",

@@ -10,24 +10,21 @@ define [
     className: 'module'
 
     events: ->
-      'click .close': 'dispose'
-      'click .icon-stop': 'stop'
-      'click .icon-play': 'start'
+      'click .glyphicon-remove': 'dispose'
+      'click .glyphicon-stop': 'stop'
+      'click .glyphicon-play': 'start'
 
     stop: ->
       Bronson.stop @moduleId
-      $('.icon-stop', @el).removeClass('inactive')
-      $('.icon-play', @el).addClass('inactive')
+      $('.glyphicon-stop', @el).addClass('active')
+      $('.glyphicon-play', @el).removeClass('active')
       @started = false
 
     start: ->
       Bronson.start @moduleId
-      $('.icon-play', @el).removeClass('inactive')
-      $('.icon-stop', @el).addClass('inactive')
+      $('.glyphicon-stop', @el).removeClass('active')
+      $('.glyphicon-play', @el).addClass('active')
       @started = true
 
     dispose: ->
-      Bronson.unload @moduleId
-      @collection.unbind 'change'
-      @collection.dispose()
-      $(@el).remove()
+      @close()

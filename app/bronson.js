@@ -282,7 +282,7 @@
     // @example
     //  Bronson.start('_@r6');
     //
-    start: function() {
+    start: function(id) {
       var _module = Bronson.find(id);
       if (!_module.started)
         _module.start();
