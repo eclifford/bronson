@@ -1,0 +1,25 @@
+{
+  "name": "bronsonjs demo",
+  "version": "1.0.0",
+  "description": "AMD module framework for building large scale javascript applications",
+  "homepage": "https://github.com/eclifford/bronson",
+  "authors": [
+    "eclifford <ericgclifford@gmail.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "sass-bootstrap": "~3.0.0",
+    "requirejs": "~2.1.9",
+    "modernizr": "~2.6.2",
+    "jquery": "~1.10.2",
+    "gmaps": "~0.4.8",
+    "marionette": "~1.2.3",
+    "backbone-amd": "~1.1.0",
+    "underscore-amd": "~1.5.2",
+    "backbone.wreqr": "~0.2.0",
+    "backbone.babysitter": "~0.0.6",
+    "requirejs-tpl": "*",
+    "bronson": "../bronson.js"
+  }
+}

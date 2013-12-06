@@ -1,0 +1,38 @@
+{
+  "name": "testudo",
+  "version": "0.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-connect": "~0.5.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-requirejs": "~0.4.1",
+    "grunt-contrib-watch": "~0.5.2",
+    "grunt-contrib-coffee": "~0.7.0",
+    "karma": "~0.10.4",
+    "karma-script-launcher": "~0.1.0",
+    "karma-chrome-launcher": "~0.1.0",
+    "karma-firefox-launcher": "~0.1.0",
+    "karma-html2js-preprocessor": "~0.1.0",
+    "karma-requirejs": "~0.1.0",
+    "karma-coffee-preprocessor": "~0.1.0",
+    "karma-phantomjs-launcher": "~0.1.0",
+    "karma-coverage": "~0.1.1",
+    "karma-mocha": "~0.1.0",
+    "grunt-env": "~0.4.0",
+    "grunt-karma": "~0.6.2",
+    "grunt-bower-requirejs": "~0.7.0",
+    "grunt-concurrent": "~0.3.0",
+    "load-grunt-tasks": "~0.1.0",
+    "glob": "~3.2.6",
+    "grunt-coffeelint": "0.0.7",
+    "karma-sinon-chai": "~0.1.1",
+    "karma-chai-jquery": "~0.1.0",
+    "grunt-contrib-symlink": "git://github.com/eclifford/grunt-contrib-symlink.git#0abb4a707532b93d3f8d17beb40b8c3bd501433e",
+    "grunt-contrib-sass": "~0.5.0"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  }
+}

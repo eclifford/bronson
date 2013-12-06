@@ -1,10 +1,10 @@
 define [
   'marionette'
-  'text!modules/carousel/templates/carouselItemTemplate.html'
+  'tpl!modules/carousel/templates/carouselItemTemplate.html'
 ], (Marionette, CarouselItemTemplate) ->
   class CarouselItemView extends Marionette.ItemView
     className: 'item text-center'
-    template: _.template(CarouselItemTemplate)
+    template: CarouselItemTemplate
 
     events:
       'click': 'selectImage'

@@ -8,6 +8,7 @@ define [
       @venuesCollection = new VenuesCollection()
       venuesView = new VenuesView
         collection: @venuesCollection
+      venuesView.moduleId = @id
       
       @venuesCollection.fetch
         data:
@@ -21,7 +22,7 @@ define [
           $(data.el).append venuesView.render().el
 
     onStart: ->
-      Bronson.subscribe 'foursqaure:app:geoupdate', (data) =>
+      Bronson.subscribe 'foursquare:app:geoupdate', (data) =>
         @venuesCollection.fetch
           data:
             ll: "#{data.lat},#{data.lng}"
@@ -31,6 +32,6 @@ define [
             section: 'food'
 
     onStop: ->
-      Bronson.unsubscribe 'foursqaure'
+      Bronson.unsubscribe 'foursquare'
 
     onUnload: ->

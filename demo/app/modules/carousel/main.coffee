@@ -38,6 +38,6 @@ define [
           silent: false
 
     onStop: ->
-
+      Bronson.unsubscribe 'instagram'
 
     onUnload: ->
