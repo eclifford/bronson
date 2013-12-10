@@ -105,9 +105,6 @@
       </div>
       <div class="col-md-9">
         <h1 id='base-module'>Modules</h2>
-        <p class="lead">
-          <strong>Bronson Module's</strong> are the entry point to each miniature application. 
-        </p>
         <p>
           A Bronson module contains callbacks for <strong>onLoad</strong>, <strong>onStart</strong>, <strong>onStop</strong>, <strong>onUnload</strong> each providing logical execution points during an application modules lifecycle.
         </p>
@@ -201,11 +198,8 @@
 <pre><code class="language-javascript">Bronson.findAll();
 </code></pre>
         <h1 id='bronson-pubsub'>Publish & Subscribe</h2>
-        <p class="lead">
-          LEAD TEXT GOES HERE
-        </p>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac enim in nibh condimentum tristique vel quis eros. Pellentesque at ipsum erat. Vivamus in tincidunt orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus ullamcorper risus sit amet mauris consequat, nec accumsan erat eleifend. Fusce tempus elementum massa ut aliquet. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam sodales purus ut nibh interdum, et tristique metus posuere. Maecenas sagittis enim ac vehicula tincidunt. Quisque sagittis rhoncus mi, placerat sodales urna gravida vel. Maecenas sodales enim vel elementum pulvinar. 
+          Bronson comes with built in methods for loosely coupled pubsub module communication. Bronson's pubsub adheres to a message naming convention for easy unsubscribing and optimized publishing. 
         </p>
         <h2 id='bronson-publish'>publish(channel:topic, message)</h3>
         <ul>
@@ -225,7 +219,7 @@
 <pre><code class="language-javascript">Bronson.publish('app:geoupdate', { lat: 37.788086, lng: -122.401111});
 </code></pre>
         <h2 id='bronson-subscribe'>subscribe(subscriber:channel:topic, [callback])</h3>
-  <ul>
+        <ul>
           <li>
             <strong>subscriber:channel:topic</strong> the pattern identifing who is subscribing to what channel and on what topic 
           </li>   
@@ -241,14 +235,31 @@
         </p>
 <pre><code class="language-javascript">Bronson.subscribe('module:app:geoupdate', function(msg) { console.log(msg); });
 </code></pre>
-        <h2 id='bronson-unsubscribe'>unsubscribe()</h3>
+        <h2 id='bronson-unsubscribe'>unsubscribe(subscriber:channel:topic)</h3>
+        <ul>
+          <li>
+            <strong>subscriber:channel:topic</strong> the event to unsubscribe to
+          </li>   
+        </ul>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac enim in nibh condimentum tristique vel quis eros. Pellentesque at ipsum erat. Vivamus in tincidunt orci.
+          The <strong>unsubscribe()</strong> method unsubscribes a subscriber from an event. The <strong>unsubscribe()</strong> method has three levels of specificity.
         </p>
+        <ol>
+          <li>
+            By supplying just a subscriber all events that the subscriber are subscribed to will be removed
+          </li>
+          <li>
+            By supplying a subscriber and a channel <code>subscriber:channel</code> all events in that channel for that subscriber will be removed.
+          </li>
+          <li>
+            By supplying a subscriber a channel and a topic <code>subscriber:channel:topic</code> just that single topic in for that subscriber will be removed.
+          </li>
+        </ol>
+<pre><code class="language-javascript">Bronson.unsubscribe('module:app:geoupdate'); // removes just this topic
+Bronson.unsubscribe('module:app'); // removes all topics in this channel
+Bronson.unsubscribe('module'); // removes all events for this subscriber
+</code></pre>
         <h1 id='bronson-permissions'>Permissions</h2>
-        <p class="lead">
-          LEAD TEXT GOES HERE
-        </p>
         <p>
           DESCRIPTION TEXT 
         </p>

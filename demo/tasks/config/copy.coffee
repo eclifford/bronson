@@ -7,6 +7,6 @@ module.exports =
     expand: true
     dot: true
     cwd: '<%= options.basePath %>'
-    src: ['**/*.{html,jsp,js,css}', '!**/vendor/**/*']
+    src: ['**/*.{html,jsp,js,css,woff,ttf,svg,jpeg}', '!**/vendor/**/*']
     dest: '<%= options.tempDir %>'
 

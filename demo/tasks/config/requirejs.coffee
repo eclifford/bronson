@@ -24,9 +24,12 @@ module.exports =
       modules: [
         name: 'main'
       ,
-        name: 'modules/instagram/main'
+        name: 'modules/carousel/main'
         exclude: ['main']
       ,
         name: 'modules/gmaps/main'
+        exclude: ['main']
+      ,
+        name: 'modules/foursquare/main'
         exclude: ['main']
       ]
