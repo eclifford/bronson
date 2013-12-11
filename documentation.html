@@ -1,0 +1,296 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BronsonJS</title>
+    <meta name="description" content="BronsonJS is a module application framework for building large scalable web applications." />
+    <meta name="keywords" content="JavaScript,RequireJS,AMD,Modules,PubSub,Publish,Subscribe,Bronson,BronsonJS" />
+    <meta name="author" content="Eric Clifford" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="vendor/bower_components/prism/themes/prism.css">
+    <script src="/vendor/bower_components/modernizr/modernizr.js"></script>
+</head>
+
+<body data-spy="scroll" data-target=".bs-sidebar">
+  <div class="container">
+    <!-- Static navbar -->
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <a href="https://github.com/eclifford/bronson">
+        <img style="position: absolute; top: 0; right: 0; border: 0; z-index: 9999" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
+      </a>
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">BronsonJS</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li class="active"><a href="documentation.html">Documentation</a></li>
+            <li><a href="demo.html">Demo</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="bs-sidebar">
+          <ul class="nav bs-sidenav" data-spy="affix">
+            <li class="active">
+              <a href="#bronson-module">Modules</a>
+              <ul class="nav">
+                <li>
+                  <a href="#bronson-load">load()</a>
+                </li>
+                <li>
+                  <a href="#bronson-unload">unload()</a>
+                </li>
+                <li>
+                  <a href="#bronson-unloadAll">unloadAll()</a>
+                </li>
+                <li>
+                  <a href="#bronson-start">start()</a>
+                </li>
+                <li>
+                  <a href="#bronson-startAll">startAll()</a>
+                </li>
+                <li>
+                  <a href="#bronson-stop">stop()</a>
+                </li>
+                <li>
+                  <a href="#bronson-find">find()</a>
+                </li>
+                <li>
+                  <a href="#bronson-findAll">findAll()</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#bronson-pubsub">Publish & Subscribe</a>
+              <ul class="nav">
+                <li>
+                  <a href="#bronson-publish">publish()</a>
+                </li>
+                <li>
+                  <a href="#bronson-subscribe">subscribe()</a>
+                </li>
+                <li>
+                  <a href="#bronson-unsubscribe">unsubscribe()</a>
+                </li>
+              </ul>
+            </li>
+              <li>
+              <a href="#bronson-permissions">Permissions</a>
+              <ul class="nav">
+                <li class="">
+                  <a href="#core-load">load()</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <h1 id='base-module'>Modules</h2>
+        <p>
+          A Bronson module contains callbacks for <strong>onLoad</strong>, <strong>onStart</strong>, <strong>onStop</strong>, <strong>onUnload</strong> each providing logical execution points during an application modules lifecycle.
+        </p>
+        <p>
+          <li>
+            <strong>onLoad</strong>: called with passed in <strong>data</strong> object automatically after RequireJS loads this module.
+          </li>
+          <li>
+            <strong>onStart</strong>: called automatically if <strong>autostart</strong> is enabled or alternatively through <strong>Bronson.start(MODULE_ID)</strong>
+          </li>
+          <li>
+            <strong>onStop</strong>: called via Bronon Api <strong>Bronson.stop(MODULE_ID)</strong>
+          </li>
+          <li>
+            <strong>onUnload</strong>: called via Bronson API <strong>Bronson.unload(MODULE_ID)</strong>
+          </li>
+        </p>
+<pre><code class="language-javascript">var Module = Bronson.Module.extend({
+  onLoad: function(data) {
+    // initialize module
+  },
+  onStart: function() {
+    // used to enabled module and its interactions with other modulesk
+  },
+  onStop: function() {
+    // used to disable module and its interactions with other modules
+  },
+  onUnload: function() {
+    // used to place cleanup code for your module
+  }
+});
+</code></pre>
+        <h2 id='bronson-load'>load([object:module])</h3>
+        <p>
+          The module <strong>load()</strong> method loads a <strong>Bronson Module</strong> with <strong>RequireJS</strong> and passes in a set of options and a data object for use in the onLoad callback.
+        </p>
+<pre><code class="language-javascript">Bronson.load([
+  'path/to/module': {
+    autostart: true,
+    data:
+      el: '#main' 
+  }
+]);
+</code></pre>
+        <h2 id='bronson-unload'>unload(string:moduleId)</h3>
+        <p>
+          The module <strong>unload()</strong> method unloads the module with the supplied <strong>moduleId</strong> and calls the <strong>onUnload</strong> callback of the module for cleanup.
+        </p>
+<pre><code class="language-javascript">Bronson.unload(MODULE_ID);
+</code></pre>
+        <h2 id='bronson-unloadAll'>unloadAll()</h3>
+        <p>
+          The module <strong>unloadAll()</strong> method unloads all loaded modules by unregistering them with <strong>RequireJS</strong> and finally calling each of their <strong>onUnload</strong> callbacks.
+        </p>
+<pre><code class="language-javascript">Bronson.unloadAll();
+</code></pre>
+        <h2 id='bronson-start'>start(string:moduleId)</h3>
+        <p>
+          The module <strong>start()</strong> method starts a module with the supplied <strong>moduleId</strong> that has already loaded method and not previously started.
+        </p>
+<pre><code class="language-javascript">Bronson.start(MODULE_ID);
+</code></pre>
+        <h2 id='bronson-startAll'>startAll()</h3>
+        <p>
+          The module <strong>startAll()</strong> method starts all modules that have not been previously started.
+        </p>
+<pre><code class="language-javascript">Bronson.startAll();
+</code></pre>
+        <h2 id='bronson-stop'>stop(string:moduleId)</h3>
+        <p>
+          The module <strong>stop()</strong> method stops a module with the supplied <strong>moduleId</strong> that has been started.
+        </p>
+<pre><code class="language-javascript">Bronson.stop();
+</code></pre>
+        <h2 id='bronson-stopAll'>stopAll()</h3>
+        <p>
+          The module <strong>stopAll()</strong> method stops all modules that have been previously started.
+        </p>
+<pre><code class="language-javascript">Bronson.stopAll();
+</code></pre>
+        <h2 id='bronson-find'>find(string:moduleId)</h3>
+        <p>
+          The module <strong>find()</strong> method returns a Bronson module that matches the supplied <strong>moduleId</strong>.
+        </p>
+<pre><code class="language-javascript">Bronson.find(MODULE_ID);
+</code></pre>
+        <h2 id='bronson-findAll'>findAll()</h3>
+        <p>
+          The module <strong>findAll()</strong> method returns an array of all Bronson modules.
+        </p>
+<pre><code class="language-javascript">Bronson.findAll();
+</code></pre>
+        <h1 id='bronson-pubsub'>Publish & Subscribe</h2>
+        <p>
+          Bronson comes with built in methods for loosely coupled pubsub module communication. Bronson's pubsub adheres to a message naming convention for easy unsubscribing and optimized publishing. 
+        </p>
+        <h2 id='bronson-publish'>publish(channel:topic, message)</h3>
+        <ul>
+          <li>
+            <strong>string:channel:topic</strong> the channel:topic to publish to
+          </li>   
+          <li>
+            <strong>object:message</strong> the object to pass to subscribers of that <code>channel:topic</code>
+          </li> 
+        </ul>
+        <p>
+          The <strong>publish()</strong> publishes an event to all subscribers utilizing the pattern <code>channel:topic</code> in addition to an message object to pass to each subscriber.
+        </p>
+        <p>
+          For instance if we had an application wide channel and we wanted to notify all of our subscribers of that channel that a geoposition is changing we could do the following.
+        </p>
+<pre><code class="language-javascript">Bronson.publish('app:geoupdate', { lat: 37.788086, lng: -122.401111});
+</code></pre>
+        <h2 id='bronson-subscribe'>subscribe(subscriber:channel:topic, [callback])</h3>
+        <ul>
+          <li>
+            <strong>subscriber:channel:topic</strong> the pattern identifing who is subscribing to what channel and on what topic 
+          </li>   
+          <li>
+            <strong>callback</strong> the callback to execute upon publishing on this subscribed <code>channel:topic</code>
+          </li> 
+        </ul>
+        <p>
+          The <strong>publish()</strong> publishes an event to all subscribers utilizing the pattern <code>channel:topic</code> in addition to an message object to pass to each subscriber.
+        </p>
+        <p>
+          For instance if we had an application wide channel and we wanted to notify all of our subscribers of that channel that a geoposition is changing we could do the following.
+        </p>
+<pre><code class="language-javascript">Bronson.subscribe('module:app:geoupdate', function(msg) { console.log(msg); });
+</code></pre>
+        <h2 id='bronson-unsubscribe'>unsubscribe(subscriber:channel:topic)</h3>
+        <ul>
+          <li>
+            <strong>subscriber:channel:topic</strong> the event to unsubscribe to
+          </li>   
+        </ul>
+        <p>
+          The <strong>unsubscribe()</strong> method unsubscribes a subscriber from an event. The <strong>unsubscribe()</strong> method has three levels of specificity.
+        </p>
+        <ol>
+          <li>
+            By supplying just a subscriber all events that the subscriber are subscribed to will be removed
+          </li>
+          <li>
+            By supplying a subscriber and a channel <code>subscriber:channel</code> all events in that channel for that subscriber will be removed.
+          </li>
+          <li>
+            By supplying a subscriber a channel and a topic <code>subscriber:channel:topic</code> just that single topic in for that subscriber will be removed.
+          </li>
+        </ol>
+<pre><code class="language-javascript">Bronson.unsubscribe('module:app:geoupdate'); // removes just this topic
+Bronson.unsubscribe('module:app'); // removes all topics in this channel
+Bronson.unsubscribe('module'); // removes all events for this subscriber
+</code></pre>
+        <h1 id='bronson-permissions'>Permissions</h2>
+        <p>
+          DESCRIPTION TEXT 
+        </p>
+        <h2 id='core-load2'>load()</h3>
+        <p>
+          SUB DESCRIPTION TEXT
+        </p>
+      </div>
+    </div>
+  </div>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script>
+    (function(b, o, i, l, e, r) {
+        b.GoogleAnalyticsObject = l;
+        b[l] || (b[l] =
+            function() {
+                (b[l].q = b[l].q || []).push(arguments)
+            });
+        b[l].l = +new Date;
+        e = o.createElement(i);
+        r = o.getElementsByTagName(i)[0];
+        e.src = '//www.google-analytics.com/analytics.js';
+        r.parentNode.insertBefore(e, r)
+    }(window, document, 'script', 'ga'));
+    ga('create', 'UA-XXXXX-X');
+    ga('send', 'pageview');
+    </script>
+    <script src="vendor/bower_components/prism/prism.js"></script>
+    <script src='vendor/bower_components/jquery/jquery.js'></script>
+    <script src='vendor/bower_components/sass-bootstrap/js/scrollspy.js'></script>
+    <script src='vendor/bower_components/sass-bootstrap/js/affix.js'></script>
+
+  </body>
+</html>
