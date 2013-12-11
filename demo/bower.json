@@ -20,6 +20,7 @@
     "backbone.wreqr": "~0.2.0",
     "backbone.babysitter": "~0.0.6",
     "requirejs-tpl": "*",
-    "bronson": "../bronson.js"
+    "bronson": "../bronson.js",
+    "prismjs": "*"
   }
 }

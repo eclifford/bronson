@@ -3,215 +3,95 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>BronsonJS</title>
-        <meta name="description" content="BronsonJS is a module application framework for building large scalable web applications." />
-        <meta name="keywords" content="JavaScript,RequireJS,AMD,Modules,PubSub,Publish,Subscribe,Bronson,BronsonJS" />
-        <meta name="author" content="Eric Clifford" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/main.css">
-        <link rel="stylesheet" href="vendor/bower_components/prism/themes/prism.css">
-        <script src="/vendor/bower_components/modernizr/modernizr.js"></script>
-    </head>
-    <body>
- 
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BronsonJS</title>
+    <meta name="description" content="BronsonJS is a module application framework for building large scalable web applications." />
+    <meta name="keywords" content="JavaScript,RequireJS,AMD,Modules,PubSub,Publish,Subscribe,Bronson,BronsonJS" />
+    <meta name="author" content="Eric Clifford" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="vendor/bower_components/prismjs/prism.css">
+    <script src="vendor/bower_components/modernizr/modernizr.js"></script>
+  </head>
+  <body>
     <div class="container">
-
       <!-- Static navbar -->
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <a href="https://github.com/eclifford/bronson">
-      <img style="position: absolute; top: 0; right: 0; border: 0; z-index: 9999" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
-    </a>
+        <a href="https://github.com/eclifford/bronson">
+          <img style="position: absolute; top: 0; right: 0; border: 0; z-index: 9999" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
+        </a>
         <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="index.html">BronsonJS</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="documentation.html">Documentation</a></li>
-            <li><a href="demo.html">Demo</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">BronsonJS</a>
+          </div>
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="index.html">Home</a></li>
+              <li><a href="documentation.html">Documentation</a></li>
+              <li><a href="demo.html">Demo</a></li>
+            </ul>
+          </div>
         </div>
       </div>
-
-      <!-- Main component for a primary marketing message or call to action -->
+      <!-- Content -->
       <div class="jumbotron">
-      <img src='assets/imgs/bronson.jpeg' width='300px' style='float: left; padding-right: 20px'
-    />
+        <img src='assets/imgs/bronson.jpeg' width='300px' style='float: left; padding-right: 20px'
+      />
         <h2 class='fontface'>
-        BronsonJS
+          BronsonJS
         </h2>
         <p>
-            Module application and pub/sub framework for RequireJS
+          Module application and pub/sub framework for RequireJS
         </p>
         <p class="download-info">
-            <a href="https://github.com/eclifford/bronson/" class="btn btn-primary btn-large"
-            onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'GitHub Project', 'View project on GitHub']);">View project on GitHub</a>
-            <a href="https://raw.github.com/eclifford/bronson/master/bronson.js"
-            class="btn btn-primary btn-large" onclick="_gaq.push(['_trackEvent', 'Home Page', 'Download', 'Download 1.0.0']);">Download Bronson</a>
-            <a href="https://raw.github.com/eclifford/bronson/master/bronson.js.min.js"
-            class="btn btn-primary btn-large" onclick="_gaq.push(['_trackEvent', 'Home Page', 'Download', 'Download 1.0.0']);">Download Minified Bronson</a>
-            <div class='clearfix'>
-            </div>
+          <a href="https://github.com/eclifford/bronson/" class="btn btn-primary btn-large"
+          onclick="_gaq.push(['_trackEvent', 'Jumbotron actions', 'GitHub Project', 'View project on GitHub']);">View project on GitHub</a>
+          <a href="https://raw.github.com/eclifford/bronson/master/bronson.js"
+          class="btn btn-primary btn-large" onclick="_gaq.push(['_trackEvent', 'Home Page', 'Download', 'Download 1.0.0']);">Download Bronson</a>
+          <a href="https://raw.github.com/eclifford/bronson/master/bronson.min.js"
+          class="btn btn-primary btn-large" onclick="_gaq.push(['_trackEvent', 'Home Page', 'Download', 'Download 1.0.0']);">Download Minified Bronson</a>
+          <div class='clearfix'></div>
         </p>
       </div>
 
-    <h2>
-    Introduction
-</h2>
-<p>
-    Bronson is an opinionated module application framework used for the building of large scalable web applications. Bronson is a thin API wrapper on top of RequireJS providing a simplfied interface for the loading, unloading, starting and stopping of modules. Use Bronson to boostrap the entry point of your application regardless of the framework your using (Backbone, AngularJS) etc.
-</p>
-<p>
-    In addition to the module bootstrapping layer. Bronson provides a fast, managed, framework agnostic publish/subscribe framework for inter module and application wide messaging. By adhering to Bronson's event namespacing your messages will be easily maintainable and more importantly easily understandable(readable) to your team. 
-</p>
-
-<h2>
-    Features
-</h2>
-<ul>
-    <li>
-        Managed loading, unloading, starting and stopping of modules through RequireJS.
-    </li>
-    <li>
-        Fast, managed, framework agnostic publish/subscribe system built for module to module as well as application wide communication.
-    </li>
-</ul>
-<h2>Installation</h2>
-<p>
-  First make sure you have RequireJS installed and at the top or bottom(preferred) of your page. If you need help make sure you read through the <a href='http://requirejs.org'>RequireJS</a> documentation.
-</p>
-
-<pre><code class="language-markup">
-&lt;head&gt;
-  &lt;title&gt;BronsonJS&lt;/title&gt;
-  &lt;script data-main='javascripts/app' src='javascripts/vendor/requirejs/require.js'&gt;&lt;/script&gt;
-  &lt;script&gt;
-     require.config({
-        baseUrl: "/javascripts",
-        paths: {
-            "bronson"   : "vendor/bronson-1.0.0"
-        },
-        waitSeconds: 15
-      });
-  &lt;/script&gt;
-&lt;/head&gt;
-</code></pre>
-<p>
-  Now that RequireJS is loaded and Bronson is aliased(optional). We use RequireJS to load Bronson.
-<p>
-<pre><code class="language-javascript">
-  require(['bronson'], function(Bronson) {
-    // Bronson is loaded
-  });
-</code></pre>
-
-<h2>Bronson's Module Definition</h2>
-<p>
-    Bronson provides a base module class to inherit your classes from. Then simply call <code>Bronson.load()</code> to load a load that module through RequireJS.
-</p>
-
-<h3>Aliasing your Module</h3>
-<p>
-  First let's add an alias to our RequireJS.config for our module named <code>foo</code>.
-</p>
-
-<pre><code class="language-markup">
-  &lt;!DOCTYPE html&gt;
-  &lt;html&gt;
-    &lt;head&gt;
-      &lt;title&gt;BronsonJS&lt;/title&gt;
-      &lt;script data-main=&#39;javascripts/app&#39; src=&#39;javascripts/vendor/requirejs/require.js&#39;&gt;&lt;/script&gt;
-      &lt;script&gt;
-         require.config({
-            baseUrl: &quot;/javascripts&quot;,
-            paths: {
-                &quot;bronson&quot;   : &quot;vendor/bronson-1.0.0&quot;,
-                &quot;foo&quot;       : &quot;javascripts/foo/main&quot;
-            },
-            waitSeconds: 15
-          });
-      &lt;/script&gt;
-    &lt;/head&gt;
-</code></pre>
-
-<h3>Creating your Module</h3>
-
-<pre><code class="language-javascript">
-  var Module = Bronson.Module.extend({
-    onLoad: function(data) {
-      
-    },
-    onStart: function() {
-
-    },
-    onStop: function() {
-
-    },
-    onUnload: function() {
-
-    }
-  });
-</code></pre>
-<h3>Load Module</h3>
-<p>
-  We can now use Bronson to load this module from anywhere Bronson is declared.
-</p>
-
-<pre><code class="language-javascript">
-  Bronson.load([
-    'foo': {
-      autostart: true,
-      data: {
-        el: '#module'
-      }
-    }
-  ]);
-</code></pre>
-
-<h2>Bronson's Publish/Subscribe</h2>
-<h3>
-    Understanding Bronson's pub/sub namespacing pattern
-</h3>
-<h4>Subscribing</h4>
-<p>
-    When subscribing we utilize the following pattern <code>subscriber:channel:topic</code> which allows us to keep Bronson's eventing system as optimized as possible and allows for the easy cleanup of unsubscribed modules.
-</p>
-<h4>Publishing</h4>
-<p>
-    When publishing we utilize the pattern <code>channel:topic</code> to target the topic in the channel we wish to publish to.
-</p>
-<pre><code class="language-javascript">
-  // Module Foo
-  //
-
-  // we subscribe by providing subscriber, channel and finally topic
-  Bronson.subscribe('foo:app:greeting', function(data) {
-    console.log(data.message);
-  });
-
-  ...
-
-  // Module Bar
-  //
-
-  // we publish by providing a channel name followed by topic
-  Bronson.publish('app:greeting', { message: 'hello!' });
-
-  // we can then easily remove any subscription by doing the following
-  Bronson.unsubscribe('foo');
-</code></pre>
-</p>
+      <h2>
+        What is Bronson?
+      </h2>
+      <p>
+        Bronson is an opinionated module application framework for the building of large scalable web applications. It was born from the need to modular application development in the real world not just single page app prototypes. Bronson sits on top of RequireJS to give a common API for loading modular widgets that you can control programatically with a universal interface for starting, stopping, loading, unloading, and communicating of modules on your pages. 
+      <h2>
+        Features
+      </h2>
+      <ul>
+        <li>
+          Module boilerplate reflecting the typical life cycle of a standalone widget.
+        </li>
+        <li>
+          API for loading, unloading, starting, stopping modules
+        </li>
+        <li>
+          Fast, managed, framework agnostic publish/subscribe system built for module to module as well as application wide communication.
+        </li>
+        <li>
+          Permissions controller for management of communication
+        </li>
+        <li>
+          Cross browser tested IE8 + Modern Browsers. 
+        </li>
+        <li>
+          Only dependency is RequireJS
+        </li>
+      </ul>
+      <h2>Installation</h2>
+      <p>Bronson is can be loaded via script tag or through require</p>
 <h2>
     Dependencies
 </h2>
@@ -241,6 +121,6 @@
           ga('create','UA-XXXXX-X');ga('send','pageview');
       </script>
 
-      <script src="vendor/bower_components/prism/prism.js"></script>
+      <script src="vendor/bower_components/prismjs/prism.js"></script>
   </body>
 </html>
