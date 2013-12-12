@@ -28,14 +28,14 @@ define [
         click: (e) ->
           # notify subscribers of new click position
           Bronson.publish 'app:geoupdate',
-            lat: e.latLng.pb
-            lng: e.latLng.qb
+            lat: e.latLng.nb
+            lng: e.latLng.ob
 
     #
     # render the map and wire up events
     #
     onStart: ->
-      Bronson.subscribe 'map:app:addmarker', (data) =>
+      Bronson.subscribe "#{@id}:app:addmarker", (data) =>
         @map.addMarker
           lat: data.lat
           lng: data.lng
@@ -45,10 +45,10 @@ define [
     # stop interacting with other modules
     #
     onStop: ->
-      Bronson.unsubscribe 'map'
+      Bronson.unsubscribe @id
 
     #
     # unsubscribe all events and unrender view
     #
     onUnload: ->
-      Bronson.unsubscribe 'map'
+      Bronson.unsubscribe @id

@@ -68,9 +68,15 @@ define(['bronson'], function(Bronson) {
       describe("load()", function() {
         it("should successfully load a module", function(done) {
           expect(function() {
-            Bronson.load([
-              {'test/fixtures/module': { success: function() {done();}}}
-            ]);
+            Bronson.load(
+              {
+                id: 'foo3',
+                path: 'test/fixtures/module',
+                success: function(module) {
+                  done();
+                }
+              }
+            );
           }).to.not.throw();
         });
       });
@@ -78,27 +84,35 @@ define(['bronson'], function(Bronson) {
       describe("stop()", function() {
         it("should successfully stop a module without erroring", function(done) {
           expect(function() {
-            Bronson.load([ 
-              {'test/fixtures/module': { autostart: true, success: function(module) {
-                Bronson.stop(module.id);
-                expect(module.started).to.equal(false);
-                done();
-              }}}
-            ]);
+            Bronson.load(
+              {
+                id: 'foo1',
+                path: 'test/fixtures/module',
+                success: function(module) {
+                  Bronson.stop(module.id);
+                  expect(module.started).to.equal(false);
+                  done();
+                }
+              }
+            );
           }).to.not.throw();
         });
       });
 
       describe("start()", function() {
-        it("should successfully start a module", function() {
+        it("should successfully start a module", function(done) {
           expect(function() {
-            Bronson.load([ 
-              {'test/fixtures/module': { autostart: false, success: function(module) {
-                Bronson.start(module.id);
-                expect(module.started).to.equal(true);
-                done();
-              }}}
-            ]);
+            Bronson.load(
+              {
+                id: 'foo2',
+                path: 'test/fixtures/module',
+                success: function(module) {
+                  Bronson.stop(module.id);
+                  expect(module.started).to.equal(false);
+                  done();
+                }
+              }
+            );
           }).to.not.throw();  
         });  
       });
