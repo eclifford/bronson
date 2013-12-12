@@ -6,44 +6,53 @@ require ['common'], (common) ->
     'jquery'
     'bronson'
   ], ($, Bronson) ->
+
     Bronson.load [
-      'modules/gmaps/main':
-        data:
-          el: '#main'
+      id: Math.random().toString(36).substring(7)
+      path: 'modules/gmaps/main'
+      data:
+        el: '#main'
+      options:
         autostart: true
     ,
-      'modules/foursquare/main':
-        data:
-          el: '#main'
+      id: Math.random().toString(36).substring(7)
+      path: 'modules/foursquare/main'
+      data:
+        el: '#main'
+      options:
         autostart: true
     ,
-      'modules/carousel/main':
-        data:
-          el: '#main'
+      id: Math.random().toString(36).substring(7)
+      path: 'modules/carousel/main'
+      data:
+        el: '#main'
+      options:
         autostart: true
     ]
 
     $('#add-map').click ->
-      Bronson.load [
-        'modules/gmaps/main':
-          data:
-            el: '#main'
+      Bronson.load
+        id: Math.random().toString(36).substring(7)
+        path: 'modules/gmaps/main'
+        data:
+          el: '#main'
+        options:
           autostart: true
-      ]
 
     $('#add-instagram').click ->
-      Bronson.load [
-        'modules/carousel/main':
-          data:
-            el: '#main'
+      Bronson.load
+        id: Math.random().toString(36).substring(7)
+        path: 'modules/carousel/main'
+        data:
+          el: '#main'
+        options:
           autostart: true
-      ]
 
     $('#add-foursquare').click ->
-      Bronson.load [
-        'modules/foursquare/main':
-          data:
-            el: '#main'
+      Bronson.load
+        id: Math.random().toString(36).substring(7)
+        path: 'modules/foursquare/main'
+        data:
+          el: '#main'
+        options:
           autostart: true
-      ]
-

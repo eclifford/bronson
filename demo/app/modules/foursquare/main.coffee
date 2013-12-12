@@ -22,7 +22,8 @@ define [
           $(data.el).append venuesView.render().el
 
     onStart: ->
-      Bronson.subscribe 'foursquare:app:geoupdate', (data) =>
+      Bronson.subscribe "#{@id}:app:geoupdate", (data) =>
+        console.log data
         @venuesCollection.fetch
           data:
             ll: "#{data.lat},#{data.lng}"
@@ -32,6 +33,6 @@ define [
             section: 'food'
 
     onStop: ->
-      Bronson.unsubscribe 'foursquare'
+      Bronson.unsubscribe @id
 
     onUnload: ->

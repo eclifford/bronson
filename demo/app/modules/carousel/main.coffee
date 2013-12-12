@@ -28,7 +28,7 @@ define [
         
 
     onStart: ->
-      Bronson.subscribe 'instagram:app:geoupdate', (data) =>
+      Bronson.subscribe "#{@id}:app:geoupdate", (data) =>
         @photos.fetch
           data:
             client_id: "b3481714257943a4974e4e7ba99eb357"
@@ -38,6 +38,6 @@ define [
           silent: false
 
     onStop: ->
-      Bronson.unsubscribe 'instagram'
+      Bronson.unsubscribe @id
 
     onUnload: ->
