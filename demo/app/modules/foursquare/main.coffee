@@ -23,7 +23,6 @@ define [
 
     onStart: ->
       Bronson.subscribe "#{@id}:app:geoupdate", (data) =>
-        console.log data
         @venuesCollection.fetch
           data:
             ll: "#{data.lat},#{data.lng}"

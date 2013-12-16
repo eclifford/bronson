@@ -21,12 +21,11 @@
   // simple deep extend
   var extend = function(target, source) {
     for(var key in source) {
-      if (key in target && typeof key == 'object') {
+      if (key in target && (typeof source[key] === 'object') && (key !== null)) {
         extend(target[key], source[key]);
-      }
+      } 
       else
-        if (source.hasOwnProperty(key))
-          target[key] = source[key];
+        target[key] = source[key];
     }
     return target;
   };

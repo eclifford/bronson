@@ -23,7 +23,7 @@ module.exports = function(grunt) {
     },
     watch: {
       files: ['Gruntfile.js', 'bronson.js', 'test/**/*.js'],
-      tasks: ['jshint', 'karma:unit:run', 'copy']
+      tasks: ['jshint', 'karma:unit:run']
     },
     copy: {
       bronson: {

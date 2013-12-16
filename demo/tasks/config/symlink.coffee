@@ -9,7 +9,7 @@ module.exports =
   expanded:
     files: [
       expand: true
-      cwd: 'app/vendor/bower_components'
+      cwd: 'app/vendor'
       src: ['*']
-      dest: '.tmp/vendor/bower_components'
+      dest: '.tmp/vendor'
     ]
