@@ -15,7 +15,7 @@
     <meta name="author" content="Eric Clifford" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/main.css">
-    <link rel="stylesheet" href="vendor/bower_components/prism/themes/prism.css">
+    <link rel="stylesheet" href="vendor/bower_components/prismjs/prism.css">
     <script src="/vendor/bower_components/modernizr/modernizr.js"></script>
 </head>
 
@@ -110,22 +110,27 @@
           A Bronson module contains callbacks for <strong>onLoad</strong>, <strong>onStart</strong>, <strong>onStop</strong>, <strong>onUnload</strong> each providing logical execution points during an application modules lifecycle.
         </p>
         <p>
-          <li>
-            <strong>onLoad</strong>: called with passed in <strong>data</strong> object automatically after RequireJS loads this module.
-          </li>
-          <li>
-            <strong>onStart</strong>: called automatically if <strong>autostart</strong> is enabled or alternatively through <strong>Bronson.start(MODULE_ID)</strong>
-          </li>
-          <li>
-            <strong>onStop</strong>: called via Bronon Api <strong>Bronson.stop(MODULE_ID)</strong>
-          </li>
-          <li>
-            <strong>onUnload</strong>: called via Bronson API <strong>Bronson.unload(MODULE_ID)</strong>
-          </li>
+          <ul>
+            <li>
+              <strong>onLoad</strong>: called with passed in <strong>data</strong> object automatically after RequireJS loads this module.
+            </li>
+            <li>
+              <strong>onStart</strong>: called automatically if <strong>autostart</strong> is enabled or alternatively through <strong>Bronson.start(MODULE_ID)</strong>
+            </li>
+            <li>
+              <strong>onStop</strong>: called via Bronon Api <strong>Bronson.stop(MODULE_ID)</strong>
+            </li>
+            <li>
+              <strong>onUnload</strong>: called via Bronson API <strong>Bronson.unload(MODULE_ID)</strong>
+            </li>
+          </ul>
         </p>
 <pre><code class="language-javascript">var Module = Bronson.Module.extend({
   onLoad: function(data) {
     // initialize module
+    console.log(this.data); // data object passed in
+    console.log(this.id); // module_id
+    console.log(this.started); // whether or not this module has been started
   },
   onStart: function() {
     // used to enabled module and its interactions with other modulesk
@@ -142,14 +147,41 @@
         <p>
           The module <strong>load()</strong> method loads a <strong>Bronson Module</strong> with <strong>RequireJS</strong> and passes in a set of options and a data object for use in the onLoad callback.
         </p>
-<pre><code class="language-javascript">Bronson.load([
-  'path/to/module': {
-    autostart: true,
+        <p>
+          Below is full example of all the options to pass to load along with the defaults.
+        </p>
+<pre><code class="language-javascript">Bronson.load(
+  {
+    id: 'foo', // module_id [required]
+    path: 'path/to/module', // requirejs path to module [required]
+    options: {
+      autoload: true,
+      autostart: false,
+      permissions: false
+    }
     data:
       el: '#main' 
+    success: function(module) {
+      console.log(module); // the loaded module
+    },
+    error: function(error) {
+      console.log(error); // error message if error occurred during load
+    }
   }
-]);
+);
 </code></pre>
+        <p>Alternatively you can pass an array of objects module to load</p>
+<pre><code class="language-javascript">Bronson.load([
+  {
+    id: 'foo', // module_id [required]
+    path: 'path/to/module', // requirejs path to module [required]
+    ...
+  }, 
+  {
+    ...
+  }
+])
+</pre></code>
         <h2 id='bronson-unload'>unload(string:moduleId)</h3>
         <p>
           The module <strong>unload()</strong> method unloads the module with the supplied <strong>moduleId</strong> and calls the <strong>onUnload</strong> callback of the module for cleanup.
@@ -178,7 +210,7 @@
         <p>
           The module <strong>stop()</strong> method stops a module with the supplied <strong>moduleId</strong> that has been started.
         </p>
-<pre><code class="language-javascript">Bronson.stop();
+<pre><code class="language-javascript">Bronson.stop(MODULE_ID);
 </code></pre>
         <h2 id='bronson-stopAll'>stopAll()</h3>
         <p>
@@ -200,7 +232,7 @@
 </code></pre>
         <h1 id='bronson-pubsub'>Publish & Subscribe</h2>
         <p>
-          Bronson comes with built in methods for loosely coupled pubsub module communication. Bronson's pubsub adheres to a message naming convention for easy unsubscribing and optimized publishing. 
+          Bronson comes with built in methods for pubsub module communication. Bronson's pubsub adheres to a message naming convention for easy unsubscribing and optimized publishing. 
         </p>
         <h2 id='bronson-publish'>publish(channel:topic, message)</h3>
         <ul>
@@ -288,7 +320,7 @@ Bronson.unsubscribe('module'); // removes all events for this subscriber
     ga('create', 'UA-XXXXX-X');
     ga('send', 'pageview');
     </script>
-    <script src="vendor/bower_components/prism/prism.js"></script>
+    <script src="vendor/bower_components/prismjs/prism.js"></script>
     <script src='vendor/bower_components/jquery/jquery.js'></script>
     <script src='vendor/bower_components/sass-bootstrap/js/scrollspy.js'></script>
     <script src='vendor/bower_components/sass-bootstrap/js/affix.js'></script>
