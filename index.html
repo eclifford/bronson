@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="vendor/bower_components/prismjs/prism.css">
+    <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Lekton|Ubuntu+Mono:400,700" rel="stylesheet">
     <script src="vendor/bower_components/modernizr/modernizr.js"></script>
   </head>
   <body>
@@ -66,16 +67,18 @@
         What is Bronson?
       </h2>
       <p>
-        Bronson is an opinionated module application framework for the building of large scalable web applications. It was born from the need to modular application development in the real world not just single page app prototypes. Bronson sits on top of RequireJS to give a common API for loading modular widgets that you can control programatically with a universal interface for starting, stopping, loading, unloading, and communicating of modules on your pages. 
+        Bronson is an opinionated module application framework for the building of large scale javascript applications. It sits on top of RequireJS and makes the loading, unloading, management and communication of your modular web components easier and more importantly loosely coupled. 
+
+        Bronson was born from the need to do modular application development in the real world not just on single page applications. 
       <h2>
         Features
       </h2>
       <ul>
         <li>
-          Module boilerplate reflecting the typical life cycle of a standalone widget.
+          Extensible base module object reflecting the typical life cycle of a standalone widget.
         </li>
         <li>
-          API for loading, unloading, starting, stopping modules
+          Easy to use API for the <strong>loading</strong>, <strong>unloading</strong>, <strong>starting</strong>, <strong>stopping</strong> modules.
         </li>
         <li>
           Fast, managed, framework agnostic publish/subscribe system built for module to module as well as application wide communication.
@@ -90,26 +93,120 @@
           Only dependency is RequireJS
         </li>
       </ul>
-      <h2>Installation</h2>
-      <p>Bronson is can be loaded via script tag or through require</p>
-<h2>
-    Dependencies
-</h2>
-<ul>
-    <li>
-        <a href='http://requirejs.org'>RequireJS</a>
-    </li>
-</ul>
-<h2>
-    Acknowledgments
-</h2>
-<ul>
-    <li>
-        <a href='http://www.youtube.com/watch?v=vXjVFPosQHw'>Nicholas Zakas: Scalable JavaScript Application Architecture</a>
-    </li>
-    <li>
-        <a href='http://addyosmani.com/largescalejavascript'>Addy Osmani: Patterns For Large-Scale JavaScript Application Architecture</a>
-    </li>
+      <h2>Getting Started</h2>
+      <h3>Installation</h3>
+      <p>
+        Download the scripts manually from the links above or optionally install with bower <code>bower install bronsonjs</code>
+      </p>
+      <h3>Basic Usage</h3>
+      <p>
+        Let's start by creating a basic Bronson module by extending Bronson's base class. This will be a simple 
+      </p>
+<pre><code class="language-javascript">define(['bronson'], function(Bronson) {
+  var Foo = Bronson.Module.extend({
+    onLoad: function(data) {
+      console.log('loaded with:', data);
+    },
+    onStart: function() {
+      console.log('started');
+    },
+    onStop: function() {
+      console.log('stopped');
+    },
+    onUnload: function() {
+      console.log('unloaded');
+    }
+  });
+  return Foo;
+});
+</pre></code>
+      <p>
+        Next lets load the module through Bronson somewhere else in the application.
+      </p>
+<pre><code class="language-javascript">require(['bronson'], function(Bronson) {
+  // load up the foo module
+  Bronson.load({
+    id: 'foo',
+    path: 'path/to/foo',
+    data: {
+      message: 'hi from foo'
+    }
+  }); 
+
+  // start the module
+  Bronson.start('foo'); // log: 'started'
+
+  // stop the module
+  Bronson.stop('foo'); // log: 'stopped'
+
+  // unload the module
+  Bronson.unload('foo'); // log: 'unloaded'
+});
+</pre></code>
+      <p>
+        Next lets add some basic pub/sub communication to communicate with the module. Start by modifing our module with some simple subscriptions onStart and release them onStop.
+      </p>
+<pre><code class="language-javascript">require(['bronson'], function(Bronson) {
+  var Foo = Bronson.Module.extend({
+    onLoad: function(data) {
+    },
+    onStart: function() {
+      // subscribe by using 'subscriberId:channelId:topicId'
+      Bronson.subscribe('foo:app:alert', function(data) {
+        alert(data.message);
+      });
+    },
+    onStop: function() {
+      // unsubscribe by using 'channelId:topicId'
+      Bronson.unsubscribe('app:alert');
+    },
+    onUnload: function() {
+    }
+  });
+  return Foo;
+}); 
+
+require(['bronson'], function(Bronson) {
+  ... 
+
+  Bronson.start('foo'); // foo started
+
+  Bronson.publish('app:message', { message: 'hello from app' }); // alert 'hello from app'
+
+  Bronson.stop('foo'); // foo stopped
+
+  Bronson.publish('app:message', { message: 'hello again!' }); // nothing
+
+});
+</pre></code>
+      <p>
+        This example walks through the basics of module management. Please refer to the advanced usage and documentation.
+      </p>
+      <h2>
+        Advanced Usage
+      </h2>
+      <p>
+        Please review the <a href='docuenntation.html'>documentation</a> or the working demo's <a href='https://github.com/eclifford/bronson/tree/master/demo'>source code</a> for more advanced usage.
+      </p>
+      <h2>
+        Dependencies
+      </h2>
+      <ul>
+        <li>
+          <a href='http://requirejs.org'>RequireJS</a>
+        </li>
+      </ul>
+      <h2>
+          Acknowledgments
+      </h2>
+      <ul>
+        <li>
+          <a href='http://www.youtube.com/watch?v=vXjVFPosQHw'>Nicholas Zakas: Scalable JavaScript Application Architecture</a>
+        </li>
+        <li>
+          <a href='http://addyosmani.com/largescalejavascript'>Addy Osmani: Patterns For Large-Scale JavaScript Application Architecture</a>
+        </li>
+      </ul>
     </div>
       <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
       <script>
