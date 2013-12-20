@@ -1,0 +1,15 @@
+{
+  "server": {
+    "port": "3000",
+    "livereload": true,
+    "livereload_port": 35729,
+    "hostname": "localhost",
+    "open": true
+  },
+  "testing": {
+    "browsers": ["PhantomJS"]
+  },
+  "project": {
+    "linting": true
+  }
+}

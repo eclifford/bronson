@@ -2,11 +2,11 @@
 # grunt-contrib-copy
 # https://github.com/gruntjs/grunt-contrib-copy
 #
-module.exports =
+module.exports = (grunt) ->
   assets:
     expand: true
     dot: true
-    cwd: '<%= options.basePath %>'
-    src: ['**/*.{html,jsp,js,css,woff,ttf,svg,jpeg}', 'CNAME', '!**/vendor/**/*']
-    dest: '<%= options.tempDir %>'
+    cwd: '<%= grunt.settings.paths.basePath %>'
+    src: ['**/*.{jsp,js,css,woff,ttf,svg,jpeg,jpg}', '!**/vendor/**/*']
+    dest: '<%= grunt.settings.paths.tempDir %>'
 

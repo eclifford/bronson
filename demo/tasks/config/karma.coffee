@@ -2,12 +2,15 @@
 # grunt-contrib-requirejs
 # https://github.com/gruntjs/grunt-contrib-requirejs
 #
-module.exports =
+module.exports = (grunt) ->
   options:
     files: [
-      '.tmp/common.js'
-      '.tmp/common/test/runner.js'
-      {pattern: '.tmp/**/*.{js,tmpl,json,html}', included: false}
+      '<%= grunt.settings.paths.tempDir %>/common.js'
+      '<%= grunt.settings.paths.tempDir %>/common/test/runner.js'
+      {pattern: '<%= grunt.settings.paths.tempDir %>/**/*.{js,tmpl,json,html}', included: false}
+    ]
+    exclude: [
+      '<%= grunt.settings.paths.tempDir %>/test/**/*'
     ]
 
     frameworks: [
@@ -19,25 +22,21 @@ module.exports =
 
     reporters: [
       'progress'
-      # 'coverage'
+      'coverage'
     ]
 
     preprocessors:
-      # 'test/**/*.coffee': ['coffee']
-      # 'app/scripts/**/*.coffee': ['coffee']
-      '.tmp/scripts/**/*.js': ['coverage']
+      '<%= grunt.settings.paths.tempDir %>/scripts/**/*.js': ['coverage']
 
     coverageReporter:
       type: 'html'
-      dir: 'test/output/coverage/'
+      dir: '<%= grunt.settings.paths.tempDir %>/test/coverage/'
 
     port: 9999
 
   unit:
-    background: true
-    browsers: ['PhantomJS']
-
-  single:
     autoWatch: true
-    browsers: ['PhantomJS']
-
+    browsers: grunt.settings.testing.browsers
+    
+  single:
+    browsers: grunt.settings.testing.browsers

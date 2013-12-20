@@ -28,7 +28,7 @@ module.exports = function(grunt) {
     copy: {
       bronson: {
         src: 'bronson.js',
-        dest: 'demo/app/vendor/bronson.js'   
+        dest: 'demo/app/vendor/bronson.js'
       }
     },
     karma: {
@@ -60,7 +60,7 @@ module.exports = function(grunt) {
         createTag: false,
         push: false
       }
-    },  
+    },
     release: {
       options: {
         file: 'bower.json',

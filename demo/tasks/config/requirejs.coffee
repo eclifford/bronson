@@ -2,15 +2,15 @@
 # grunt-contrib-requirejs
 # https://github.com/gruntjs/grunt-contrib-requirejs
 #
-module.exports =
+module.exports = (grunt) ->
   # Options: https://github.com/jrburke/r.js/blob/master/build/example.build.js
   dist:
     options:
       # appDir: '<%= options.tempDir %>'
-      baseUrl: '<%= options.tempDir %>'
-      mainConfigFile: "<%= options.tempDir %>/common.js"
+      baseUrl: '<%= grunt.settings.paths.tempDir %>'
+      mainConfigFile: "<%= grunt.settings.paths.tempDir %>/common.js"
       fileExclusionRegExp: new RegExp("modules/.*/[0-9A-Za-z]*Spec.js")
-      dir: "<%= options.buildDir %>"
+      dir: "<%= grunt.settings.paths.buildDir %>"
       skipDirOptimize: true
       optimizeCss: 'none'
       removeCombined: false

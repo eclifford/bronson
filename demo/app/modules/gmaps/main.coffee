@@ -10,6 +10,11 @@ define [
   'vendor/bower_components/gmaps/gmaps'
 ], ($, Bronson, MapView) ->
   class Gmaps extends Bronson.Module
+
+    # Bronson event mediator
+    events:
+      'app:addmarker': 'update'
+
     #
     # get current users geolocation and start the module
     #
@@ -35,11 +40,6 @@ define [
     # render the map and wire up events
     #
     onStart: ->
-      Bronson.subscribe "#{@id}:app:addmarker", (data) =>
-        @map.addMarker
-          lat: data.lat
-          lng: data.lng
-        @map.setCenter data.lat, data.lng
 
     #
     # stop interacting with other modules
@@ -52,3 +52,9 @@ define [
     #
     onUnload: ->
       Bronson.unsubscribe @id
+
+    update: (data) ->
+      @map.addMarker
+        lat: data.lat
+        lng: data.lng
+      @map.setCenter data.lat, data.lng

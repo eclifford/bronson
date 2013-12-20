@@ -2,14 +2,14 @@
 # grunt-contrib-clean
 # https://github.com/gruntjs/grunt-contrib-clean
 #
-module.exports =
+module.exports = (grunt) ->
   options:
     force: true # watch yourself there be dragons
 
   dist: [
-    "<%= options.tempDir %>",
-    "<%= options.buildDir %>"
+    "<%= grunt.settings.paths.tempDir %>",
+    "<%= grunt.settings.paths.buildDir %>"
   ]
   server: [
-    "<%= options.tempDir %>"
+    "<%= grunt.settings.paths.tempDir %>"
   ]

@@ -1,47 +1,8 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>BronsonJS</title>
-    <meta name="description" content="BronsonJS is a module application framework for building large scalable web applications." />
-    <meta name="keywords" content="JavaScript,RequireJS,AMD,Modules,PubSub,Publish,Subscribe,Bronson,BronsonJS" />
-    <meta name="author" content="Eric Clifford" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="vendor/bower_components/prismjs/prism.css">
-    <link href="http://fonts.googleapis.com/css?family=Droid+Sans|Lekton|Ubuntu+Mono:400,700" rel="stylesheet">
-    <script src="vendor/bower_components/modernizr/modernizr.js"></script>
-  </head>
+  @@include('header.html')
   <body>
     <div class="container">
-      <!-- Static navbar -->
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <a href="https://github.com/eclifford/bronson">
-          <img style="position: absolute; top: 0; right: 0; border: 0; z-index: 9999" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub">
-        </a>
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="index.html">BronsonJS</a>
-          </div>
-          <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="index.html">Home</a></li>
-              <li><a href="documentation.html">Documentation</a></li>
-              <li><a href="demo.html">Demo</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      @@include('main_nav.html')
       <!-- Content -->
       <div class="jumbotron">
         <img src='assets/imgs/bronson.jpeg' width='300px' style='float: left; padding-right: 20px'
@@ -98,9 +59,9 @@
       <p>
         Download the scripts manually from the links above or optionally install with bower <code>bower install bronsonjs</code>
       </p>
-      <h3>Basic Usage</h3>
+      <h3>Module Loading & Management</h3>
       <p>
-        Let's start by creating a basic Bronson module by extending Bronson's base class. This will be a simple 
+        Let's start by creating a basic Bronson module by extending Bronson's base object.
       </p>
 <pre><code class="language-javascript">define(['bronson'], function(Bronson) {
   var Foo = Bronson.Module.extend({
@@ -124,64 +85,118 @@
         Next lets load the module through Bronson somewhere else in the application.
       </p>
 <pre><code class="language-javascript">require(['bronson'], function(Bronson) {
-  // load up the foo module
+  // load up the module asynchronously through RequireJS and registers with Bronson
   Bronson.load({
-    id: 'foo',
-    path: 'path/to/foo',
-    data: {
+    id: 'foo',                // unique id used for API methods
+    path: 'path/to/foo',      // path for RequireJS to load
+    data: {                   // optional data object to pass to onLoad
       message: 'hi from foo'
     }
   }); 
 
-  // start the module
+  // start the module by id
   Bronson.start('foo'); // log: 'started'
 
-  // stop the module
+  // stop the module by id
   Bronson.stop('foo'); // log: 'stopped'
 
-  // unload the module
+  // unload the module by id
   Bronson.unload('foo'); // log: 'unloaded'
 });
 </pre></code>
+      <h3>Event Aggregation (Pub/Sub)</h3>
+      <p>To encourage strong decoupling of your modules Bronson comes with a build in publish/subscribe system complete with a permissions gateway and consistent enforced naming convention in the form of <code>subscriber:channel:topic</code></p>
+
+      <p>Let's take a look at a simple example</p>
+
+<pre><code class="language-javascript">// first set up your subscription scoping it to a channel and topic
+Bronson.subscribe('foo:app:helloworld', function(data) {
+  console.log(data.message);
+});
+
+// next publish a method to the channel topic (leaving off subscriber)
+Bronson.publish('app:helloworld', { message: 'hey!' }); // hey!
+
+// finally we'll use unsubscribe to remove the subscription. 
+Bronson.unsubscribe('foo:app:helloworld');
+
+// unsubscribe can be scoped to subscriber only (removing all subscriptions for that subscriber)
+Bronson.unsubscribe('foo');
+</pre></code>
+      <h3>Putting it all together</h3>
       <p>
-        Next lets add some basic pub/sub communication to communicate with the module. Start by modifing our module with some simple subscriptions onStart and release them onStop.
+        Now we know the very basics of loading and controlling modules with Bronson. Next lets add some basic pub/sub communication to communicate with the module. Bronson modules themselves act as <strong>mediators</strong> interfacing with Bronson's built in event aggregation system. This gives structure to your event based communication with modules acting as the controllers of all inbound and outbound communication. 
       </p>
+      <p>Bronson modules have an events hash mapping Bronson's event aggregation to modules onLoad</p>
 <pre><code class="language-javascript">require(['bronson'], function(Bronson) {
   var Foo = Bronson.Module.extend({
+    // Event hash mapping callbacks to Bronson events 
+    // (notice we leave the subscriber ID off as it's inferred)
+    events: {
+      'app:notification': 'notification'
+    },
     onLoad: function(data) {
+      // good for ajax request, creating Backbone views or similar
     },
     onStart: function() {
-      // subscribe by using 'subscriberId:channelId:topicId'
-      Bronson.subscribe('foo:app:alert', function(data) {
-        alert(data.message);
-      });
+      // good for rendering of Backbone views or similar
     },
     onStop: function() {
-      // unsubscribe by using 'channelId:topicId'
-      Bronson.unsubscribe('app:alert');
+      // stop animations pause components
     },
     onUnload: function() {
+      // remove elements from DOM && clean up memory
+    },
+    notification: function(data) {
+      // started is automatically kept track of via start() & stop() methods
+      if(this.started) {
+        alert(data.message);
+      }
     }
   });
   return Foo;
 }); 
 
 require(['bronson'], function(Bronson) {
-  ... 
+  // verbose options for load() including defaults
+  Bronson.load({
+    id: 'foo',                // unique id used for API methods
+    path: 'path/to/foo',      // path for RequireJS to load
+    options: {
+      autoload: true,
+      autostart: false
+    },
+    success: function(module) {},
+    error: function(error) {},
+    data: {                   // optional data object to pass to onLoad
+      message: 'hi from foo'
+    }
+  }); 
 
-  Bronson.start('foo'); // foo started
+  Bronson.publish('app:notification', { message: 'hey!'}); // nothing
 
-  Bronson.publish('app:message', { message: 'hello from app' }); // alert 'hello from app'
+  Bronson.start('foo');
 
-  Bronson.stop('foo'); // foo stopped
-
-  Bronson.publish('app:message', { message: 'hello again!' }); // nothing
+  Bronson.publish('app:notification', { message: 'hey!'}); // alert('hey!')
 
 });
 </pre></code>
+      <h3>Module Permissions</h3>
       <p>
-        This example walks through the basics of module management. Please refer to the advanced usage and documentation.
+        Bronson comes with a Permissions manager for managing which modules can communicate with other modules. The first thing we must do is enable it.
       </p>
+<pre><code class="language-javascript">Bronson.options.permissions = true;
+</code></pre>
+      <p>
+        Next create a hash of module to module relationships.
+      </p>
+<pre><code class="language-javascript">Bronson.Permissions.set({
+  'foo': {
+    'baz': true,
+    'bar': false
+  }
+});
+</code></pre>
       <h2>
         Advanced Usage
       </h2>
@@ -208,16 +223,7 @@ require(['bronson'], function(Bronson) {
         </li>
       </ul>
     </div>
-      <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-      <script>
-          (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-          function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-          e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-          e.src='//www.google-analytics.com/analytics.js';
-          r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-          ga('create','UA-XXXXX-X');ga('send','pageview');
-      </script>
-
-      <script src="vendor/bower_components/prismjs/prism.js"></script>
+    
+    @@include('footer.html')
   </body>
 </html>

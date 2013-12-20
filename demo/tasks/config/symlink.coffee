@@ -2,14 +2,15 @@
 # grunt-contrib-symlink
 # https://github.com/gruntjs/grunt-contrib-symlink
 #
-module.exports =
+module.exports = (grunt) ->
   options:
+    force: true
     overwrite: true
 
   expanded:
     files: [
       expand: true
-      cwd: 'app/vendor'
+      cwd: '<%= grunt.settings.paths.basePath %>/vendor/bower_components'
       src: ['*']
-      dest: '.tmp/vendor'
+      dest: '<%= grunt.settings.paths.tempDir %>/vendor/bower_components'
     ]

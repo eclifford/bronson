@@ -4,7 +4,7 @@
 # @author Eric Clifford
 #
 require.config
-  baseUrl: './'
+  baseUrl: '/'
 
   paths:
     # Aliases

@@ -2,22 +2,21 @@
 # grunt-contrib-connect
 # https://github.com/gruntjs/grunt-contrib-connect
 #
-module.exports =
+module.exports = (grunt) ->
   options:
-    port: 9000
-    livereload: 35729
-    # change this to '0.0.0.0' to access the server from outside
-    hostname: 'localhost'
+    port: grunt.settings.server.port
+    livereload: grunt.settings.server.livereload_port
+    hostname: grunt.settings.server.hostname
 
   livereload:
     options:
-      open: true
+      open: grunt.settings.server.open
       base: [
-        '<%= options.basePath %>'
-        '<%= options.tempDir %>'
+        '<%= grunt.settings.paths.tempDir %>'
+        '<%= grunt.settings.paths.basePath %>'
       ]
 
   dist:
     options:
-      open: true
-      base: '<%= options.buildDir %>'
+      open: grunt.settings.server.open
+      base: '<%= grunt.settings.paths.buildDir %>'

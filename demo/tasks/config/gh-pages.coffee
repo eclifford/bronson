@@ -2,7 +2,7 @@
 # grunt-gh-pages
 # https://github.com/tschaub/grunt-gh-pages
 #
-module.exports = 
+module.exports = (grunt) ->
   options: 
     base: 'dist'
   src: ['**']

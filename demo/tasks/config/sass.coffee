@@ -1,7 +1,7 @@
-module.exports = 
+module.exports = (grunt) ->
   dev:
     expand: true
-    cwd: "<%= options.basePath %>"
+    cwd: "<%= grunt.settings.paths.basePath %>"
     src: ["**/*.{scss,sass}", "!**/vendor/**/*.{scss,sass}"]
-    dest: "<%= options.tempDir %>"
+    dest: "<%= grunt.settings.paths.tempDir %>"
     ext: ".css"

@@ -2,10 +2,10 @@
 # grunt-contrib-coffee
 # https://github.com/gruntjs/grunt-contrib-coffee
 #
-module.exports =
+module.exports = (grunt) ->
   dev:
     expand: true
-    cwd: "<%= options.basePath %>"
+    cwd: "<%= grunt.settings.paths.basePath %>"
     src: ["**/*.coffee", "!**/vendor/**/*.coffee"]
-    dest: "<%= options.tempDir %>"
+    dest: "<%= grunt.settings.paths.tempDir %>"
     ext: ".js"

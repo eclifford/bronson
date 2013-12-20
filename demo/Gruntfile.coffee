@@ -1,5 +1,5 @@
 #
-# Visa Gruntfile
+# Testudo Gruntfile
 # @author Eric Clifford
 #
 module.exports = (grunt) ->
@@ -7,24 +7,22 @@ module.exports = (grunt) ->
   require('load-grunt-tasks')(grunt)
 
   # Our configuration object
-  config = 
-    options: 
+  config = grunt.settings = grunt.util._.extend
+    paths:
       basePath: 'app'
       buildDir: 'dist'
       tempDir: '.tmp'
+  , grunt.file.readJSON('user-settings.json')
 
-  # Load options
-  grunt.util._.merge(config, loadConfig('./tasks/config/'))
-
-  # Initialize Grunt
-  grunt.initConfig(config)
+    # Initialize Grunt
+  grunt.initConfig(loadConfig('./tasks/config/', grunt))
 
   # Load tasks
   grunt.loadTasks('./tasks');
 
 # Load configuration options
 #
-loadConfig = (path) ->
+loadConfig = (path, grunt) ->
   glob = require("glob")
   object = {}
   key = undefined
@@ -32,6 +30,6 @@ loadConfig = (path) ->
     cwd: path
   ).forEach (option) ->
     key = option.replace(/\.coffee$/, "")
-    object[key] = require(path + option)
+    object[key] = require(path + option)(grunt)
 
   object
