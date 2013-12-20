@@ -2,7 +2,7 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  define(['marionette', 'tpl!modules/foursquare/templates/venuesItemTemplate.html'], function(Marionette, VenuesItemTemplate) {
+  define(['marionette', 'tpl!modules/foursquare/templates/venuesItemTemplate.tmpl'], function(Marionette, VenuesItemTemplate) {
     var VenuesItemView, _ref;
     return VenuesItemView = (function(_super) {
       __extends(VenuesItemView, _super);

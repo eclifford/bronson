@@ -2,7 +2,7 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  define(['marionette', 'modules/carousel/views/carouselItemView', 'tpl!modules/carousel/templates/carouselTemplate.html', 'bootstrap/carousel'], function(Marionette, CarouselItemView, CarouselTemplate) {
+  define(['marionette', 'modules/carousel/views/carouselItemView', 'tpl!modules/carousel/templates/carouselTemplate.tmpl', 'bootstrap/carousel'], function(Marionette, CarouselItemView, CarouselTemplate) {
     var CarouselView, _ref;
     return CarouselView = (function(_super) {
       __extends(CarouselView, _super);

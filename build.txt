@@ -15,9 +15,9 @@ vendor/bower_components/backbone.babysitter/lib/amd/backbone.babysitter.js
 vendor/bower_components/marionette/lib/core/amd/backbone.marionette.js
 modules/carousel/collections/photosCollection.js
 vendor/bower_components/requirejs-tpl/tpl.js
-tpl!modules/carousel/templates/carouselItemTemplate.html
+tpl!modules/carousel/templates/carouselItemTemplate.tmpl
 modules/carousel/views/carouselItemView.js
-tpl!modules/carousel/templates/carouselTemplate.html
+tpl!modules/carousel/templates/carouselTemplate.tmpl
 vendor/bower_components/sass-bootstrap/js//carousel.js
 modules/carousel/views/carouselView.js
 modules/carousel/main.js
@@ -30,7 +30,7 @@ vendor/bower_components/backbone.wreqr/lib/amd/backbone.wreqr.js
 vendor/bower_components/backbone.babysitter/lib/amd/backbone.babysitter.js
 vendor/bower_components/marionette/lib/core/amd/backbone.marionette.js
 vendor/bower_components/requirejs-tpl/tpl.js
-tpl!modules/gmaps/templates/mapTemplate.html
+tpl!modules/gmaps/templates/mapTemplate.tmpl
 modules/gmaps/views/mapView.js
 vendor/bower_components/gmaps/gmaps.js
 modules/gmaps/main.js
@@ -44,8 +44,8 @@ vendor/bower_components/backbone.babysitter/lib/amd/backbone.babysitter.js
 vendor/bower_components/marionette/lib/core/amd/backbone.marionette.js
 modules/foursquare/collections/venuesCollection.js
 vendor/bower_components/requirejs-tpl/tpl.js
-tpl!modules/foursquare/templates/venuesItemTemplate.html
+tpl!modules/foursquare/templates/venuesItemTemplate.tmpl
 modules/foursquare/views/venuesItemView.js
-tpl!modules/foursquare/templates/venuesTemplate.html
+tpl!modules/foursquare/templates/venuesTemplate.tmpl
 modules/foursquare/views/venuesView.js
 modules/foursquare/main.js
