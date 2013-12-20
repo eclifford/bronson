@@ -1,6 +1,6 @@
 (function() {
   require.config({
-    baseUrl: './',
+    baseUrl: '/',
     paths: {
       'bootstrap': 'vendor/bower_components/sass-bootstrap/js/',
       'jquery': 'vendor/bower_components/jquery/jquery',

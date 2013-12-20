@@ -23,7 +23,7 @@
     for(var key in source) {
       if (key in target && (typeof source[key] === 'object') && (key !== null)) {
         extend(target[key], source[key]);
-      } 
+      }
       else
         target[key] = source[key];
     }
@@ -31,13 +31,13 @@
   };
 
   extend(Bronson, {
-    version: '2.0.9',
+    version: '2.0.11',
 
     settings: {
       options: {
         autoload: true,
         autostart: true,
-        permissions: false   
+        permissions: false
       },
       success: function() {},
       error: function() {}
@@ -82,7 +82,7 @@
       _args = [].slice.call(arguments, 1);
 
       for (var subscriber in _subscribers) {
-        _subscribers[subscriber].callback.apply(this, _args);
+        _subscribers[subscriber].callback.apply(_subscribers[subscriber].context, _args);
       }
     },
     // Subscribe a module to an event
@@ -349,6 +349,14 @@
     Module.prototype.load = function(module) {
       this.id = module.id;
       this.path = module.path;
+
+      // bind subscription events
+      if(this.events) {
+        for (var event in this.events) {
+          Bronson.subscribe(module.id + ':' + event, this[this.events[event]], this);
+        }
+      }
+
       this.onLoad(module.data);
     };
 
