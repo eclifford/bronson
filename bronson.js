@@ -31,7 +31,7 @@
   };
 
   extend(Bronson, {
-    version: '2.0.9',
+    version: '2.0.11',
 
     settings: {
       options: {
