@@ -32,17 +32,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">BronsonJS</a>
+      <a class="navbar-brand" href="/">BronsonJS</a>
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/index.html">Home</a></li>
+        <li class="active"><a href="/">Home</a></li>
         <li><a href="/pages/documentation/">Documentation</a></li>
         <li><a href="/pages/demo/">Demo</a></li>
       </ul>
     </div>
   </div>
 </div>
+
     <!-- Content -->
     <div class="row">
       <div class="col-md-3">
@@ -91,7 +92,7 @@
                 </li>
               </ul>
             </li>
-              <li>
+            <li>
               <a href="#bronson-permissions">Permissions</a>
               <ul class="nav">
                 <li class="">
@@ -103,7 +104,7 @@
         </div>
       </div>
       <div class="col-md-9">
-        <h1 id='base-module'>Modules</h2>
+        <h1 id='bronson-module'>Modules</h2>
         <p>
           A Bronson module contains callbacks for <strong>onLoad</strong>, <strong>onStart</strong>, <strong>onStop</strong>, <strong>onUnload</strong> each providing logical execution points during an application modules lifecycle.
         </p>
@@ -308,18 +309,18 @@ Bronson.unsubscribe('module'); // removes all events for this subscriber
     e=o.createElement(i);r=o.getElementsByTagName(i)[0];
     e.src='//www.google-analytics.com/analytics.js';
     r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-    ga('create','UA-XXXXX-X');ga('send','pageview');
+    ga('create','UA-34017473-1');ga('send','pageview');
 </script>
 
 <script src='/vendor/bower_components/jquery/jquery.js'></script>
 <script src="/vendor/bower_components/prismjs/prism.js"></script>
 <script>
-var url = window.location;
-// Will also work for relative and absolute hrefs
-$('ul.nav li').removeClass('active');
-$('ul.nav a').filter(function() {
-    return this.href == window.location.href;
-}).parent().addClass('active');
+  var url = window.location;
+  // Will also work for relative and absolute hrefs
+  $('ul.nav li').removeClass('active');
+  $('ul.nav a').filter(function() {
+      return this.href == window.location.href;
+  }).parent().addClass('active');
 </script>
     <script src='/vendor/bower_components/sass-bootstrap/js/scrollspy.js'></script>
     <script src='/vendor/bower_components/sass-bootstrap/js/affix.js'></script>
