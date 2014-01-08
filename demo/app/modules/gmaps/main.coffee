@@ -33,8 +33,8 @@ define [
         click: (e) ->
           # notify subscribers of new click position
           Bronson.publish 'app:geoupdate',
-            lat: e.latLng.nb
-            lng: e.latLng.ob
+            lat: e.latLng.lat()
+            lng: e.latLng.lng()
 
     #
     # render the map and wire up events

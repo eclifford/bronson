@@ -1,7 +1,7 @@
 define [
   'marionette'
   'modules/carousel/views/carouselItemView'
-  'tpl!modules/carousel/templates/carouselTemplate.html'
+  'tpl!modules/carousel/templates/carouselTemplate.tmpl'
   'bootstrap/carousel'
 ], (Marionette, CarouselItemView, CarouselTemplate) ->
   class CarouselView extends Marionette.CompositeView

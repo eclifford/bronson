@@ -1,6 +1,6 @@
 define [
   'marionette'
-  'tpl!modules/carousel/templates/carouselItemTemplate.html'
+  'tpl!modules/carousel/templates/carouselItemTemplate.tmpl'
 ], (Marionette, CarouselItemTemplate) ->
   class CarouselItemView extends Marionette.ItemView
     className: 'item text-center'

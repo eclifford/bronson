@@ -1,6 +1,6 @@
 define [
   'marionette'
-  'tpl!modules/gmaps/templates/mapTemplate.html'
+  'tpl!modules/gmaps/templates/mapTemplate.tmpl'
 ], (Marionette, MapTemplate) ->
   class MapView extends Marionette.CompositeView
     template: MapTemplate

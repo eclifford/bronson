@@ -88,7 +88,7 @@
     // Subscribe a module to an event
     //
     // @param event [String] the event string
-    // @param callback [Function] the method to invoke 
+    // @param callback [Function] the method to invoke
     // @param context [Object] what 'this' is
     //
     // @example
@@ -186,7 +186,7 @@
     // Load a module
     //
     // @param modules [Object or Array] the modules to load
-    // 
+    //
     // @example
     //   Bronson.load({
     //     id: 'foo',
@@ -280,7 +280,7 @@
           _modules[i].start();
       }
     },
-    // Stop a module by id 
+    // Stop a module by id
     //
     // @example
     //  Bronson.stop('foo');
@@ -434,7 +434,7 @@
         if (module.options.autoload) _module.load(module);
         if (module.options.autostart) _module.start();
         if (module.success) module.success(_module);
-        
+
       });
     } catch (error) {
       if (module.error) {

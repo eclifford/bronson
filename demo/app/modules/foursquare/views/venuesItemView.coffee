@@ -1,6 +1,6 @@
 define [
   'marionette'
-  'tpl!modules/foursquare/templates/venuesItemTemplate.html'
+  'tpl!modules/foursquare/templates/venuesItemTemplate.tmpl'
 ], (Marionette, VenuesItemTemplate) ->
   class VenuesItemView extends Marionette.ItemView
     template: VenuesItemTemplate
