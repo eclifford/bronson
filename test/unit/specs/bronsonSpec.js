@@ -113,8 +113,31 @@ define(['bronson'], function(Bronson) {
                 }
               }
             );
-          }).to.not.throw();  
-        });  
+          }).to.not.throw();
+        });
+      });
+    });
+
+    describe("Bronson.extend", function() {
+      it("should extend deep extend object", function() {
+        var obj1 = {
+          id: '123',
+          started: false,
+          loaded: false
+        };
+
+        var obj2 = {
+          id: '234',
+          started: true
+        };
+
+        var mergedObj = Bronson.extend(obj1, obj2);
+
+        expect(mergedObj).to.deep.equal({
+          id: '234',
+          started: true,
+          loaded: false
+        });
       });
     });
 
@@ -123,7 +146,7 @@ define(['bronson'], function(Bronson) {
       before(function() {
         rules = {
           "search": {
-            "grid": true 
+            "grid": true
           }
         };
       });

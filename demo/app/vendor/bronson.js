@@ -19,15 +19,17 @@
 }(this, function(root, Bronson) {
 
   // simple deep extend
-  var extend = function(target, source) {
-    for(var key in source) {
-      if (key in target && (typeof source[key] === 'object') && (key !== null)) {
-        extend(target[key], source[key]);
+  var extend = Bronson.extend = function(destination, source) {
+    for (var property in source) {
+      if (typeof source[property] === "object" &&
+       source[property] !== null ) {
+        destination[property] = destination[property] || {};
+        arguments.callee(destination[property], source[property]);
+      } else {
+        destination[property] = source[property];
       }
-      else
-        target[key] = source[key];
     }
-    return target;
+    return destination;
   };
 
   extend(Bronson, {
