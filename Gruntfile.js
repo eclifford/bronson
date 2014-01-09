@@ -63,7 +63,7 @@ module.exports = function(grunt) {
     },
     release: {
       options: {
-        file: 'bower.json',
+        file: '--all',
         npm: false,
         bump: true,
         github: {
