@@ -73,6 +73,11 @@ module.exports = function(grunt) {
         }
       }
     },
+    'release-it': {
+      options: {
+        pkgFiles: ['bower.json', 'package.json']
+      }
+    },
     replace: {
       dist: {
         src: ['bronson.js'],

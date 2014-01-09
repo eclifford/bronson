@@ -1,11 +1,15 @@
 {
   "name": "bronsonjs",
-  "version": "2.0.11",
+  "version": "2.0.12",
   "description": "AMD module framework for building large scale javascript applications",
   "homepage": "https://github.com/eclifford/bronson",
   "authors": [
     "eclifford <ericgclifford@gmail.com>"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/eclifford/bronson.git"
+  },
   "license": "MIT",
   "ignore": [
     "node_modules",
