@@ -65,17 +65,12 @@ module.exports = function(grunt) {
       options: {
         file: 'bower.json',
         npm: false,
-        bump: false,
+        bump: true,
         github: {
           repo: 'eclifford/bronson',
           usernameVar: 'GITHUB_USERNAME',
           passwordVar: 'GITHUB_PASSWORD'
         }
-      }
-    },
-    'release-it': {
-      options: {
-        pkgFiles: ['bower.json', 'package.json']
       }
     },
     replace: {
@@ -92,5 +87,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['karma:unit:start', 'watch']);
   grunt.registerTask('build', ['jshint', 'uglify']);
-  grunt.registerTask('deploy', ['bump', 'replace', 'build', 'release']);
+  grunt.registerTask('deploy', ['replace', 'build', 'release']);
 };
