@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/eclifford/bronson.git"
+    "url": "git@github.com:eclifford/bronson.git"
   },
   "author": "Eric Clifford <ericgclifford@gmail.com>",
   "license": "MIT",
