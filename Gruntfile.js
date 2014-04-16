@@ -46,10 +46,16 @@ module.exports = function(grunt) {
           'test/unit/runner.js'
         ],
 
-        autoWatch: true
+        autoWatch: false
+
       },
       unit: {
         background: true,
+        browsers: ['PhantomJS']
+      },
+      single: {
+        background: false,
+        singleRun: true,
         browsers: ['PhantomJS']
       }
     },
