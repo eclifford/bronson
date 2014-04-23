@@ -1,6 +1,7 @@
 # Bronson JS
 
 [![Build Status](https://travis-ci.org/eclifford/bronson.svg?branch=master)](https://travis-ci.org/eclifford/bronson)
+[![Coverage Status](https://coveralls.io/repos/eclifford/bronson/badge.png?branch=master)](https://coveralls.io/r/eclifford/bronson?branch=master)
 
 ## What is Bronson?
 
