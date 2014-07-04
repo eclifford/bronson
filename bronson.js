@@ -1,39 +1,26 @@
 /*!
  * Bronsonjs - AMD module framework
- * (c) 2012-2013 Eric Clifford <ericgclifford@gmail.com>
+ * (c) 2012-2014 Eric Clifford <ericgclifford@gmail.com>
  * MIT Licensed.
  *
  * http://bronsonjs.com
  * http://github.com/eclifford/bronson
  */
 (function(root, factory) {
-  if (typeof exports !== 'undefined') {
-    factory(root, exports);
-  } else if (typeof define === 'function' && define.amd) {
-    define(['exports'], function(exports) {
-      root.Bronson = factory(root, exports);
+  if (typeof define === 'function' && define.amd) {
+    define([], function() {
+      return (root.Bronson = factory(root));
     });
+  } else if (typeof exports !== 'undefined') {
+    module.exports = factory(root);
   } else {
-    root.Bronson = factory(root, {});
+    root.Bronson = factory(root);
   }
-}(this, function(root, Bronson) {
+}(this, function(root) {
+  'use strict';
 
-  // simple deep extend
-  var extend = Bronson.extend = function(destination, source) {
-    for (var property in source) {
-      if (typeof source[property] === "object" &&
-       source[property] !== null ) {
-        destination[property] = destination[property] || {};
-        arguments.callee(destination[property], source[property]);
-      } else {
-        destination[property] = source[property];
-      }
-    }
-    return destination;
-  };
-
-  extend(Bronson, {
-    version: '2.0.12',
+  var Bronson =  {
+    version: '2.0.13',
 
     settings: {
       options: {
@@ -217,8 +204,35 @@
         if (!modules[i].path)
           throw new Error("Bronson.load: must supply path parameter");
 
-        modules[i] = extend(extend({}, this.settings), modules[i]);
-        amd_load(modules[i]);
+        modules[i] = Bronson.Utils.merge(this.settings, modules[i]);
+
+        this.requireLoad(modules[i]);
+      }
+    },
+    requireLoad: function(module) {
+      try {
+        // Load the module through RequireJS
+        require(['module', module.path], function(Module, LoadedModule) {
+          var _module = new LoadedModule();
+
+          // Create the hash for storing of module instances if not already created
+          Bronson.modules[module.path] = (!Bronson.modules[module.path] ? [] : Bronson.modules[module.path]);
+
+          // Store them module instance
+          Bronson.modules[module.path].push(_module);
+
+          // Add the path to our Module
+          Bronson.Utils.merge(Module, { path: module.path});
+
+          if (module.options.autoload) _module.load(module);
+          if (module.options.autostart) _module.start();
+          if (module.success) module.success(_module);
+
+        });
+      } catch (error) {
+        if (module.error) {
+          module.error(error);
+        }
       }
     },
     // Unload module by id
@@ -337,7 +351,7 @@
       }
       return returnModules;
     }
-  });
+  };
 
   Bronson.Module = (function() {
     Module.prototype.id = "";
@@ -351,6 +365,7 @@
     Module.prototype.load = function(module) {
       this.id = module.id;
       this.path = module.path;
+      this.loaded = true;
 
       // bind subscription events
       if(this.events) {
@@ -402,7 +417,7 @@
     rules: {},
 
     set: function(props) {
-      this.rules = extend(this.rules, props);
+      this.rules = Bronson.Utils.merge(this.rules, props);
     },
 
     validate: function(subscriber, channel) {
@@ -418,66 +433,70 @@
     }
   };
 
-  var amd_load = function(module) {
-    try {
-      // Load the module through RequireJS
-      require(['module', module.path], function(Module, LoadedModule) {
-        var _module = new LoadedModule();
+  Bronson.Utils = {
+    // http://github.com/eclifford/n-deep-merge
+    merge: function (dest) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
 
-        // Create the hash for storing of module instances if not already created
-        Bronson.modules[module.path] = (!Bronson.modules[module.path] ? [] : Bronson.modules[module.path]);
+        if (!source && typeof source !== 'boolean')
+          continue;
 
-        // Store them module instance
-        Bronson.modules[module.path].push(_module);
+        var isObj = typeof source === 'object',
+            isArray = toString.call(source) == '[object Array]';
 
-        // Add the path to our Module
-        extend(Module, { path: module.path});
-
-        if (module.options.autoload) _module.load(module);
-        if (module.options.autostart) _module.start();
-        if (module.success) module.success(_module);
-
-      });
-    } catch (error) {
-      if (module.error) {
-        module.error(error);
+        if(isArray) {
+          dest = dest || [];
+          for (var x = 0; x < source.length; x++) {
+            if (dest.indexOf(source[x]) === -1) {
+              dest.push(source[x]);
+            }
+          }
+        } else if (isObj) {
+          dest = dest || {};
+          for (var key in source) {
+            dest[key] = this.merge(dest[key], source[key]);
+          }
+        } else {
+          dest = source;
+        }
       }
+      return dest;
+    },
+    inherit: function(props) {
+      var hasProp = {}.hasOwnProperty;
+      var parent = this;
+      var child;
+
+      // Setup the constructor function for the new object
+      if (props && hasProp.call(props, 'constructor')) {
+        child = props.constructor;
+      } else {
+        child = function(){ return parent.apply(this, arguments); };
+      }
+
+      // Set the new objects prototype chain to inherit from parent
+      function Obj() { this.constructor = child; }
+      Obj.prototype = parent.prototype;
+      child.prototype = new Obj();
+
+      // Add prototype properties to the subclass if supplied
+      if (props) {
+        Bronson.Utils.merge(child.prototype, props);
+      }
+
+      // Convience property for accessing the parent's prototype
+      child.__super__ = parent.prototype;
+
+      return child;
     }
-  };
-
-  var inherit = function(props) {
-    var hasProp = {}.hasOwnProperty;
-    var parent = this;
-    var child;
-
-    // Setup the constructor function for the new object
-    if (props && hasProp.call(props, 'constructor')) {
-      child = props.constructor;
-    } else {
-      child = function(){ return parent.apply(this, arguments); };
-    }
-
-    // Set the new objects prototype chain to inherit from parent
-    function ctor() { this.constructor = child; }
-    ctor.prototype = parent.prototype;
-    child.prototype = new ctor;
-
-    // Add prototype properties to the subclass if supplied
-    if (props) {
-      extend(child.prototype, props);
-    }
-
-    // Convience property for accessing the parent's prototype
-    child.__super__ = parent.prototype;
-
-    return child;
   };
 
   // Aliases
   Bronson.on      = Bronson.subscribe;
   Bronson.trigger = Bronson.publish;
 
-  Bronson.Module.extend = inherit;
+  Bronson.Module.extend = Bronson.Utils.inherit;
 
   return Bronson;
 }));

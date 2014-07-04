@@ -35,12 +35,13 @@ module.exports = function(grunt) {
       options: {
         basePath: '',
 
-        frameworks: ['requirejs' ,'mocha', 'chai-jquery', 'sinon-chai'],
+        frameworks: ['requirejs' ,'mocha', 'chai-jquery', 'jquery-1.8.3', 'sinon-chai'],
 
         reporters: ['progress'],
 
         files: [
           {pattern: 'bronson.js', included: false},
+          {pattern: 'bower_components/async/lib/async.js', included: false},
           {pattern: 'test/fixtures/**/*.js', included: false},
           {pattern: 'test/unit/specs/*.js', included: false},
           'test/unit/runner.js'
@@ -64,19 +65,8 @@ module.exports = function(grunt) {
         files: ['package.json', 'bower.json'],
         commit: false,
         createTag: false,
-        push: false
-      }
-    },
-    release: {
-      options: {
-        file: '--all',
-        npm: false,
-        bump: true,
-        github: {
-          repo: 'eclifford/bronson',
-          usernameVar: 'GITHUB_USERNAME',
-          passwordVar: 'GITHUB_PASSWORD'
-        }
+        push: false,
+        commitFiles: ['-a']
       }
     },
     replace: {
@@ -93,5 +83,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['karma:unit:start', 'watch']);
   grunt.registerTask('build', ['jshint', 'uglify']);
-  grunt.registerTask('deploy', ['replace', 'build', 'release']);
+  grunt.registerTask('release', ['bump', 'replace', 'build']);
 };

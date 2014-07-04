@@ -1,4 +1,4 @@
-define(['bronson'], function(Bronson) {
+define(['bronson', 'bower_components/async/lib/async'], function(Bronson, async) {
   describe("Bronson", function() {
     describe("subscribe()", function() {
       it("should successfully subscribe given valid parameters", function() {
@@ -63,7 +63,6 @@ define(['bronson'], function(Bronson) {
         }).to.throw(Error);
       });
     });
-
     describe("Bronson.Module", function() {
       describe("load()", function() {
         it("should successfully load a module", function(done) {
@@ -73,6 +72,8 @@ define(['bronson'], function(Bronson) {
                 id: 'foo3',
                 path: 'test/fixtures/module',
                 success: function(module) {
+                  console.log(JSON.stringify(module));
+                  expect(module.loaded).to.equal(true);
                   done();
                 }
               }
@@ -123,30 +124,53 @@ define(['bronson'], function(Bronson) {
         var obj1 = {
           id: '123',
           started: false,
+          data: {
+            el: 'hi'
+          },
+          keys: [1, 2, 3],
           loaded: false
         };
 
         var obj2 = {
           id: '234',
+          data: {
+            scope: 'body'
+          },
+          objs: [
+            {
+              name: 'foo'
+            }
+          ],
+          keys: [4],
           started: true
         };
 
-        var mergedObj = Bronson.extend(obj1, obj2);
-
+        var mergedObj = Bronson.Utils.merge(obj1, obj2);
         expect(mergedObj).to.deep.equal({
           id: '234',
           started: true,
+          data: {
+            el: 'hi',
+            scope: 'body'
+          },
+          objs: [
+            {
+              name: 'foo'
+            }
+          ],
+          keys: [1, 2, 3, 4],
           loaded: false
         });
       });
+
     });
 
     describe("Bronson.Permissions", function() {
       var rules;
       before(function() {
         rules = {
-          "search": {
-            "grid": true
+          search: {
+            grid: true
           }
         };
       });
@@ -172,5 +196,3 @@ define(['bronson'], function(Bronson) {
     });
   });
 });
-
-

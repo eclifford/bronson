@@ -1,6 +1,6 @@
 {
   "name": "bronsonjs",
-  "version": "2.0.12",
+  "version": "2.0.13",
   "description": "AMD module framework for building large scale javascript applications",
   "homepage": "https://github.com/eclifford/bronson",
   "authors": [
@@ -19,7 +19,15 @@
   "keywords": [
     "AMD",
     "requirejs",
-    "module"
+    "module",
+    "pubsub",
+    "messanging"
   ],
-  "main": "bronson.js"
+  "dependencies": {
+    "requirejs": "~2.1.14"
+  },
+  "main": "bronson.js",
+  "devDependencies": {
+    "async": "~0.9.0"
+  }
 }
