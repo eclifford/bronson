@@ -26,8 +26,5 @@
   "dependencies": {
     "requirejs": "~2.1.14"
   },
-  "main": "bronson.js",
-  "devDependencies": {
-    "async": "~0.9.0"
-  }
+  "main": "bronson.js"
 }

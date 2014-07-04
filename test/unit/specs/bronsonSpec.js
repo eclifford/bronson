@@ -1,4 +1,4 @@
-define(['bronson', 'bower_components/async/lib/async'], function(Bronson, async) {
+define(['bronson'], function(Bronson, async) {
   describe("Bronson", function() {
     describe("subscribe()", function() {
       it("should successfully subscribe given valid parameters", function() {
