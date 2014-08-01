@@ -58,6 +58,39 @@ module.exports = function(grunt) {
         background: false,
         singleRun: true,
         browsers: ['PhantomJS']
+      },
+      ci: {
+        sauceLabs: {
+          testName: 'Bronson Unit Tests'
+        },
+        singleRun: true,
+        customLaunchers: {
+          sl_chrome: {
+            base: 'SauceLabs',
+            browserName: 'chrome',
+            platform: 'Windows 7',
+            version: '35'
+          },
+          sl_firefox: {
+            base: 'SauceLabs',
+            browserName: 'firefox',
+            version: '30'
+          },
+          sl_ios_safari: {
+            base: 'SauceLabs',
+            browserName: 'iphone',
+            platform: 'OS X 10.9',
+            version: '7.1'
+          },
+          sl_ie_11: {
+            base: 'SauceLabs',
+            browserName: 'internet explorer',
+            platform: 'Windows 8.1',
+            version: '11'
+          }
+        },
+        browsers: ['sl_chrome', 'sl_firefox', 'sl_ie_11'],
+        reporters: ['dots', 'saucelabs']
       }
     },
     bump: {
