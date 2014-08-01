@@ -7,8 +7,7 @@ module.exports = (grunt) ->
   [
     'clean'
     'concurrent:dev'
-    'symlink'
+    'copy'
     'connect:livereload'
     'watch'
   ]
-

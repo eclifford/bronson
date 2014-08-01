@@ -20,7 +20,7 @@
   'use strict';
 
   var Bronson =  {
-    version: '2.0.14',
+    version: '2.0.15',
 
     settings: {
       options: {

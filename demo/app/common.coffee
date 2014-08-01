@@ -17,12 +17,10 @@ require.config
     'backbone.wreqr': 'vendor/bower_components/backbone.wreqr/lib/amd/backbone.wreqr'
     'backbone.babysitter': 'vendor/bower_components/backbone.babysitter/lib/amd/backbone.babysitter'
     'marionette': 'vendor/bower_components/marionette/lib/core/amd/backbone.marionette'
-    'bronson': 'vendor/bronson'
+    'bronson': 'vendor/bower_components/bronson/bronson'
     'text': 'vendor/bower_components/requirejs-text/text'
     'tpl': 'vendor/bower_components/requirejs-tpl/tpl'
 
   shim:
     'bootstrap':
       deps: ["jquery"]
-
-

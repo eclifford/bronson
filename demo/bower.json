@@ -7,7 +7,9 @@
     "eclifford <ericgclifford@gmail.com>"
   ],
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "bronson": "~2.0.15"
+  },
   "devDependencies": {
     "sass-bootstrap": "~3.0.0",
     "requirejs": "~2.1.9",

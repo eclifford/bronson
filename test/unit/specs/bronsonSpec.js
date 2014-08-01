@@ -34,6 +34,12 @@ define(['bronson'], function(Bronson, async) {
           Bronson.publish('searchview:doesntexist');
         }).to.not.throw(Error);
       });
+      it("should throw when using invalid format", function() {
+        var spy = sinon.spy();
+        expect(function() {
+          Bronson.publish('searchview');
+        }).to.throw(Error);
+      });
     });
 
     describe("unsubscribe()", function() {
@@ -120,7 +126,7 @@ define(['bronson'], function(Bronson, async) {
     });
 
     describe("Bronson.extend", function() {
-      it("should extend deep extend object", function() {
+      it("should deep extend object", function() {
         var obj1 = {
           id: '123',
           started: false,

@@ -1,6 +1,6 @@
 {
   "name": "bronsonjs",
-  "version": "2.0.14",
+  "version": "2.0.15",
   "description": "AMD module framework for building large scale javascript applications",
   "main": "bronson.js",
   "directories": {
@@ -25,7 +25,6 @@
     "grunt-contrib-uglify": "*",
     "grunt-contrib-watch": "*",
     "grunt-karma": "*",
-    "grunt-release": "*",
     "grunt-text-replace": "*",
     "karma": "*",
     "karma-chai": "*",
