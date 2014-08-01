@@ -20,7 +20,7 @@
   'use strict';
 
   var Bronson =  {
-    version: '2.0.13',
+    version: '2.0.14',
 
     settings: {
       options: {
@@ -443,7 +443,7 @@
           continue;
 
         var isObj = typeof source === 'object',
-            isArray = toString.call(source) == '[object Array]';
+            isArray = Object.prototype.toString.call(source) == '[object Array]';
 
         if(isArray) {
           dest = dest || [];

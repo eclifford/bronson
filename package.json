@@ -1,13 +1,13 @@
 {
   "name": "bronsonjs",
-  "version": "2.0.13",
+  "version": "2.0.14",
   "description": "AMD module framework for building large scale javascript applications",
   "main": "bronson.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "grunt karma:single"
+    "test": "grunt karma:ci"
   },
   "repository": {
     "url": "git@github.com:eclifford/bronson.git"
@@ -19,24 +19,25 @@
   },
   "devDependencies": {
     "grunt": "~0.4.5",
+    "grunt-bump": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-karma": "*",
+    "grunt-release": "*",
+    "grunt-text-replace": "*",
+    "karma": "*",
+    "karma-chai": "*",
+    "karma-chai-jquery": "*",
     "karma-chrome-launcher": "*",
     "karma-firefox-launcher": "*",
-    "karma-requirejs": "*",
-    "karma-phantomjs-launcher": "*",
-    "karma": "*",
-    "karma-sinon-chai": "*",
-    "karma-chai-jquery": "*",
-    "load-grunt-tasks": "*",
-    "grunt-karma": "*",
     "karma-mocha": "*",
-    "karma-chai": "*",
-    "grunt-contrib-uglify": "*",
-    "grunt-contrib-jshint": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-release": "*",
-    "grunt-bump": "*",
-    "grunt-text-replace": "*",
-    "grunt-contrib-copy": "*"
+    "karma-phantomjs-launcher": "*",
+    "karma-requirejs": "*",
+    "karma-sauce-launcher": "^0.2.10",
+    "karma-sinon-chai": "*",
+    "load-grunt-tasks": "*"
   },
   "dependencies": {
     "karma-jquery": "^0.1.0"
