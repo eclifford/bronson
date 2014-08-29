@@ -188,25 +188,25 @@
     //     error: function() {}
     //   });
     //
-    load: function(modules) {
+    load: function(data) {
       // validate parameters
-      if (!modules) {
-        throw new Error("Bronson.load: must supply valid parameter modules");
+      if (!data) {
+        throw new Error("Bronson.load: must supply valid parameter data");
       }
 
-      if (!(modules instanceof Array))
-        modules = [modules];
+      if (!(data instanceof Array))
+        data = [data];
 
-      // Iterate through all the modules to load
-      for (var i = 0; i < modules.length; i++) {
-        if (!modules[i].id)
+      // Iterate through all the data to load
+      for (var i = 0; i < data.length; i++) {
+        if (!data[i].id)
           throw new Error("Bronson.load: must supply id parameter");
-        if (!modules[i].path)
+        if (!data[i].path)
           throw new Error("Bronson.load: must supply path parameter");
 
-        modules[i] = Bronson.Utils.merge(this.settings, modules[i]);
+        var _module = Bronson.Utils.merge({}, this.settings, data[i]);
 
-        this.requireLoad(modules[i]);
+        this.requireLoad(_module);
       }
     },
     requireLoad: function(module) {

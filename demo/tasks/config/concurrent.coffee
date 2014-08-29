@@ -6,9 +6,5 @@ module.exports = (grunt) ->
   dev: [
     'sass'
     'coffee'
-    'copy:assets'
     'includereplace'
   ]
-
-
-

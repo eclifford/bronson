@@ -6,6 +6,6 @@ module.exports = (grunt) ->
   dev:
     expand: true
     cwd: "<%= grunt.settings.paths.basePath %>"
-    src: ["**/*.coffee", "!**/vendor/**/*.coffee"]
+    src: ["modules/**/*.coffee", "main.coffee", "common.coffee"]
     dest: "<%= grunt.settings.paths.tempDir %>"
     ext: ".js"

@@ -6,7 +6,6 @@ module.exports = (grunt) ->
   grunt.registerTask 'build', [
     'clean:dist'
     'concurrent:dev'
-    'symlink'
+    'copy'
     'requirejs'
   ]
-
