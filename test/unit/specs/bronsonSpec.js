@@ -78,7 +78,6 @@ define(['bronson'], function(Bronson, async) {
                 id: 'foo3',
                 path: 'test/fixtures/module',
                 success: function(module) {
-                  console.log(JSON.stringify(module));
                   expect(module.loaded).to.equal(true);
                   done();
                 }

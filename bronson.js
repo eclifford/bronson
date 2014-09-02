@@ -20,7 +20,7 @@
   'use strict';
 
   var Bronson =  {
-    version: '2.0.16',
+    version: '2.0.17',
 
     settings: {
       options: {
@@ -44,34 +44,37 @@
     //   Bronson.publish('grid:change');
     //
     publish: function(event) {
-      var _event_regex = /^[a-z]+((:[a-z]+){1})$/;
-      var _event = event.toLowerCase();
-      var _event_array = [];
-      var _channel, _topic, _subscribers, _args;
+      var event_regex = /^[a-z]+((:[a-z]+){1})$/;
+      var subscribers, event_array = [];
+      var channel, topic, args;
+
+      // make event lowercase
+      event = event.toLowerCase();
 
       // Validate parameters
-      if (!_event_regex.test(_event)) {
+      if (!event_regex.test(event)) {
         throw new Error("Bronson.publish: event name must be in format subscriber of channel:topic");
       }
 
-      // split event based on channel:event
-      _event_array = _event.split(':');
-
       // extract channel and topic
-      _channel = _event_array[0];
-      _topic = _event_array[1];
+      event_array = event.split(':');
+      channel = event_array[0];
+      topic = event_array[1];
 
       // Verify that the event exists
-      if (!Bronson.events[_channel] || !Bronson.events[_channel][_topic]) return;
+      if (!Bronson.events[channel] || !Bronson.events[channel][topic]) {
+        return;
+      }
 
       // Get all the subscribers to this event
-      _subscribers = Bronson.events[_channel][_topic].slice();
+      subscribers = Bronson.events[channel][topic].slice();
 
       // Get the arguments
-      _args = [].slice.call(arguments, 1);
+      args = [].slice.call(arguments, 1);
 
-      for (var subscriber in _subscribers) {
-        _subscribers[subscriber].callback.apply(_subscribers[subscriber].context, _args);
+      // publish specified event to each subscriber
+      for (var i = 0; i < subscribers.length; i++) {
+        subscribers[i].callback.apply(subscribers[i].context, args);
       }
     },
     // Subscribe a module to an event
@@ -84,43 +87,44 @@
     //   Bronson.subscribe('searchview:grid:change', function() {}, this);
     //
     subscribe: function(event, callback, context) {
-      var _event_regex = /^[a-zA-Z0-9]+((:[a-zA-Z0-9]+){2})$/;
-      var _event = event.toLowerCase();
-      var _event_array, _subscriber, _channel, _topic;
+      var event_regex = /^[a-zA-Z0-9]+((:[a-zA-Z0-9]+){2})$/;
+      var event_array = [];
+      var subscriber, channel, topic;
+
+      // make event lowercase
+      event = event.toLowerCase();
 
       // validate paramaters
-      if (!_event_regex.test(_event)) {
-        throw new Error("Bronson.subscribe: event " + _event + " must be in format subscriber or subscriber:channel:topic");
+      if (!event_regex.test(event)) {
+        throw new Error("Bronson.subscribe: event " + event + " must be in format subscriber or subscriber:channel:topic");
       }
       if ((typeof callback !== "undefined" && callback !== null) && typeof callback !== "function") {
-        throw new Error("Bronson.subscribe: callback must be a function");
+        throw new Error("Bronson.subscribe: callback must supplied and must be a function");
       }
 
-      // split event based on subscriber:channel:event
-      _event_array = _event.split(':');
-
       // extract the subscriber, channel, topic from event
-      _subscriber = _event_array[0];
-      _channel = _event_array[1];
-      _topic = _event_array[2];
+      event_array = event.split(':');
+      subscriber = event_array[0];
+      channel = event_array[1];
+      topic = event_array[2];
 
       // verify that this subscription is permitted
       if (this.settings.permissions) {
-        if (!Bronson.Permissions.validate(_subscriber, _channel))
+        if (!Bronson.Permissions.validate(subscriber, channel))
           throw new Error("Bronson.subscribe: permissions do not allow this subscriber to listen to that channel");
       }
 
       // verify channel exists if not create it
-      if (!this.events[_channel]) {
-        this.events[_channel] = {};
+      if (!this.events[channel]) {
+        this.events[channel] = {};
       }
 
       // create the topic if it doesn't exist
-      this.events[_channel][_topic] = (!this.events[_channel][_topic] ? [] : this.events[_channel][_topic]);
+      this.events[channel][topic] = (!this.events[channel][topic] ? [] : this.events[channel][topic]);
 
       // push the event
-      this.events[_channel][_topic].push({
-        subscriber: _subscriber,
+      this.events[channel][topic].push({
+        subscriber: subscriber,
         context: context || this,
         callback: callback
       });
@@ -133,41 +137,41 @@
     //   Bronson.unsubscribe('searchview');
     //
     unsubscribe: function(event) {
-      var _event_regex = /^[a-zA-Z0-9]+((:[a-zA-Z0-9]+){2})?$/;
-      var _event = event.toLowerCase();
-      var _event_array = [];
-      var _subscriber, _channel, _topic, i, topicObj;
+      var event_regex = /^[a-zA-Z0-9]+((:[a-zA-Z0-9]+){2})?$/;
+      var event_array = [];
+      var subscriber, channel, topic, i, topicObj;
 
-      if (!_event_regex.test(_event)) {
+      // make event lowercase
+      event = event.toLowerCase();
+
+      if (!event_regex.test(event)) {
         throw new Error("Bronson.unsubscribe: event must be in format subscriber or subscriber:channel:topic");
       }
 
-      // split the event subscriber:channel:event
-      _event_array = _event.split(':');
-
       // extract the subscriber, channel, topic
-      _subscriber = _event_array[0];
-      _channel = _event_array[1];
-      _topic = _event_array[2];
+      event_array = event.split(':');
+      subscriber = event_array[0];
+      channel = event_array[1];
+      topic = event_array[2];
 
       // if only subscriber passed we remove all events
-      if (_event_array.length === 1) {
-        for (_channel in this.events) {
-          for (_topic in this.events[_channel]) {
+      if (event_array.length === 1) {
+        for (channel in this.events) {
+          for (topic in this.events[channel]) {
             // enumerate topics in reverse order removing those that match
-            for (i = this.events[_channel][_topic].length - 1; i >= 0; i--) {
-              if (this.events[_channel][_topic][i].subscriber === _subscriber) {
-                this.events[_channel][_topic].splice(i, 1);
+            for (i = this.events[channel][topic].length - 1; i >= 0; i--) {
+              if (this.events[channel][topic][i].subscriber === subscriber) {
+                this.events[channel][topic].splice(i, 1);
               }
             }
           }
         }
       } else {
         // enumerate topics in reverse order removing those that match
-        for (i = this.events[_channel][_topic].length - 1; i >= 0; i--) {
-          topicObj = this.events[_channel][_topic][i];
-          if (topicObj.subscriber === _subscriber) {
-            this.events[_channel][_topic].splice(i, 1);
+        for (i = this.events[channel][topic].length - 1; i >= 0; i--) {
+          topicObj = this.events[channel][topic][i];
+          if (topicObj.subscriber === subscriber) {
+            this.events[channel][topic].splice(i, 1);
           }
         }
       }
@@ -189,51 +193,61 @@
     //   });
     //
     load: function(data) {
+      var module;
+
       // validate parameters
       if (!data) {
         throw new Error("Bronson.load: must supply valid parameter data");
       }
 
-      if (!(data instanceof Array))
+      if (!(data instanceof Array)) {
         data = [data];
+      }
 
       // Iterate through all the data to load
       for (var i = 0; i < data.length; i++) {
-        if (!data[i].id)
+        if (!data[i].id) {
           throw new Error("Bronson.load: must supply id parameter");
-        if (!data[i].path)
+        }
+        if (!data[i].path) {
           throw new Error("Bronson.load: must supply path parameter");
+        }
 
-        var _module = Bronson.Utils.merge({}, this.settings, data[i]);
+        // merge incoming data object with default settings
+        module = Bronson.Utils.merge({}, this.settings, data[i]);
 
-        this.requireLoad(_module);
+        // load with require
+        this._require(module);
       }
     },
-    requireLoad: function(module) {
-      try {
-        // Load the module through RequireJS
-        require(['module', module.path], function(Module, LoadedModule) {
-          var _module = new LoadedModule();
+    // Load a module with Require.JS
+    //
+    // @param module [Object] the module to load
+    //
+    _require: function(data) {
+      // Load the module through RequireJS
+      require(['module', data.path], function(Module, LoadedModule) {
+        var module = new LoadedModule();
 
-          // Create the hash for storing of module instances if not already created
-          Bronson.modules[module.path] = (!Bronson.modules[module.path] ? [] : Bronson.modules[module.path]);
+        // Create the hash for storing of data instances if not already created
+        Bronson.modules[data.path] = (!Bronson.modules[data.path] ? [] : Bronson.modules[data.path]);
 
-          // Store them module instance
-          Bronson.modules[module.path].push(_module);
+        // Store them data instance
+        Bronson.modules[data.path].push(module);
 
-          // Add the path to our Module
-          Bronson.Utils.merge(Module, { path: module.path});
+        // Add the path to our Module
+        Bronson.Utils.merge(Module, { path: data.path});
 
-          if (module.options.autoload) _module.load(module);
-          if (module.options.autostart) _module.start();
-          if (module.success) module.success(_module);
+        if (data.options.autoload) module.load(data);
+        if (data.options.autostart) module.start();
+        if (data.success) data.success(module);
 
-        });
-      } catch (error) {
-        if (module.error) {
-          module.error(error);
-        }
-      }
+      }, function(err) {
+        var failedId = err.requireModules && err.requireModules[0];
+        requirejs.undef(failedId);
+
+        throw new Error("Bronson._require: error loading with RequireJS", err);
+      });
     },
     // Unload module by id
     //
@@ -241,12 +255,19 @@
     //   Bronson.unload('TestModule')
     //
     unload: function(id) {
+      var module, index;
+
       if (!(typeof id !== "undefined" && id !== null) || typeof id !== "string") {
         throw new Error("Bronson.unload: id must be valid");
       }
 
-      var module = this.find(id);
-      var index = this.modules[module.type].indexOf(module);
+      module = this.find(id);
+
+      if (!module) {
+        throw new Error("Bronson.unload: attempted to unload module module that does not exist", id);
+      }
+
+      index = this.modules[module.type].indexOf(module);
 
       this.modules[module.type].splice(index, 1);
 
@@ -269,9 +290,9 @@
     //   Bronson.unloadAll()
     //
     unloadAll: function() {
-      var _modules = this.all();
-      for (var i = 0; i < _modules.length; i++) {
-        this.unload(_modules[i].id);
+      var modules = this.all();
+      for (var i = 0; i < modules.length; i++) {
+        this.unload(modules[i].id);
       }
     },
     // Start the module by id
@@ -280,9 +301,10 @@
     //  Bronson.start('foo');
     //
     start: function(id) {
-      var _module = Bronson.find(id);
-      if (!_module.started)
-        _module.start();
+      var module = this.find(id);
+      if (!module.started) {
+        module.start();
+      }
     },
     // Start all the modules that aren't started
     //
@@ -290,10 +312,11 @@
     //  Bronson.startAll();
     //
     startAll: function() {
-      var _modules = this.findAll();
-      for (var i = 0; i < _modules.length; i++) {
-        if (!_modules[i].started)
-          _modules[i].start();
+      var modules = this.findAll();
+      for (var i = 0; i < modules.length; i++) {
+        if (!modules[i].started) {
+          modules[i].start();
+        }
       }
     },
     // Stop a module by id
@@ -302,9 +325,10 @@
     //  Bronson.stop('foo');
     //
     stop: function(id) {
-      var _module = Bronson.find(id);
-      if (_module.started)
-        _module.stop();
+      var module = this.find(id);
+      if (module.started) {
+        module.stop();
+      }
     },
     // Stop all started modules
     //
@@ -312,10 +336,11 @@
     //  Bronson.stopAll();
     //
     stopAll: function() {
-      var _modules = this.findAll();
-      for (var i = 0; i < _modules.length; i++) {
-        if (_modules[i].started)
-          _modules[i].stop();
+      var modules = this.findAll();
+      for (var i = 0; i < modules.length; i++) {
+        if (modules[i].started) {
+          modules[i].stop();
+        }
       }
     },
     // Find a module by instance id
@@ -324,12 +349,12 @@
     //  Bronson.find('foo');
     //
     find: function(id) {
-      var _modules = this.modules;
-      for (var module in _modules) {
-        if (_modules.hasOwnProperty(module)) {
-          for (var i in _modules[module]) {
-            if (_modules[module][i].id === id)
-              return _modules[module][i];
+      for (var module in this.modules) {
+        if (this.modules.hasOwnProperty(module)) {
+          for (var i in this.modules[module]) {
+            if (this.modules[module][i].id === id) {
+              return this.modules[module][i];
+            }
           }
         }
       }
@@ -341,11 +366,11 @@
     //
     findAll: function() {
       var returnModules = [];
-      var _modules = this.modules;
-      for (var module in _modules) {
-        if (_modules.hasOwnProperty(module)) {
-          for (var i in _modules[module]) {
-            returnModules.push(_modules[module][i]);
+      var modules = this.modules;
+      for (var module in modules) {
+        if (modules.hasOwnProperty(module)) {
+          for (var i in modules[module]) {
+            returnModules.push(modules[module][i]);
           }
         }
       }
@@ -417,7 +442,7 @@
     rules: {},
 
     set: function(props) {
-      this.rules = Bronson.Utils.merge(this.rules, props);
+      this.rules = Bronson.Utils.merge({}, this.rules, props);
     },
 
     validate: function(subscriber, channel) {
